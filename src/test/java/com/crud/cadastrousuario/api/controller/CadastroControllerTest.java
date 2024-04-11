@@ -1,5 +1,6 @@
 package com.crud.cadastrousuario.api.controller;
 
+import com.crud.cadastrousuario.domain.dto.PessoaCreateDTO;
 import com.crud.cadastrousuario.domain.dto.PessoaResponseDTO;
 import com.crud.cadastrousuario.domain.dto.mapper.PessoaMapper;
 import com.crud.cadastrousuario.domain.model.Pessoa;
@@ -9,6 +10,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,8 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
+@AutoConfigureMockMvc
 @WebMvcTest(CadastroController.class)
 class CadastroControllerTest {
 
@@ -39,6 +43,7 @@ class CadastroControllerTest {
 
     @Test
     void buscaPessoasTest() throws Exception {
+
         Pessoa pessoa = new Pessoa();
         PessoaResponseDTO dto = new PessoaResponseDTO();
 
@@ -52,17 +57,23 @@ class CadastroControllerTest {
     }
 
     @Test
-    void buscaPessoasIDTest() throws Exception {
+    public void buscaPessoasIDTest() throws Exception {
+        Long pessoaId = 1L;
         Pessoa pessoa = new Pessoa();
-        PessoaResponseDTO dto = new PessoaResponseDTO();
+        pessoa.setId(pessoaId);
 
-        given(pessoaService.searchPeople(any(Pageable.class), any())).willReturn(Collections.singletonList(pessoa));
-        given(pessoaMapper.toDTO(any(List.class))).willReturn(Collections.singletonList(dto));
+        PessoaResponseDTO pessoaResponseDTO = new PessoaResponseDTO();
 
-        mockMvc.perform(get("/cadastro/pessoas/{id}", 1L)
+        given(pessoaService.searchPeopleofID(pessoaId)).willReturn(pessoa);
+        given(pessoaMapper.toDTO(pessoa)).willReturn(pessoaResponseDTO);
+
+        mockMvc.perform(get("/cadastro/pessoas/{id}", pessoaId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(pessoaId));
     }
+
+
 
 }

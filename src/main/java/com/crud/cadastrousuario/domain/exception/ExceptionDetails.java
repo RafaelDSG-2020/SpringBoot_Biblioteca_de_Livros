@@ -19,14 +19,14 @@ public class ExceptionDetails {
     private String title;
     private String message;
     private String path;
-    private List<Object> objects;
+    //private List<Object> objects;
 
 
-
-    @Getter
-    @Builder
-    public static class Object {
-        private String field;
-        private String messageField;
-    }
+//
+//    @Getter
+//    @Builder
+//    public static class Object {
+//        private String field;
+//        private String messageField;
+//    }
 }

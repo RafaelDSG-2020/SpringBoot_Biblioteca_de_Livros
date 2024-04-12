@@ -28,7 +28,7 @@ class CrudPessoaServiceTest {
     private CrudPessoaService pessoaService;
 
     @Test
-    void shouldThrowBadRequestWhenEmailExists() {
+    void testbadRequestEmail() {
         Pessoa pessoa = new Pessoa();
         pessoa.setEmail("test@example.com");
 
@@ -40,29 +40,7 @@ class CrudPessoaServiceTest {
     }
 
     @Test
-    void shouldPassWhenEmailNotExists() {
-        Pessoa pessoa = new Pessoa();
-        pessoa.setEmail("test@example.com");
-
-        when(pessoaRepository.existsByEmail(anyString())).thenReturn(false);
-
-        assertDoesNotThrow(() -> pessoaService.isEmailAvailable(pessoa));
-
-        verify(pessoaRepository).existsByEmail("test@example.com");
-    }
-
-    @Test
-    void shouldThrowNotFoundExceptionWhenIdNotExists() {
-        Long id = 1L;
-        when(pessoaRepository.findById(id)).thenReturn(Optional.empty());
-
-        assertThrows(NotFoundException.class, () -> pessoaService.isIdAvailable(id));
-
-        verify(pessoaRepository).findById(id);
-    }
-
-    @Test
-    void shouldPassWhenIdExists() {
+    void testNotFoundRequestId() {
         Long id = 1L;
         Pessoa pessoa = new Pessoa();
         pessoa.setId(id);

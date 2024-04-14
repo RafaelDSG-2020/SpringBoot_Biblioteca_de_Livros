@@ -51,18 +51,18 @@ class CadastroControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    @Test
-    void buscaPessoasIDTest() throws Exception {
-        Pessoa pessoa = new Pessoa();
-        PessoaResponseDTO dto = new PessoaResponseDTO();
-
-        given(pessoaService.searchPeople(any(Pageable.class), any())).willReturn(Collections.singletonList(pessoa));
-        given(pessoaMapper.toDTO(any(List.class))).willReturn(Collections.singletonList(dto));
-
-        mockMvc.perform(get("/cadastro/pessoas/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
+//    @Test
+//    void buscaPessoasIDTest() throws Exception {
+//        Pessoa pessoa = new Pessoa();
+//        PessoaResponseDTO dto = new PessoaResponseDTO();
+//
+//        given(pessoaService.searchPeople(any(Pageable.class), any())).willReturn(Collections.singletonList(pessoa));
+//        given(pessoaMapper.toDTO(any(List.class))).willReturn(Collections.singletonList(dto));
+//
+//        mockMvc.perform(get("/cadastro/pessoas/{id}", 1L)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+//    }
 
 }

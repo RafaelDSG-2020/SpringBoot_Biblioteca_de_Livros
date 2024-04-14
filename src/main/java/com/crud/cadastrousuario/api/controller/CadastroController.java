@@ -33,7 +33,7 @@ public class CadastroController {
     private PessoaMapper pessoaMapper;
 
 
-    @GetMapping("/pessoas")
+    @GetMapping("/pessoa")
     public ResponseEntity<List<PessoaResponseDTO>> buscaPessoas(@PageableDefault(size = 5) Pageable pageable, PessoaFilterDTO filter) {
      //   System.out.println(nameRef);
 //        log.info();
@@ -43,7 +43,7 @@ public class CadastroController {
 
     }
 
-    @GetMapping("/pessoas/{id}")
+    @GetMapping("/pessoa/{id}")
     public ResponseEntity<Object> buscaPessoas(@PathVariable(value = "id") Long id) throws BadRequestException, NotFoundException {
 
         Pessoa pessoasave = pessoaService.searchPeopleofID(id);

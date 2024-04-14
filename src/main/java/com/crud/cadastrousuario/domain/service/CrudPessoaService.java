@@ -1,6 +1,7 @@
 package com.crud.cadastrousuario.domain.service;
 
 
+import com.crud.cadastrousuario.domain.dto.PessoaCreateDTO;
 import com.crud.cadastrousuario.domain.dto.PessoaFilterDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
@@ -62,6 +63,14 @@ public class CrudPessoaService {
     }
 
     public void isEmailAvailable(Pessoa pessoa) throws  BadRequestException {
+
+        if (pessoaRepository.existsByEmail(pessoa.getEmail())){
+            throw new BadRequestException("Pessoa com email cadastrado");
+        }
+
+    }
+
+    public void isEmailAvailable(PessoaCreateDTO pessoa) throws  BadRequestException {
 
         if (pessoaRepository.existsByEmail(pessoa.getEmail())){
             throw new BadRequestException("Pessoa com email cadastrado");

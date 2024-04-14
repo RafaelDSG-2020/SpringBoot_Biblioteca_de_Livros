@@ -19,10 +19,12 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PessoaCreateDTO {
 
-    @NotBlank(message = "Nome não pode ser nulo")
+    @NotNull(message = "Nome nao pode ser nulo")
+    @NotBlank(message = "Nome não pode ser vazio")
     @Size(min = 3 ,message = "O numero minimo é 3 caracteres")
     @Size(max = 50 , message = "O numero maximo é 50 caracteres")
     private String nome;
+    @NotNull(message = "email nao pode ser nulo")
     @Email(message = "Email invalido Colocar um email Valido")
     private String email;
     @Size(min = 11 , message = "O numero minimo é 11 Digitos")

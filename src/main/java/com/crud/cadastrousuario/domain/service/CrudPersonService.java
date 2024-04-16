@@ -1,13 +1,14 @@
 package com.crud.cadastrousuario.domain.service;
 
 
-import com.crud.cadastrousuario.domain.dto.PessoaCreateDTO;
-import com.crud.cadastrousuario.domain.dto.PessoaFilterDTO;
+import com.crud.cadastrousuario.domain.dto.PersonCreateDTO;
+import com.crud.cadastrousuario.domain.dto.PersonFilterDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
-import com.crud.cadastrousuario.domain.model.Pessoa;
-import com.crud.cadastrousuario.domain.repository.PessoaRepository;
-import com.crud.cadastrousuario.domain.repository.PessoaRepositorySpec;
+import com.crud.cadastrousuario.domain.model.Person;
+import com.crud.cadastrousuario.domain.repository.PersonRepository;
+import com.crud.cadastrousuario.domain.repository.PersonRepositorySpec;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,21 +19,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CrudPessoaService {
+public class CrudPersonService {
 
     @Autowired
-    public  PessoaRepository pessoaRepository;
+    public PersonRepository pessoaRepository;
 
-    public Pessoa save(Pessoa pessoa) throws BadRequestException {
+    public Person save(Person pessoa) throws BadRequestException {
 
         isEmailAvailable(pessoa);
         return pessoaRepository.save(pessoa);
     }
 
-    public List<Pessoa> searchPeople(Pageable pageable , PessoaFilterDTO filter){
+    public List<Person> searchPeople(Pageable pageable , PersonFilterDTO filter){
 
-        Page<Pessoa> pageUser = pessoaRepository.findAll(
-                PessoaRepositorySpec.filter(filter),
+        Page<Person> pageUser = pessoaRepository.findAll(
+                PersonRepositorySpec.filter(filter),
                 PageRequest.of(pageable.getPageNumber(),
                         pageable.getPageSize()));
 
@@ -40,13 +41,13 @@ public class CrudPessoaService {
 
     }
 
-    public Pessoa searchPeopleofID(Long id) throws NotFoundException {
+    public Person searchPeopleByID(Long id) throws NotFoundException {
         isIdAvailable(id);
-        Optional<Pessoa> opt = pessoaRepository.findById(id);
+        Optional<Person> opt = pessoaRepository.findById(id);
         return opt.get();
     }
 
-    public Pessoa updatePeopleOFID(Long id, Pessoa pessoa) throws NotFoundException, BadRequestException {
+    public Person updatePeopleByID(Long id, Person pessoa) throws NotFoundException, BadRequestException {
 
         isIdAvailable(id);
         isEmailAvailable(pessoa);
@@ -56,13 +57,27 @@ public class CrudPessoaService {
 
     }
 
-    public void deletePeopleOFID(Long id) throws NotFoundException, BadRequestException {
+    public Person updatePeopleByIDD(Long id) throws NotFoundException, BadRequestException {
+
+
         isIdAvailable(id);
-        Pessoa pessoa = searchPeopleofID(id);
+        Person pessoa = new Person();
+        isEmailAvailable(pessoa);
+        pessoa.setId(id);
+        return pessoaRepository.save(pessoa);
+
+
+    }
+
+
+
+    public void deletePeopleByID(Long id) throws NotFoundException, BadRequestException {
+        isIdAvailable(id);
+        Person pessoa = searchPeopleByID(id);
         pessoaRepository.delete(pessoa);
     }
 
-    public void isEmailAvailable(Pessoa pessoa) throws  BadRequestException {
+    public void isEmailAvailable(Person pessoa) throws  BadRequestException {
 
         if (pessoaRepository.existsByEmail(pessoa.getEmail())){
             throw new BadRequestException("Pessoa com email cadastrado");
@@ -70,16 +85,18 @@ public class CrudPessoaService {
 
     }
 
-    public void isEmailAvailable(PessoaCreateDTO pessoa) throws  BadRequestException {
+    public void isEmailAvailable(PersonCreateDTO pessoa) throws  BadRequestException {
 
         if (pessoaRepository.existsByEmail(pessoa.getEmail())){
             throw new BadRequestException("Pessoa com email cadastrado");
         }
 
     }
+
+
 
     public void isIdAvailable(Long id) throws NotFoundException {
-        Optional<Pessoa> opt = pessoaRepository.findById(id);
+        Optional<Person> opt = pessoaRepository.findById(id);
         if (opt.isEmpty()){
             throw new NotFoundException("Pessoa com id: " + id + " Inexistente.");
         }

@@ -1,7 +1,9 @@
 package com.crud.cadastrousuario.domain.repository;
 
-import com.crud.cadastrousuario.domain.dto.PessoaFilterDTO;
-import com.crud.cadastrousuario.domain.model.Pessoa;
+import com.crud.cadastrousuario.domain.dto.PersonFilterDTO;
+
+import com.crud.cadastrousuario.domain.model.Person;
+
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -9,12 +11,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class PessoaRepositorySpec {
+public class PersonRepositorySpec {
 
 
     private static CriteriaBuilder criteriaBuilder;
 
-    public static Specification<Pessoa> filter(PessoaFilterDTO filter) {
+    public static Specification<Person> filter(PersonFilterDTO filter) {
         return Specification
                 .where(filterWhereIn("nome", filter.getName()))
                 .and(filterWhereIn("email", filter.getEmail()))
@@ -26,7 +28,7 @@ public class PessoaRepositorySpec {
 //        return (root, query, builder) -> builder.lower(root.get(field)).in(values);
 //    }
 
-    public static Specification<Pessoa> filterWhereIn(String field, String value) {
+    public static Specification<Person> filterWhereIn(String field, String value) {
         if (field == null || field.trim().isEmpty() || value == null || value.trim().isEmpty()) {
             return null;
         }

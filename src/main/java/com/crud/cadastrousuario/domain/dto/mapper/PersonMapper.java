@@ -1,8 +1,8 @@
 package com.crud.cadastrousuario.domain.dto.mapper;
 
-import com.crud.cadastrousuario.domain.dto.PessoaCreateDTO;
-import com.crud.cadastrousuario.domain.dto.PessoaResponseDTO;
-import com.crud.cadastrousuario.domain.model.Pessoa;
+import com.crud.cadastrousuario.domain.dto.PersonCreateDTO;
+import com.crud.cadastrousuario.domain.dto.PersonResponseDTO;
+import com.crud.cadastrousuario.domain.model.Person;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,22 +11,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class PessoaMapper {
+public class PersonMapper {
 
     @Autowired
     private ModelMapper mapper;
 
-    public Pessoa toEntity(PessoaCreateDTO dto){
-        Pessoa entity = mapper.map(dto, Pessoa.class);
+    public Person toEntity(PersonCreateDTO dto){
+        Person entity = mapper.map(dto, Person.class);
         return entity;
     }
 
-    public PessoaResponseDTO toDTO(Pessoa entity){
-        PessoaResponseDTO dto = mapper.map(entity, PessoaResponseDTO.class);
+    public PersonResponseDTO toDTO(Person entity){
+        PersonResponseDTO dto = mapper.map(entity, PersonResponseDTO.class);
         return dto;
     }
 
-    public List<PessoaResponseDTO> toDTO(List<Pessoa> pessoas){
+    public List<PersonResponseDTO> toDTO(List<Person> pessoas){
 
         return pessoas.stream()
                 .map(pessoa -> toDTO(pessoa))

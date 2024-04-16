@@ -1,13 +1,16 @@
 package com.crud.cadastrousuario.api.controller;
 
-import com.crud.cadastrousuario.domain.dto.PessoaFilterDTO;
+import com.crud.cadastrousuario.domain.dto.PersonFilterDTO;
+
+import com.crud.cadastrousuario.domain.dto.mapper.PersonMapper;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
-import com.crud.cadastrousuario.domain.dto.PessoaCreateDTO;
-import com.crud.cadastrousuario.domain.dto.PessoaResponseDTO;
-import com.crud.cadastrousuario.domain.dto.mapper.PessoaMapper;
-import com.crud.cadastrousuario.domain.model.Pessoa;
-import com.crud.cadastrousuario.domain.service.CrudPessoaService;
+import com.crud.cadastrousuario.domain.dto.PersonCreateDTO;
+import com.crud.cadastrousuario.domain.dto.PersonResponseDTO;
+
+import com.crud.cadastrousuario.domain.model.Person;
+
+import com.crud.cadastrousuario.domain.service.CrudPersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,47 +31,46 @@ public class CadastroController {
 
 
     @Autowired
-    private CrudPessoaService pessoaService;
+    private CrudPersonService pessoaService;
     @Autowired
-    private PessoaMapper pessoaMapper;
+    private PersonMapper pessoaMapper;
 
 
     @GetMapping("/pessoa")
-    public ResponseEntity<List<PessoaResponseDTO>> buscaPessoas(@PageableDefault(size = 5) Pageable pageable, PessoaFilterDTO filter) {
-     //   System.out.println(nameRef);
-//        log.info();
-        List<Pessoa> pessoas = pessoaService.searchPeople(pageable , filter);
-        List<PessoaResponseDTO> pessoaResponseDTOS = pessoaMapper.toDTO(pessoas);
-        return ResponseEntity.status(HttpStatus.OK).body(pessoaResponseDTOS);
+    public ResponseEntity<List<PersonResponseDTO>> buscaPessoas(@PageableDefault(size = 5) Pageable pageable, PersonFilterDTO filter) {
+
+        List<Person> pessoas = pessoaService.searchPeople(pageable , filter);
+        List<PersonResponseDTO> personResponseDTOS = pessoaMapper.toDTO(pessoas);
+        return ResponseEntity.status(HttpStatus.OK).body(personResponseDTOS);
 
     }
 
     @GetMapping("/pessoa/{id}")
-    public ResponseEntity<Object> buscaPessoas(@PathVariable(value = "id") Long id) throws BadRequestException, NotFoundException {
+    public ResponseEntity<Object> buscaPessoas(@PathVariable(value = "id") Long id) throws NotFoundException {
 
-        Pessoa pessoasave = pessoaService.searchPeopleofID(id);
-        PessoaResponseDTO pessoaResponseDTO = pessoaMapper.toDTO(pessoasave);
-        return  ResponseEntity.status(HttpStatus.OK).body(pessoaResponseDTO);
+        Person pessoasave = pessoaService.searchPeopleByID(id);
+        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoasave);
+        return  ResponseEntity.status(HttpStatus.OK).body(personResponseDTO);
 
     }
     @PostMapping("/pessoa")
-    public ResponseEntity<PessoaResponseDTO> saveRegistration(@RequestBody @Valid PessoaCreateDTO pessoaCreateDTO) throws NotFoundException, BadRequestException {
+    public ResponseEntity<PersonResponseDTO> saveRegistration(@RequestBody @Valid PersonCreateDTO pessoaCreateDTO) throws NotFoundException, BadRequestException {
 
-        Pessoa pessoa = pessoaMapper.toEntity(pessoaCreateDTO);
-        Pessoa pessoaSalva = pessoaService.save(pessoa);
-        PessoaResponseDTO pessoaResponseDTO = pessoaMapper.toDTO(pessoaSalva);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pessoaResponseDTO);
+        Person pessoa = pessoaMapper.toEntity(pessoaCreateDTO);
+        Person pessoaSalva = pessoaService.save(pessoa);
+        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoaSalva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(personResponseDTO);
 
     }
 
     @PutMapping("/pessoa/{id}")
     public ResponseEntity<Object> atualizaUmCadastro(@PathVariable(value = "id") Long id,
-                                                     @RequestBody @Valid  PessoaCreateDTO pessoaCreateDTO)
+                                                     @RequestBody @Valid PersonCreateDTO pessoaCreateDTO)
             throws NotFoundException, BadRequestException {
-        Pessoa pessoa = pessoaMapper.toEntity(pessoaCreateDTO);
-        Pessoa pessoaSalva = pessoaService.updatePeopleOFID(id, pessoa);
-        PessoaResponseDTO pessoaResponseDTO = pessoaMapper.toDTO(pessoaSalva);
-        return  ResponseEntity.status(HttpStatus.OK).body(pessoaResponseDTO);
+        Person pessoa = pessoaMapper.toEntity(pessoaCreateDTO);
+        Person pessoaSalva = pessoaService.updatePeopleByID(id, pessoa);
+        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoaSalva);
+        return  ResponseEntity.status(HttpStatus.OK).body(personResponseDTO);
 
     }
 
@@ -76,7 +78,7 @@ public class CadastroController {
     @DeleteMapping("/pessoa/{id}")
     public ResponseEntity<Object> deletaUmCadastro (@PathVariable(value = "id") Long id) throws NotFoundException, BadRequestException {
 
-        pessoaService.deletePeopleOFID(id);
+        pessoaService.deletePeopleByID(id);
         return ResponseEntity.status(HttpStatus.OK).body("Foi Removido com Sucesso");
 
     }

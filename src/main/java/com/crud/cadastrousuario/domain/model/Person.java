@@ -1,9 +1,6 @@
 package com.crud.cadastrousuario.domain.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Pessoa implements Serializable  {
+public class Person implements Serializable  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

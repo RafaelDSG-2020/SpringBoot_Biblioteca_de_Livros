@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PessoaFilterDTO {
+public class PersonFilterDTO {
 
     private String name;
     private String email;

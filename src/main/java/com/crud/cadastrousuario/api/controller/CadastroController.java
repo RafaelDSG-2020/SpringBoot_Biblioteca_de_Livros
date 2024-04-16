@@ -24,7 +24,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.*;
 
 @RestController
-@RequestMapping("/cadastro")
+@RequestMapping("/register")
 @RequiredArgsConstructor
 @Log4j2
 public class CadastroController {
@@ -36,7 +36,7 @@ public class CadastroController {
     private PersonMapper pessoaMapper;
 
 
-    @GetMapping("/pessoa")
+    @GetMapping("/people")
     public ResponseEntity<List<PersonResponseDTO>> buscaPessoas(@PageableDefault(size = 5) Pageable pageable, PersonFilterDTO filter) {
 
         List<Person> pessoas = pessoaService.searchPeople(pageable , filter);
@@ -45,7 +45,7 @@ public class CadastroController {
 
     }
 
-    @GetMapping("/pessoa/{id}")
+    @GetMapping("/people/{id}")
     public ResponseEntity<Object> buscaPessoas(@PathVariable(value = "id") Long id) throws NotFoundException {
 
         Person pessoasave = pessoaService.searchPeopleByID(id);
@@ -53,7 +53,7 @@ public class CadastroController {
         return  ResponseEntity.status(HttpStatus.OK).body(personResponseDTO);
 
     }
-    @PostMapping("/pessoa")
+    @PostMapping("/people")
     public ResponseEntity<PersonResponseDTO> saveRegistration(@RequestBody @Valid PersonCreateDTO pessoaCreateDTO) throws NotFoundException, BadRequestException {
 
         Person pessoa = pessoaMapper.toEntity(pessoaCreateDTO);
@@ -63,7 +63,7 @@ public class CadastroController {
 
     }
 
-    @PutMapping("/pessoa/{id}")
+    @PutMapping("/people/{id}")
     public ResponseEntity<Object> atualizaUmCadastro(@PathVariable(value = "id") Long id,
                                                      @RequestBody @Valid PersonCreateDTO pessoaCreateDTO)
             throws NotFoundException, BadRequestException {
@@ -75,7 +75,7 @@ public class CadastroController {
     }
 
 
-    @DeleteMapping("/pessoa/{id}")
+    @DeleteMapping("/people/{id}")
     public ResponseEntity<Object> deletaUmCadastro (@PathVariable(value = "id") Long id) throws NotFoundException, BadRequestException {
 
         pessoaService.deletePeopleByID(id);

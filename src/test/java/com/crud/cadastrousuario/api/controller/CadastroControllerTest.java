@@ -66,7 +66,7 @@ class CadastroControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    static final String PESSOA_API = "/cadastro/pessoa";
+    static final String PESSOA_API = "/register/people";
 
     private static PersonCreateDTO getPessoaCreateDTO() {
 

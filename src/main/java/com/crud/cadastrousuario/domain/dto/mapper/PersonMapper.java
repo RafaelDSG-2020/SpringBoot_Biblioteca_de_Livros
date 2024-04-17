@@ -16,20 +16,37 @@ public class PersonMapper {
     @Autowired
     private ModelMapper mapper;
 
-    public Person toEntity(PersonCreateDTO dto){
-        Person entity = mapper.map(dto, Person.class);
-        return entity;
+//    public Person toEntity(PersonCreateDTO dto){
+//        Person entity = mapper.map(dto, Person.class);
+//        return entity;
+//    }
+
+    public <R> R toEntity(Object source, Class<R> resultClass) {
+        return mapper.map(source, resultClass);
     }
 
-    public PersonResponseDTO toDTO(Person entity){
-        PersonResponseDTO dto = mapper.map(entity, PersonResponseDTO.class);
-        return dto;
+
+    public <R> R toDTO (Object entity, Class<R> resultClass){
+        return mapper.map(entity, resultClass);
     }
+//    public PersonResponseDTO toDTO(Person entity){
+//        PersonResponseDTO dto = mapper.map(entity, PersonResponseDTO.class);
+//        return dto;
+//    }
 
-    public List<PersonResponseDTO> toDTO(List<Person> pessoas){
 
-        return pessoas.stream()
-                .map(pessoa -> toDTO(pessoa))
+    public <S, T> List<T> toDtoList(List<S> sourceList, Class<T> dtoClass) {
+        return sourceList.stream()
+                .map(source -> toDTO(source, dtoClass))
                 .collect(Collectors.toList());
     }
+
+
+
+//    public List<PersonResponseDTO> toDTO(List<Person> pessoas){
+//
+//        return pessoas.stream()
+//                .map(pessoa -> toDTO(pessoa))
+//                .collect(Collectors.toList());
+//    }
 }

@@ -204,7 +204,7 @@ class CadastroControllerTest {
         Person pessoa = new Person();
         PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
 
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonCreateDTO.class), eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.save(any(Person.class))).thenReturn(pessoa);
         when(pessoaMapper.toDTO(any(Person.class))).thenReturn(personResponseDTO);
 
@@ -317,7 +317,7 @@ class CadastroControllerTest {
 
         Person pessoa = getPessoa();
 
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonCreateDTO.class), eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.save(any(Person.class)))
                 .thenThrow(new BadRequestException("Email ja esta cadastrado"));
 
@@ -341,7 +341,7 @@ class CadastroControllerTest {
         Person pessoa = getPessoa();
 
 
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonCreateDTO.class), eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.updatePeopleByID(any(Long.class), any(Person.class)))
                 .thenThrow(new BadRequestException("E-mail não pode ser vazio"));
 
@@ -362,7 +362,7 @@ class CadastroControllerTest {
 
         Person pessoa = new Person();
         PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonCreateDTO.class) , eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.updatePeopleByID(eq(id), any(Person.class))).thenReturn(pessoa);
         when(pessoaMapper.toDTO(any(Person.class))).thenReturn(personResponseDTO);
 
@@ -381,7 +381,7 @@ class CadastroControllerTest {
 
         Person pessoa = getPessoa();
 
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonCreateDTO.class) , eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.updatePeopleByID(anyLong(), any(Person.class)))
                 .thenThrow(new BadRequestException("Email ja esta cadastrado"));
 

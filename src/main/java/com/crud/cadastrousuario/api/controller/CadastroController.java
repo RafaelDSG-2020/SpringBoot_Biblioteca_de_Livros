@@ -40,7 +40,7 @@ public class CadastroController {
     public ResponseEntity<List<PersonResponseDTO>> buscaPessoas(@PageableDefault(size = 5) Pageable pageable, PersonFilterDTO filter) {
 
         List<Person> pessoas = pessoaService.searchPeople(pageable , filter);
-        List<PersonResponseDTO> personResponseDTOS = pessoaMapper.toDTO(pessoas);
+        List<PersonResponseDTO> personResponseDTOS = pessoaMapper.toDTO(pessoas, LinkedList.class);
         return ResponseEntity.status(HttpStatus.OK).body(personResponseDTOS);
 
     }
@@ -49,16 +49,17 @@ public class CadastroController {
     public ResponseEntity<Object> buscaPessoas(@PathVariable(value = "id") Long id) throws NotFoundException {
 
         Person pessoasave = pessoaService.searchPeopleByID(id);
-        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoasave);
+        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoasave, PersonResponseDTO.class);
         return  ResponseEntity.status(HttpStatus.OK).body(personResponseDTO);
 
     }
     @PostMapping("/people")
     public ResponseEntity<PersonResponseDTO> saveRegistration(@RequestBody @Valid PersonCreateDTO pessoaCreateDTO) throws NotFoundException, BadRequestException {
 
-        Person pessoa = pessoaMapper.toEntity(pessoaCreateDTO);
+        Person pessoa = pessoaMapper.toEntity(pessoaCreateDTO,Person.class);
+        System.out.println(pessoa);
         Person pessoaSalva = pessoaService.save(pessoa);
-        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoaSalva);
+        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoaSalva, PersonResponseDTO.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(personResponseDTO);
 
     }
@@ -67,9 +68,9 @@ public class CadastroController {
     public ResponseEntity<Object> atualizaUmCadastro(@PathVariable(value = "id") Long id,
                                                      @RequestBody @Valid PersonCreateDTO pessoaCreateDTO)
             throws NotFoundException, BadRequestException {
-        Person pessoa = pessoaMapper.toEntity(pessoaCreateDTO);
+        Person pessoa = pessoaMapper.toEntity(pessoaCreateDTO , Person.class );
         Person pessoaSalva = pessoaService.updatePeopleByID(id, pessoa);
-        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoaSalva);
+        PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoaSalva, PersonResponseDTO.class);
         return  ResponseEntity.status(HttpStatus.OK).body(personResponseDTO);
 
     }

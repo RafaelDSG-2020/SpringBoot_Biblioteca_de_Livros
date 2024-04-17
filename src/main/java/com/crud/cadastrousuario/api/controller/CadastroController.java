@@ -2,7 +2,7 @@ package com.crud.cadastrousuario.api.controller;
 
 import com.crud.cadastrousuario.domain.dto.PersonFilterDTO;
 
-import com.crud.cadastrousuario.domain.dto.mapper.PersonMapper;
+import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.dto.PersonCreateDTO;
@@ -33,20 +33,20 @@ public class CadastroController {
     @Autowired
     private CrudPersonService pessoaService;
     @Autowired
-    private PersonMapper pessoaMapper;
+    private Mapper pessoaMapper;
 
 
     @GetMapping("/people")
-    public ResponseEntity<List<PersonResponseDTO>> buscaPessoas(@PageableDefault(size = 5) Pageable pageable, PersonFilterDTO filter) {
+    public ResponseEntity<List<PersonResponseDTO>> searchPeople(@PageableDefault(size = 5) Pageable pageable, PersonFilterDTO filter) {
 
         List<Person> pessoas = pessoaService.searchPeople(pageable , filter);
-        List<PersonResponseDTO> personResponseDTOS = pessoaMapper.toDTO(pessoas, LinkedList.class);
+        List<PersonResponseDTO> personResponseDTOS = pessoaMapper.toDTO(pessoas, PersonResponseDTO.class);
         return ResponseEntity.status(HttpStatus.OK).body(personResponseDTOS);
 
     }
 
     @GetMapping("/people/{id}")
-    public ResponseEntity<Object> buscaPessoas(@PathVariable(value = "id") Long id) throws NotFoundException {
+    public ResponseEntity<Object> searchPeople(@PathVariable(value = "id") Long id) throws NotFoundException {
 
         Person pessoasave = pessoaService.searchPeopleByID(id);
         PersonResponseDTO personResponseDTO = pessoaMapper.toDTO(pessoasave, PersonResponseDTO.class);

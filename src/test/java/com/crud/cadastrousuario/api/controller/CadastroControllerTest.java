@@ -4,7 +4,7 @@ import com.crud.cadastrousuario.domain.dto.PersonCreateDTO;
 
 import com.crud.cadastrousuario.domain.dto.PersonFilterDTO;
 import com.crud.cadastrousuario.domain.dto.PersonResponseDTO;
-import com.crud.cadastrousuario.domain.dto.mapper.PersonMapper;
+import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
@@ -29,6 +29,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -54,7 +55,7 @@ class CadastroControllerTest {
     private CrudPersonService pessoaService;
 
     @MockBean
-    private PersonMapper pessoaMapper;
+    private Mapper pessoaMapper;
 
     @MockBean
     private PersonRepository pessoaRepository;
@@ -120,7 +121,7 @@ class CadastroControllerTest {
 
 
         when(pessoaService.searchPeople(any(Pageable.class), any(PersonFilterDTO.class))).thenReturn(listaPessoas);
-        when(pessoaMapper.toDTO(listaPessoas)).thenReturn(listaPersonResponseDTO);
+        when(pessoaMapper.toDTO(any(List.class), eq(PersonResponseDTO.class))).thenReturn(listaPersonResponseDTO);
 
         mockMvc.perform(get(PESSOA_API)
                         .param("nome", "Teste")
@@ -144,7 +145,9 @@ class CadastroControllerTest {
 
 
         when(pessoaService.searchPeople(any(Pageable.class), any(PersonFilterDTO.class))).thenReturn(listaPessoas);
-        when(pessoaMapper.toDTO(listaPessoas)).thenReturn(listaPersonResponseDTO);
+        when(pessoaMapper.toDTO(any(List.class), eq(PersonResponseDTO.class))).thenReturn(listaPersonResponseDTO);
+
+        //when(pessoaMapper.toDTO(listaPessoas)).thenReturn(listaPersonResponseDTO);
 
         mockMvc.perform(get(PESSOA_API)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -169,7 +172,8 @@ class CadastroControllerTest {
         PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
 
         when(pessoaService.searchPeopleByID(idTeste)).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(pessoa)).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(pessoa, PersonResponseDTO.class)).thenReturn(personResponseDTO);
+
 
         mockMvc.perform(get(PESSOA_API + "/{id}", idTeste)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -206,7 +210,7 @@ class CadastroControllerTest {
 
         when(pessoaMapper.toEntity(any(PersonCreateDTO.class), eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.save(any(Person.class))).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(any(Person.class))).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(any(Person.class), eq(PersonResponseDTO.class))).thenReturn(personResponseDTO);
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
         String pessoaResponseDTOJson = objectMapper.writeValueAsString(personResponseDTO);
@@ -364,7 +368,7 @@ class CadastroControllerTest {
         PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
         when(pessoaMapper.toEntity(any(PersonCreateDTO.class) , eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.updatePeopleByID(eq(id), any(Person.class))).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(any(Person.class))).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(any(Person.class), eq(PersonResponseDTO.class))).thenReturn(personResponseDTO);
 
         mockMvc.perform(put(PESSOA_API + "/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)

@@ -1,9 +1,8 @@
 package com.crud.cadastrousuario.api.controller;
 
-import com.crud.cadastrousuario.domain.dto.PersonCreateDTO;
+import com.crud.cadastrousuario.domain.dto.PersonDTO;
 
-import com.crud.cadastrousuario.domain.dto.PersonFilterDTO;
-import com.crud.cadastrousuario.domain.dto.PersonResponseDTO;
+
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
@@ -29,7 +28,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -44,9 +42,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest(controllers = CadastroController.class)
+@WebMvcTest(controllers = RegisterController.class)
 @AutoConfigureMockMvc
-class CadastroControllerTest {
+class RegisterControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -61,7 +59,7 @@ class CadastroControllerTest {
     private PersonRepository pessoaRepository;
 
     @InjectMocks
-    private CadastroController cadastroController;
+    private RegisterController registerController;
 
 
     @Autowired
@@ -69,30 +67,30 @@ class CadastroControllerTest {
 
     static final String PESSOA_API = "/register/people";
 
-    private static PersonCreateDTO getPessoaCreateDTO() {
+    private static PersonDTO getPessoaCreateDTO() {
 
-        PersonCreateDTO pessoaCreateDTO = PersonCreateDTO.builder()
-                .nome("Teste")
+        PersonDTO pessoaCreateDTO = PersonDTO.builder()
+                .name("Teste")
                 .email("teste@example.com")
-                .telefone("12345678901")
+                .phone("12345678901")
                 .build();
         return pessoaCreateDTO;
 
     }
-    private static List<PersonResponseDTO> getPessoaResponseDTO(){
+    private static List<PersonDTO> getPessoaResponseDTO(){
 
-        List<PersonResponseDTO> listaPersonResponseDTO = new ArrayList<>();
+        List<PersonDTO> listaPersonResponseDTO = new ArrayList<>();
 
-        PersonResponseDTO personResponseDTO1 = PersonResponseDTO.builder()
-                .nome("Teste")
+        PersonDTO personResponseDTO1 = PersonDTO.builder()
+                .name("Teste")
                 .email("teste@example.com")
-                .telefone("12345678901")
+                .phone("12345678901")
                 .build();
 
-        PersonResponseDTO personResponseDTO2 = PersonResponseDTO.builder()
-                .nome("Testano")
+        PersonDTO personResponseDTO2 = PersonDTO.builder()
+                .name("Testano")
                 .email("Testano@example.com")
-                .telefone("10987654321")
+                .phone("10987654321")
                 .build();
 
         listaPersonResponseDTO.add(personResponseDTO1);
@@ -105,9 +103,9 @@ class CadastroControllerTest {
     private static Person getPessoa() {
 
         Person pessoa =  Person.builder()
-                .nome("Teste")
+                .name("Teste")
                 .email("teste@example.com")
-                .telefone("12345678901")
+                .phone("12345678901")
                 .build();
         return pessoa;
 
@@ -117,11 +115,11 @@ class CadastroControllerTest {
     public void testeDeveRetornar_UmaListaDePessoas_EverificarCadaCampo_MetodoGet() throws Exception {
 
         List<Person> listaPessoas = new ArrayList<>();
-        List<PersonResponseDTO> listaPersonResponseDTO = getPessoaResponseDTO();
+        List<PersonDTO> listaPersonResponseDTO = getPessoaResponseDTO();
 
 
-        when(pessoaService.searchPeople(any(Pageable.class), any(PersonFilterDTO.class))).thenReturn(listaPessoas);
-        when(pessoaMapper.toDTO(any(List.class), eq(PersonResponseDTO.class))).thenReturn(listaPersonResponseDTO);
+        when(pessoaService.searchPeople(any(Pageable.class), any(PersonDTO.class))).thenReturn(listaPessoas);
+        when(pessoaMapper.toDTO(any(List.class), eq(PersonDTO.class))).thenReturn(listaPersonResponseDTO);
 
         mockMvc.perform(get(PESSOA_API)
                         .param("nome", "Teste")
@@ -141,11 +139,11 @@ class CadastroControllerTest {
     public void testDeveRetornar_UmaListaDePessoas_EverificarCadaCampo_SemParametros_MetodoGet() throws Exception {
 
         List<Person> listaPessoas = new ArrayList<>();
-        List<PersonResponseDTO> listaPersonResponseDTO = getPessoaResponseDTO();
+        List<PersonDTO> listaPersonResponseDTO = getPessoaResponseDTO();
 
 
-        when(pessoaService.searchPeople(any(Pageable.class), any(PersonFilterDTO.class))).thenReturn(listaPessoas);
-        when(pessoaMapper.toDTO(any(List.class), eq(PersonResponseDTO.class))).thenReturn(listaPersonResponseDTO);
+        when(pessoaService.searchPeople(any(Pageable.class), any(PersonDTO.class))).thenReturn(listaPessoas);
+        when(pessoaMapper.toDTO(any(List.class), eq(PersonDTO.class))).thenReturn(listaPersonResponseDTO);
 
         //when(pessoaMapper.toDTO(listaPessoas)).thenReturn(listaPersonResponseDTO);
 
@@ -169,10 +167,10 @@ class CadastroControllerTest {
 
         Person pessoa = getPessoa();
 
-        PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
+        PersonDTO personResponseDTO = getPessoaResponseDTO().get(0);
 
         when(pessoaService.searchPeopleByID(idTeste)).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(pessoa, PersonResponseDTO.class)).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(pessoa, PersonDTO.class)).thenReturn(personResponseDTO);
 
 
         mockMvc.perform(get(PESSOA_API + "/{id}", idTeste)
@@ -203,14 +201,14 @@ class CadastroControllerTest {
     @Test
     public void testeVerificar_CadastrarPessoa_EVerificarCampos_MetodoPost() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
 
         Person pessoa = new Person();
-        PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
+        PersonDTO personResponseDTO = getPessoaResponseDTO().get(0);
 
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class), eq(Person.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonDTO.class), eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.save(any(Person.class))).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(any(Person.class), eq(PersonResponseDTO.class))).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(any(Person.class), eq(PersonDTO.class))).thenReturn(personResponseDTO);
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
         String pessoaResponseDTOJson = objectMapper.writeValueAsString(personResponseDTO);
@@ -229,8 +227,8 @@ class CadastroControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComNomeMenorque3Caracteres_MetodoPost() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
-        pessoaCreateDTO.setNome("TS");
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
+        pessoaCreateDTO.setName("TS");
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
 
@@ -243,8 +241,8 @@ class CadastroControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComNomeMaiorque50Caracteres_MetodoPost() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
-        pessoaCreateDTO.setNome("TesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTeste");
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
+        pessoaCreateDTO.setName("TesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTeste");
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
 
@@ -258,8 +256,8 @@ class CadastroControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComTelefoneMenor_Que11Digitos_MetodoPost() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
-        pessoaCreateDTO.setTelefone("1234567890");
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
+        pessoaCreateDTO.setPhone("1234567890");
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
 
@@ -273,8 +271,8 @@ class CadastroControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComTelefoneMaior_Que13Digitos_MetodoPost() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
-        pessoaCreateDTO.setTelefone("1234567890123456789");
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
+        pessoaCreateDTO.setPhone("1234567890123456789");
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
 
@@ -288,7 +286,7 @@ class CadastroControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComEmailEscritoIncorreto_MetodoPost() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
         String mudaEmail = "123123123131231";
         pessoaCreateDTO.setEmail(mudaEmail);
 
@@ -303,7 +301,7 @@ class CadastroControllerTest {
     @Test
     public void testeVerificar_PessoaComEmailNulo_MetodoPost() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
         pessoaCreateDTO.setEmail(null);
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
@@ -317,11 +315,11 @@ class CadastroControllerTest {
     @Test
     public void testedeveRetornarBadRequest_QuandoEmailJaCadastrado_MetodoPost() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
 
         Person pessoa = getPessoa();
 
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class), eq(Person.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonDTO.class), eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.save(any(Person.class)))
                 .thenThrow(new BadRequestException("Email ja esta cadastrado"));
 
@@ -340,12 +338,12 @@ class CadastroControllerTest {
     @Test
     public void testeVerificar_AtualizarCadastro_ComEmailNulo_MetodoPut() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
         pessoaCreateDTO.setEmail(null);
         Person pessoa = getPessoa();
 
 
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class), eq(Person.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonDTO.class), eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.updatePeopleByID(any(Long.class), any(Person.class)))
                 .thenThrow(new BadRequestException("E-mail não pode ser vazio"));
 
@@ -362,13 +360,13 @@ class CadastroControllerTest {
     public void testeVerificar_AtualizaUmCadastro_MetodoPut() throws Exception {
 
         Long id = 1L;
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
 
         Person pessoa = new Person();
-        PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class) , eq(Person.class))).thenReturn(pessoa);
+        PersonDTO personResponseDTO = getPessoaResponseDTO().get(0);
+        when(pessoaMapper.toEntity(any(PersonDTO.class) , eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.updatePeopleByID(eq(id), any(Person.class))).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(any(Person.class), eq(PersonResponseDTO.class))).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(any(Person.class), eq(PersonDTO.class))).thenReturn(personResponseDTO);
 
         mockMvc.perform(put(PESSOA_API + "/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -381,11 +379,11 @@ class CadastroControllerTest {
     @Test
     public void testedeveRetornarBadRequest_QuandoEmailJaCadastrado_MetodoPut() throws Exception {
 
-        PersonCreateDTO pessoaCreateDTO = getPessoaCreateDTO();
+        PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
 
         Person pessoa = getPessoa();
 
-        when(pessoaMapper.toEntity(any(PersonCreateDTO.class) , eq(Person.class))).thenReturn(pessoa);
+        when(pessoaMapper.toEntity(any(PersonDTO.class) , eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.updatePeopleByID(anyLong(), any(Person.class)))
                 .thenThrow(new BadRequestException("Email ja esta cadastrado"));
 

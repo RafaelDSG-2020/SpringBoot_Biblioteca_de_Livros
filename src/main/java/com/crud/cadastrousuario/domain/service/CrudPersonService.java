@@ -1,8 +1,7 @@
 package com.crud.cadastrousuario.domain.service;
 
 
-import com.crud.cadastrousuario.domain.dto.PersonCreateDTO;
-import com.crud.cadastrousuario.domain.dto.PersonFilterDTO;
+import com.crud.cadastrousuario.domain.dto.PersonDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Person;
@@ -30,7 +29,7 @@ public class CrudPersonService {
         return pessoaRepository.save(pessoa);
     }
 
-    public List<Person> searchPeople(Pageable pageable , PersonFilterDTO filter){
+    public List<Person> searchPeople(Pageable pageable , PersonDTO filter){
 
         Page<Person> pageUser = pessoaRepository.findAll(
                 PersonRepositorySpec.filter(filter),
@@ -85,7 +84,7 @@ public class CrudPersonService {
 
     }
 
-    public void isEmailAvailable(PersonCreateDTO pessoa) throws  BadRequestException {
+    public void isEmailAvailable(PersonDTO pessoa) throws  BadRequestException {
 
         if (pessoaRepository.existsByEmail(pessoa.getEmail())){
             throw new BadRequestException("Pessoa com email cadastrado");

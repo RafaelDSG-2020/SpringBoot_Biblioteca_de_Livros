@@ -1,6 +1,6 @@
 package com.crud.cadastrousuario.domain.repository;
 
-import com.crud.cadastrousuario.domain.dto.PersonFilterDTO;
+import com.crud.cadastrousuario.domain.dto.PersonDTO;
 
 import com.crud.cadastrousuario.domain.model.Person;
 
@@ -16,11 +16,11 @@ public class PersonRepositorySpec {
 
     private static CriteriaBuilder criteriaBuilder;
 
-    public static Specification<Person> filter(PersonFilterDTO filter) {
+    public static Specification<Person> filter(PersonDTO filter) {
         return Specification
-                .where(filterWhereIn("nome", filter.getName()))
+                .where(filterWhereIn("name", filter.getName()))
                 .and(filterWhereIn("email", filter.getEmail()))
-                .and(filterWhereIn("telefone", filter.getPhone()));
+                .and(filterWhereIn("phone", filter.getPhone()));
     }
 
 //    public static Specification<Pessoa> filterWhereIn(String field, List<String> values) {

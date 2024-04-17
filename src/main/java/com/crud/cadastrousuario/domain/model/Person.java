@@ -21,11 +21,12 @@ public class Person implements Serializable  {
     @Column(name = "ID")
     private Long id;
     @Column(name = "NOME", length = 50, nullable = false)
-    private String nome;
+    private String name;
     @Column(name = "EMAIL", length = 50, nullable = false, unique=true )
     private String email;
     @Column(name = "TELEFONE" , length = 50, nullable = false)
-    private String telefone;
+    private String phone;
+
 
 
 

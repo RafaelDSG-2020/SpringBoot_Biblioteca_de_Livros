@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PersonDTO {
 
-    private Long id;
     @NotNull(message = "Nome nao pode ser nulo")
     @NotBlank(message = "Nome não pode ser vazio")
     @Size(min = 3 , max = 50,message = "O numero de caracteres deve estar entre 3 e 50 caractesres")

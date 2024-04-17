@@ -13,11 +13,6 @@ public class Mapper {
     @Autowired
     private ModelMapper mapper;
 
-//    public Person toEntity(PersonCreateDTO dto){
-//        Person entity = mapper.map(dto, Person.class);
-//        return entity;
-//    }
-
     public <R> R toEntity(Object source, Class<R> resultClass) {
         return mapper.map(source, resultClass);
     }

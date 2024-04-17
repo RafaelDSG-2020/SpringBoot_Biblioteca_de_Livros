@@ -4,7 +4,7 @@ import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.dto.PersonDTO;
-
+import com.crud.cadastrousuario.domain.dto.PersonResponseDTO;
 
 import com.crud.cadastrousuario.domain.model.Person;
 
@@ -35,10 +35,10 @@ public class RegisterController {
 
 
     @GetMapping("/people")
-    public ResponseEntity<List<PersonDTO>> searchPeople(@PageableDefault(size = 5) Pageable pageable, PersonDTO filter) {
+    public ResponseEntity<List<PersonResponseDTO>> searchPeople(@PageableDefault(size = 5) Pageable pageable, PersonDTO filter) {
 
         List<Person> people = personService.searchPeople(pageable , filter);
-        List<PersonDTO> personResponseDTOS = personMapper.toDTO(people, PersonDTO.class);
+        List<PersonResponseDTO> personResponseDTOS = personMapper.toDTO(people, PersonResponseDTO.class);
         return ResponseEntity.status(HttpStatus.OK).body(personResponseDTOS);
 
     }
@@ -47,17 +47,17 @@ public class RegisterController {
     public ResponseEntity<Object> searchPeople(@PathVariable(value = "id") Long id) throws NotFoundException {
 
         Person personSave = personService.searchPeopleByID(id);
-        PersonDTO personResponseDTO = personMapper.toDTO(personSave, PersonDTO.class);
+        PersonResponseDTO personResponseDTO = personMapper.toDTO(personSave, PersonResponseDTO.class);
         return  ResponseEntity.status(HttpStatus.OK).body(personResponseDTO);
 
     }
     @PostMapping("/people")
-    public ResponseEntity<PersonDTO> saveRegistration(@RequestBody @Valid PersonDTO personCreateDTO) throws NotFoundException, BadRequestException {
+    public ResponseEntity<Object> saveRegistration(@RequestBody @Valid PersonDTO personCreateDTO) throws NotFoundException, BadRequestException {
 
-      //  System.out.println(personCreateDTO);
+
         Person person = personMapper.toEntity(personCreateDTO,Person.class);
         Person personSave = personService.save(person);
-        PersonDTO personResponseDTO = personMapper.toDTO(personSave, PersonDTO.class);
+        PersonResponseDTO personResponseDTO = personMapper.toDTO(personSave, PersonResponseDTO.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(personResponseDTO);
 
     }
@@ -68,7 +68,7 @@ public class RegisterController {
             throws NotFoundException, BadRequestException {
         Person person = personMapper.toEntity(pessoaCreateDTO , Person.class );
         Person personSave = personService.updatePeopleByID(id, person);
-        PersonDTO personResponseDTO = personMapper.toDTO(personSave, PersonDTO.class);
+        PersonResponseDTO personResponseDTO = personMapper.toDTO(personSave, PersonResponseDTO.class);
         return  ResponseEntity.status(HttpStatus.OK).body(personResponseDTO);
 
     }

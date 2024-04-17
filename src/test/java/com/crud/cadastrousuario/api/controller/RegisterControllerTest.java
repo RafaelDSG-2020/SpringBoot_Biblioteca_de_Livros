@@ -2,7 +2,7 @@ package com.crud.cadastrousuario.api.controller;
 
 import com.crud.cadastrousuario.domain.dto.PersonDTO;
 
-
+import com.crud.cadastrousuario.domain.dto.PersonResponseDTO;
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
@@ -77,17 +77,17 @@ class RegisterControllerTest {
         return pessoaCreateDTO;
 
     }
-    private static List<PersonDTO> getPessoaResponseDTO(){
+    private static List<PersonResponseDTO> getPessoaResponseDTO(){
 
-        List<PersonDTO> listaPersonResponseDTO = new ArrayList<>();
+        List<PersonResponseDTO> listaPersonResponseDTO = new ArrayList<>();
 
-        PersonDTO personResponseDTO1 = PersonDTO.builder()
+        PersonResponseDTO personResponseDTO1 = PersonResponseDTO.builder()
                 .name("Teste")
                 .email("teste@example.com")
                 .phone("12345678901")
                 .build();
 
-        PersonDTO personResponseDTO2 = PersonDTO.builder()
+        PersonResponseDTO personResponseDTO2 = PersonResponseDTO.builder()
                 .name("Testano")
                 .email("Testano@example.com")
                 .phone("10987654321")
@@ -115,11 +115,11 @@ class RegisterControllerTest {
     public void testeDeveRetornar_UmaListaDePessoas_EverificarCadaCampo_MetodoGet() throws Exception {
 
         List<Person> listaPessoas = new ArrayList<>();
-        List<PersonDTO> listaPersonResponseDTO = getPessoaResponseDTO();
+        List<PersonResponseDTO> listaPersonResponseDTO = getPessoaResponseDTO();
 
 
         when(pessoaService.searchPeople(any(Pageable.class), any(PersonDTO.class))).thenReturn(listaPessoas);
-        when(pessoaMapper.toDTO(any(List.class), eq(PersonDTO.class))).thenReturn(listaPersonResponseDTO);
+        when(pessoaMapper.toDTO(any(List.class), eq(PersonResponseDTO.class))).thenReturn(listaPersonResponseDTO);
 
         mockMvc.perform(get(PESSOA_API)
                         .param("nome", "Teste")
@@ -139,11 +139,11 @@ class RegisterControllerTest {
     public void testDeveRetornar_UmaListaDePessoas_EverificarCadaCampo_SemParametros_MetodoGet() throws Exception {
 
         List<Person> listaPessoas = new ArrayList<>();
-        List<PersonDTO> listaPersonResponseDTO = getPessoaResponseDTO();
+        List<PersonResponseDTO> listaPersonResponseDTO = getPessoaResponseDTO();
 
 
         when(pessoaService.searchPeople(any(Pageable.class), any(PersonDTO.class))).thenReturn(listaPessoas);
-        when(pessoaMapper.toDTO(any(List.class), eq(PersonDTO.class))).thenReturn(listaPersonResponseDTO);
+        when(pessoaMapper.toDTO(any(List.class), eq(PersonResponseDTO.class))).thenReturn(listaPersonResponseDTO);
 
         //when(pessoaMapper.toDTO(listaPessoas)).thenReturn(listaPersonResponseDTO);
 
@@ -167,10 +167,10 @@ class RegisterControllerTest {
 
         Person pessoa = getPessoa();
 
-        PersonDTO personResponseDTO = getPessoaResponseDTO().get(0);
+        PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
 
         when(pessoaService.searchPeopleByID(idTeste)).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(pessoa, PersonDTO.class)).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(pessoa, PersonResponseDTO.class)).thenReturn(personResponseDTO);
 
 
         mockMvc.perform(get(PESSOA_API + "/{id}", idTeste)
@@ -204,11 +204,11 @@ class RegisterControllerTest {
         PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
 
         Person pessoa = new Person();
-        PersonDTO personResponseDTO = getPessoaResponseDTO().get(0);
+        PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
 
         when(pessoaMapper.toEntity(any(PersonDTO.class), eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.save(any(Person.class))).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(any(Person.class), eq(PersonDTO.class))).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(any(Person.class), eq(PersonResponseDTO.class))).thenReturn(personResponseDTO);
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
         String pessoaResponseDTOJson = objectMapper.writeValueAsString(personResponseDTO);
@@ -363,10 +363,10 @@ class RegisterControllerTest {
         PersonDTO pessoaCreateDTO = getPessoaCreateDTO();
 
         Person pessoa = new Person();
-        PersonDTO personResponseDTO = getPessoaResponseDTO().get(0);
+        PersonResponseDTO personResponseDTO = getPessoaResponseDTO().get(0);
         when(pessoaMapper.toEntity(any(PersonDTO.class) , eq(Person.class))).thenReturn(pessoa);
         when(pessoaService.updatePeopleByID(eq(id), any(Person.class))).thenReturn(pessoa);
-        when(pessoaMapper.toDTO(any(Person.class), eq(PersonDTO.class))).thenReturn(personResponseDTO);
+        when(pessoaMapper.toDTO(any(Person.class), eq(PersonResponseDTO.class))).thenReturn(personResponseDTO);
 
         mockMvc.perform(put(PESSOA_API + "/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)

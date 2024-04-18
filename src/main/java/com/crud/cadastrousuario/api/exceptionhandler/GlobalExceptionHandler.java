@@ -57,9 +57,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return new ResponseEntity<>(ExceptionDetails.builder()
                 .timestamp(LocalDateTime.now(ZoneId.systemDefault()))
                 .message(ex.getMessage())
-                .status(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.NOT_FOUND.value())
                 .path(((ServletWebRequest) request).getRequest().getRequestURI())
-                .build(), HttpStatus.BAD_REQUEST);
+                .build(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadRequestException.class)

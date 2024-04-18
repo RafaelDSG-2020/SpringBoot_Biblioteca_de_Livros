@@ -125,12 +125,12 @@ class RegisterControllerTest {
                         .param("nome", "Teste")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nome").value("Teste"))
+                .andExpect(jsonPath("$[0].name").value("Teste"))
                 .andExpect(jsonPath("$[0].email").value("teste@example.com"))
-                .andExpect(jsonPath("$[0].telefone").value("12345678901"))
-                .andExpect(jsonPath("$[1].nome").value("Testano"))
+                .andExpect(jsonPath("$[0].phone").value("12345678901"))
+                .andExpect(jsonPath("$[1].name").value("Testano"))
                 .andExpect(jsonPath("$[1].email").value("Testano@example.com"))
-                .andExpect(jsonPath("$[1].telefone").value("10987654321"))
+                .andExpect(jsonPath("$[1].phone").value("10987654321"))
                 .andExpect(content().json(objectMapper.writeValueAsString(listaPersonResponseDTO)));
 
     }
@@ -150,12 +150,12 @@ class RegisterControllerTest {
         mockMvc.perform(get(PESSOA_API)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nome").value("Teste"))
+                .andExpect(jsonPath("$[0].name").value("Teste"))
                 .andExpect(jsonPath("$[0].email").value("teste@example.com"))
-                .andExpect(jsonPath("$[0].telefone").value("12345678901"))
-                .andExpect(jsonPath("$[1].nome").value("Testano"))
+                .andExpect(jsonPath("$[0].phone").value("12345678901"))
+                .andExpect(jsonPath("$[1].name").value("Testano"))
                 .andExpect(jsonPath("$[1].email").value("Testano@example.com"))
-                .andExpect(jsonPath("$[1].telefone").value("10987654321"))
+                .andExpect(jsonPath("$[1].phone").value("10987654321"))
                 .andExpect(content().json(objectMapper.writeValueAsString(listaPersonResponseDTO)));
 
     }
@@ -176,9 +176,9 @@ class RegisterControllerTest {
         mockMvc.perform(get(PESSOA_API + "/{id}", idTeste)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("nome").value("Teste"))
+                .andExpect(jsonPath("name").value("Teste"))
                 .andExpect(jsonPath("email").value("teste@example.com"))
-                .andExpect(jsonPath("telefone").value("12345678901"))
+                .andExpect(jsonPath("phone").value("12345678901"))
                 .andExpect(content().json(objectMapper.writeValueAsString(personResponseDTO)));
 
     }
@@ -217,9 +217,9 @@ class RegisterControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(pessoaCreateDTOJson))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("nome").value("Teste"))
+                .andExpect(jsonPath("name").value("Teste"))
                 .andExpect(jsonPath("email").value("teste@example.com"))
-                .andExpect(jsonPath("telefone").value("12345678901"))
+                .andExpect(jsonPath("phone").value("12345678901"))
                 .andExpect(content().json(pessoaResponseDTOJson));
 
     }

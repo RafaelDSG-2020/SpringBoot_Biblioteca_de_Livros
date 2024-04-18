@@ -65,7 +65,7 @@ class RegisterControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    static final String PESSOA_API = "/register/people";
+    static final String PESSOA_API = "/api/v1/register/people";
 
     private static PersonDTO getPessoaCreateDTO() {
 

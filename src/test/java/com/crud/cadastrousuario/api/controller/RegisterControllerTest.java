@@ -145,7 +145,7 @@ class RegisterControllerTest {
         when(pessoaService.searchPeople(any(Pageable.class), any(PersonDTO.class))).thenReturn(listaPessoas);
         when(pessoaMapper.toDTO(any(List.class), eq(PersonResponseDTO.class))).thenReturn(listaPersonResponseDTO);
 
-        //when(pessoaMapper.toDTO(listaPessoas)).thenReturn(listaPersonResponseDTO);
+
 
         mockMvc.perform(get(PESSOA_API)
                         .contentType(MediaType.APPLICATION_JSON))

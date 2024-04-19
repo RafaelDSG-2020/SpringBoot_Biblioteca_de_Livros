@@ -51,6 +51,8 @@ public class RegisterController {
         return  ResponseEntity.status(HttpStatus.OK).body(personResponseDTO);
 
     }
+
+
     @PostMapping("/people")
     public ResponseEntity<Object> saveRegistration(@RequestBody @Valid PersonDTO personCreateDTO) throws NotFoundException, BadRequestException {
 

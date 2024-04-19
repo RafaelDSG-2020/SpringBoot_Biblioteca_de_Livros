@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Data
-@Entity(name = "Pessoa")
-@Table(name = "pessoa")
+@Entity(name = "Usuario")
+@Table(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Person implements Serializable  {
+public class User implements Serializable  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

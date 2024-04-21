@@ -11,13 +11,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-//@Table(name = "Pessoa",uniqueConstraints={@UniqueConstraint(columnNames={"EMAIL"})})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
+
 
     @ValidName
     private String name;

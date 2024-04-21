@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Data
-@Entity(name = "Usuario")
-@Table(name = "usuario")
+@Entity(name = "Users")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,11 +20,11 @@ public class User implements Serializable  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    @Column(name = "NOME", length = 50, nullable = false)
+    @Column(name = "NAME", length = 50, nullable = false)
     private String name;
     @Column(name = "EMAIL", length = 50, nullable = false, unique=true )
     private String email;
-    @Column(name = "TELEFONE" , length = 50, nullable = false)
+    @Column(name = "PHONE" , length = 50, nullable = false)
     private String phone;
 
 

@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.*;
 
 @RestController
-@RequestMapping("api/v1/register")
+@RequestMapping("api/v1/user")
 @RequiredArgsConstructor
 @Log4j2
 public class UserController {
@@ -34,54 +34,48 @@ public class UserController {
     private Mapper userMapper;
 
 
-    @GetMapping("/user")
-    public ResponseEntity<List<UserResponseDTO>> findUser(@PageableDefault(size = 5) Pageable pageable, UserDTO filter) {
+    @GetMapping()
+    public ResponseEntity<List<User>> findUserByParameters(@PageableDefault(size = 5) Pageable pageable, UserDTO filter) {
 
         List<User> user = userService.findUser(pageable , filter);
-        List<UserResponseDTO> userResponseDTOS = userMapper.toDTO(user, UserResponseDTO.class);
-        return ResponseEntity.status(HttpStatus.OK).body(userResponseDTOS);
+        //List<UserResponseDTO> userResponseDTOS = userMapper.toDTO(user, UserResponseDTO.class);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
 
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<Object> findUser(@PathVariable(value = "id") Long id) throws NotFoundException {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findUserByID(@PathVariable(value = "id") Long id){
 
         User userSave = userService.findUserByID(id);
-        UserResponseDTO userResponseDTO = userMapper.toDTO(userSave, UserResponseDTO.class);
-        return  ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
+        // UserResponseDTO userResponseDTO = userMapper.toDTO(userSave, UserResponseDTO.class);
+        return  ResponseEntity.status(HttpStatus.OK).body(userSave);
 
     }
 
 
-    @PostMapping("/user")
-    public ResponseEntity<Object> saveRegistration(@RequestBody @Valid UserDTO userCreateDTO) throws NotFoundException, BadRequestException {
 
+    @PostMapping()
+    public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userCreateDTO){
 
-        User user = userMapper.toEntity(userCreateDTO, User.class);
-        User userSave = userService.save(user);
-        UserResponseDTO userResponseDTO = userMapper.toDTO(userSave, UserResponseDTO.class);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
-
+        User userSave = userService.save(userCreateDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userSave);
     }
 
-    @PutMapping("/user/{id}")
-    public ResponseEntity<Object> UpdateRegistration(@PathVariable(value = "id") Long id,
-                                                     @RequestBody @Valid UserDTO userCreateDTO)
-            throws NotFoundException, BadRequestException {
-        User user = userMapper.toEntity(userCreateDTO , User.class );
-        User userSave = userService.updateUserByID(id, user);
-        UserResponseDTO userResponseDTO = userMapper.toDTO(userSave, UserResponseDTO.class);
-        return  ResponseEntity.status(HttpStatus.OK).body(userResponseDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> UpdateUser(@PathVariable(value = "id") Long id,
+                                             @RequestBody @Valid UserDTO userCreateDTO) {
 
+        User userSave = userService.updateUserByID(id, userCreateDTO);
+        return  ResponseEntity.status(HttpStatus.OK).body(userSave);
+        //return  ResponseEntity.ok(userSave); //.status(HttpStatus.OK).body(userResponseDTO);
     }
 
 
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<Object> deleteRegistration(@PathVariable(value = "id") Long id) throws NotFoundException, BadRequestException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUserByID(@PathVariable(value = "id") Long id) {
 
         userService.deletePeopleByID(id);
         return ResponseEntity.status(HttpStatus.OK).body("Foi Removido com Sucesso");
-
     }
 
 }

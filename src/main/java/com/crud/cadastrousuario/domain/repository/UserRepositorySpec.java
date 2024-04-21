@@ -23,10 +23,7 @@ public class UserRepositorySpec {
                 .and(filterWhereIn("phone", filter.getPhone()));
     }
 
-//    public static Specification<Pessoa> filterWhereIn(String field, List<String> values) {
-//        if (field == null || Strings.isBlank(field) || values.isEmpty()) return null;
-//        return (root, query, builder) -> builder.lower(root.get(field)).in(values);
-//    }
+
 
     public static Specification<User> filterWhereIn(String field, String value) {
         if (field == null || field.trim().isEmpty() || value == null || value.trim().isEmpty()) {
@@ -34,15 +31,6 @@ public class UserRepositorySpec {
         }
 
         return ((root, query, builder) -> builder.like(builder.lower(root.get(field)), "%"+value.toLowerCase()+"%"));
-//        return (root, query, builder) -> {builder.like(builder.lower())
-////            List<Predicate> predicates = new ArrayList<>();
-//
-////            for (String value : values) {
-////                predicates.add(builder.like(builder.lower(root.get(field)), "%" + value.toLowerCase() + "%"));
-////            }
-//
-//            return builder.or(predicates.toArray(new Predicate[0]));
-//        };
     }
 
     private static List<String> prepareValuesToFilter(String value) {

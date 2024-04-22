@@ -2,7 +2,6 @@ package com.crud.cadastrousuario.domain.service;
 
 
 import com.crud.cadastrousuario.domain.dto.UserDTO;
-import com.crud.cadastrousuario.domain.dto.UserResponseDTO;
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;

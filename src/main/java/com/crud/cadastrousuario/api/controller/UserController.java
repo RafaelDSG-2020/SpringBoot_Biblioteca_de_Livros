@@ -1,10 +1,7 @@
 package com.crud.cadastrousuario.api.controller;
 
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
-import com.crud.cadastrousuario.domain.exception.BadRequestException;
-import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.dto.UserDTO;
-import com.crud.cadastrousuario.domain.dto.UserResponseDTO;
 
 import com.crud.cadastrousuario.domain.model.User;
 
@@ -38,7 +35,6 @@ public class UserController {
     public ResponseEntity<List<User>> findUserByParameters(@PageableDefault(size = 5) Pageable pageable, UserDTO filter) {
 
         List<User> user = userService.findUser(pageable , filter);
-        //List<UserResponseDTO> userResponseDTOS = userMapper.toDTO(user, UserResponseDTO.class);
         return ResponseEntity.status(HttpStatus.OK).body(user);
 
     }
@@ -47,7 +43,6 @@ public class UserController {
     public ResponseEntity<Object> findUserByID(@PathVariable(value = "id") Long id){
 
         User userSave = userService.findUserByID(id);
-        // UserResponseDTO userResponseDTO = userMapper.toDTO(userSave, UserResponseDTO.class);
         return  ResponseEntity.status(HttpStatus.OK).body(userSave);
 
     }
@@ -67,7 +62,7 @@ public class UserController {
 
         User userSave = userService.updateUserByID(id, userCreateDTO);
         return  ResponseEntity.status(HttpStatus.OK).body(userSave);
-        //return  ResponseEntity.ok(userSave); //.status(HttpStatus.OK).body(userResponseDTO);
+
     }
 
 
@@ -75,7 +70,7 @@ public class UserController {
     public ResponseEntity<Object> deleteUserByID(@PathVariable(value = "id") Long id) {
 
         userService.deletePeopleByID(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Foi Removido com Sucesso");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Foi Removido com Sucesso");
     }
 
 }

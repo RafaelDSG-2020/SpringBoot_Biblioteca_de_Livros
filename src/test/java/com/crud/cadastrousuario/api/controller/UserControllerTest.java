@@ -2,7 +2,6 @@ package com.crud.cadastrousuario.api.controller;
 
 import com.crud.cadastrousuario.domain.dto.UserDTO;
 
-import com.crud.cadastrousuario.domain.dto.UserResponseDTO;
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
@@ -77,45 +76,57 @@ class UserControllerTest {
         return userCreateDTO;
 
     }
-    private static List<UserResponseDTO> getUserResponseDTO(){
+//    private static List<UserResponseDTO> getUserResponseDTO(){
+//
+//        List<UserResponseDTO> listaUserResponseDTO = new ArrayList<>();
+//
+//        UserResponseDTO userResponseDTO1 = UserResponseDTO.builder()
+//                .name("Teste")
+//                .email("teste@example.com")
+//                .phone("12345678901")
+//                .build();
+//
+//        UserResponseDTO userResponseDTO2 = UserResponseDTO.builder()
+//                .name("Testano")
+//                .email("Testano@example.com")
+//                .phone("10987654321")
+//                .build();
+//
+//        listaUserResponseDTO.add(userResponseDTO1);
+//        listaUserResponseDTO.add(userResponseDTO2);
+//
+//        return listaUserResponseDTO;
+//
+//    }
 
-        List<UserResponseDTO> listaUserResponseDTO = new ArrayList<>();
+    private static List<User> getUser() {
 
-        UserResponseDTO userResponseDTO1 = UserResponseDTO.builder()
+        List<User> listaUser = new ArrayList<>();
+
+        User userResponseDTO1 = User.builder()
                 .name("Teste")
                 .email("teste@example.com")
                 .phone("12345678901")
                 .build();
 
-        UserResponseDTO userResponseDTO2 = UserResponseDTO.builder()
+        User userResponseDTO2 = User.builder()
                 .name("Testano")
                 .email("Testano@example.com")
                 .phone("10987654321")
                 .build();
 
-        listaUserResponseDTO.add(userResponseDTO1);
-        listaUserResponseDTO.add(userResponseDTO2);
+        listaUser.add(userResponseDTO1);
+        listaUser.add(userResponseDTO2);
 
-        return listaUserResponseDTO;
-
-    }
-
-    private static User getUser() {
-
-        User pessoa =  User.builder()
-                .name("Teste")
-                .email("teste@example.com")
-                .phone("12345678901")
-                .build();
-        return pessoa;
+        return listaUser;
 
     }
 
     @Test
     public void testeDeveRetornar_UmaListaDePessoas_EverificarCadaCampo_MetodoGet() throws Exception {
 
-        List<User> listaUser = new ArrayList<>();
-        List<UserResponseDTO> listaUserResponseDTO = getUserResponseDTO();
+        List<User> listaUser =getUser();
+        //List<UserResponseDTO> listaUserResponseDTO = getUserResponseDTO();
 
 
         when(userService.findUser(any(Pageable.class), any(UserDTO.class))).thenReturn(listaUser);
@@ -138,12 +149,12 @@ class UserControllerTest {
     @Test
     public void testDeveRetornar_UmaListaDePessoas_EverificarCadaCampo_SemParametros_MetodoGet() throws Exception {
 
-        List<User> listaPessoas = new ArrayList<>();
-        List<UserResponseDTO> listaUserResponseDTO = getUserResponseDTO();
+        List<User> listaPessoas = getUser();
+        //List<UserResponseDTO> listaUserResponseDTO = getUserResponseDTO();
 
 
         when(userService.findUser(any(Pageable.class), any(UserDTO.class))).thenReturn(listaPessoas);
-        when(userMapper.toDTO(any(List.class), eq(UserResponseDTO.class))).thenReturn(listaUserResponseDTO);
+        //when(userMapper.toDTO(any(List.class), eq(UserResponseDTO.class))).thenReturn(listaUserResponseDTO);
 
 
 
@@ -156,7 +167,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[1].name").value("Testano"))
                 .andExpect(jsonPath("$[1].email").value("Testano@example.com"))
                 .andExpect(jsonPath("$[1].phone").value("10987654321"))
-                .andExpect(content().json(objectMapper.writeValueAsString(listaUserResponseDTO)));
+                .andExpect(content().json(objectMapper.writeValueAsString(listaPessoas)));
 
     }
 
@@ -165,12 +176,12 @@ class UserControllerTest {
 
         Long idTeste = 1L;
 
-        User pessoa = getUser();
+        User pessoa = getUser().get(0);
 
-        UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
+        //UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
 
         when(userService.findUserByID(idTeste)).thenReturn(pessoa);
-        when(userMapper.toDTO(pessoa, UserResponseDTO.class)).thenReturn(userResponseDTO);
+        //when(userMapper.toDTO(pessoa, UserResponseDTO.class)).thenReturn(userResponseDTO);
 
 
         mockMvc.perform(get(PESSOA_API + "/{id}", idTeste)
@@ -179,7 +190,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("name").value("Teste"))
                 .andExpect(jsonPath("email").value("teste@example.com"))
                 .andExpect(jsonPath("phone").value("12345678901"))
-                .andExpect(content().json(objectMapper.writeValueAsString(userResponseDTO)));
+                .andExpect(content().json(objectMapper.writeValueAsString(pessoa)));
 
     }
 
@@ -203,15 +214,15 @@ class UserControllerTest {
 
         UserDTO pessoaCreateDTO = getUserCreateDTO();
 
-        User pessoa = new User();
-        UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
+        User pessoa = getUser().get(0);
+       // UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
 
-        when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
+       // when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
         when(userService.save(any(UserDTO.class))).thenReturn(pessoa);
-        when(userMapper.toDTO(any(User.class), eq(UserResponseDTO.class))).thenReturn(userResponseDTO);
+       // when(userMapper.toDTO(any(User.class), eq(UserResponseDTO.class))).thenReturn(userResponseDTO);
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
-        String pessoaResponseDTOJson = objectMapper.writeValueAsString(userResponseDTO);
+        String pessoaResponseDTOJson = objectMapper.writeValueAsString(pessoa);
 
         mockMvc.perform(post(PESSOA_API)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -317,7 +328,7 @@ class UserControllerTest {
 
         UserDTO pessoaCreateDTO = getUserCreateDTO();
 
-        User pessoa = getUser();
+        User pessoa = getUser().get(0);
 
         when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
         when(userService.save(any(UserDTO.class)))
@@ -340,7 +351,7 @@ class UserControllerTest {
 
         UserDTO pessoaCreateDTO = getUserCreateDTO();
         pessoaCreateDTO.setEmail(null);
-        User pessoa = getUser();
+        User pessoa = getUser().get(0);
 
 
         when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
@@ -362,17 +373,17 @@ class UserControllerTest {
         Long id = 1L;
         UserDTO pessoaCreateDTO = getUserCreateDTO();
 
-        User pessoa = new User();
-        UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
-        when(userMapper.toEntity(any(UserDTO.class) , eq(User.class))).thenReturn(pessoa);
+        User pessoa = getUser().get(0);
+      //  UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
+      //  when(userMapper.toEntity(any(UserDTO.class) , eq(User.class))).thenReturn(pessoa);
         when(userService.updateUserByID(eq(id), any(UserDTO.class))).thenReturn(pessoa);
-        when(userMapper.toDTO(any(User.class), eq(UserResponseDTO.class))).thenReturn(userResponseDTO);
+     //   when(userMapper.toDTO(any(User.class), eq(UserResponseDTO.class))).thenReturn(userResponseDTO);
 
         mockMvc.perform(put(PESSOA_API + "/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pessoaCreateDTO)))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(userResponseDTO)));
+                .andExpect(content().json(objectMapper.writeValueAsString(pessoa)));
 
     }
 
@@ -381,7 +392,7 @@ class UserControllerTest {
 
         UserDTO pessoaCreateDTO = getUserCreateDTO();
 
-        User pessoa = getUser();
+        User pessoa = getUser().get(0);
 
         when(userMapper.toEntity(any(UserDTO.class) , eq(User.class))).thenReturn(pessoa);
         when(userService.updateUserByID(anyLong(), any(UserDTO.class)))
@@ -406,7 +417,7 @@ class UserControllerTest {
 
         mockMvc.perform(delete(PESSOA_API + "/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andExpect(content().string("Foi Removido com Sucesso"));
 
     }

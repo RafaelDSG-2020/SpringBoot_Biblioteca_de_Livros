@@ -1,10 +1,9 @@
 package com.crud.cadastrousuario.domain.service;
 
 import com.crud.cadastrousuario.domain.dto.AuthorDTO;
-import com.crud.cadastrousuario.domain.dto.PersonResponseDTO;
+
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 import com.crud.cadastrousuario.domain.model.Author;
-import com.crud.cadastrousuario.domain.model.Person;
 import com.crud.cadastrousuario.domain.repository.AuthorRepository;
 import com.crud.cadastrousuario.domain.repository.AuthorRepositorySpec;
 
@@ -27,7 +26,7 @@ public class CrudAuthorService {
     private Mapper authorMapper;
 
     @Autowired
-    CrudPersonService personService;
+    CrudUserService personService;
 
 
 

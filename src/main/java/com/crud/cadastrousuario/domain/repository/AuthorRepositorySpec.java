@@ -2,7 +2,6 @@ package com.crud.cadastrousuario.domain.repository;
 
 import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 import com.crud.cadastrousuario.domain.model.Author;
-import com.crud.cadastrousuario.domain.model.Person;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Collections;

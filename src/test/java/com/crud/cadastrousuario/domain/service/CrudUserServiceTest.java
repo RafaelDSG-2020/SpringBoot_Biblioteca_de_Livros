@@ -7,8 +7,8 @@ import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 
 
-import com.crud.cadastrousuario.domain.model.Person;
-import com.crud.cadastrousuario.domain.repository.PersonRepository;
+import com.crud.cadastrousuario.domain.model.User;
+import com.crud.cadastrousuario.domain.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,18 +24,18 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-class CrudPersonServiceTest {
+class CrudUserServiceTest {
 
     @Mock
-    private PersonRepository pessoaRepository;
+    private UserRepository pessoaRepository;
 
     @InjectMocks
-    private CrudPersonService pessoaService;
+    private CrudUserService pessoaService;
 
     @Test
     @DisplayName("Teste verifica se o metodo retorna um email duplicado")
     void testbadRequestEmail() {
-        Person pessoa = new Person();
+        User pessoa = new User();
         pessoa.setEmail("test@example.com");
 
         when(pessoaRepository.existsByEmail(anyString())).thenReturn(true);
@@ -48,7 +48,7 @@ class CrudPersonServiceTest {
     @DisplayName("Esse teste verifica se o ID existe")
     void testExistId() {
         Long id = 1L;
-        Person pessoa = new Person();
+        User pessoa = new User();
         pessoa.setId(id);
 
         when(pessoaRepository.findById(id)).thenReturn(Optional.of(pessoa));
@@ -62,7 +62,7 @@ class CrudPersonServiceTest {
     @Test
     @DisplayName("Teste para verificar se o email não existe")
     void testPassWhen_EmailNotExists() {
-        Person pessoa = new Person();
+        User pessoa = new User();
         pessoa.setEmail("test@example.com");
 
         when(pessoaRepository.existsByEmail(anyString())).thenReturn(false);

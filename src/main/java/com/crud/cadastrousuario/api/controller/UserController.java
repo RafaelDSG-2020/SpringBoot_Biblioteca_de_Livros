@@ -37,7 +37,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<List<User>> findUserByParameters(@PageableDefault(size = 5) Pageable pageable, UserDTO filter) {
 
-        LOGGER.info("\n" + "Method: findUserByParameters searches for a set of paginated users 5 by 5. HTTP Method: GET");
+        LOGGER.info("Method: findUserByParameters searches for a set of paginated users 5 by 5. HTTP Method: GET");
         List<User> user = userService.findUser(pageable , filter);
         return ResponseEntity.status(HttpStatus.OK).body(user);
 
@@ -46,7 +46,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> findUserByID(@PathVariable(value = "id") Long id){
 
-        LOGGER.info("\n" + "Method: findUserByID searches for just one user by their ID. HTTP Method: GET");
+        LOGGER.info("Method: findUserByID searches for just one user by their ID. HTTP Method: GET");
         User userSave = userService.findUserByID(id);
         return  ResponseEntity.status(HttpStatus.OK).body(userSave);
 
@@ -57,7 +57,7 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userCreateDTO){
 
-        LOGGER.info("\n" + "Method: saveUser creates a user in the database. HTTP Method: POST");
+        LOGGER.info("Method: saveUser creates a user in the database. HTTP Method: POST");
 
         User userSave = userService.save(userCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(userSave);
@@ -67,7 +67,7 @@ public class UserController {
     public ResponseEntity<Object> UpdateUser(@PathVariable(value = "id") Long id,
                                              @RequestBody @Valid UserDTO userCreateDTO) {
 
-        LOGGER.info("\n" + "Method: update User has the function of updating a user created in a table. HTTP Method: PU");
+        LOGGER.info("Method: update User has the function of updating a user created in a table. HTTP Method: PUT");
 
         User userSave = userService.updateUserByID(id, userCreateDTO);
         return  ResponseEntity.status(HttpStatus.OK).body(userSave);
@@ -78,7 +78,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUserByID(@PathVariable(value = "id") Long id) {
 
-        LOGGER.info("\n" + "Method: deleteUserByID deletes a user by ID in the database. HTTP Method: DELETE ");
+        LOGGER.info("Method: deleteUserByID deletes a user by ID in the database. HTTP Method: DELETE ");
         userService.deleteUserByID(id);
         return ResponseEntity.noContent().build();
     }

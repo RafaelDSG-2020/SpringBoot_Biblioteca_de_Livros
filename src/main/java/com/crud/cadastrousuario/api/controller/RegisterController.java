@@ -24,7 +24,6 @@ import java.util.*;
 @RestController
 @RequestMapping("api/v1/register")
 @RequiredArgsConstructor
-@Log4j2
 public class RegisterController {
 
 

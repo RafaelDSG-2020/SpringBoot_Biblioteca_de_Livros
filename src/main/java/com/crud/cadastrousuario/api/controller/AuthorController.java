@@ -4,11 +4,14 @@ import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 import com.crud.cadastrousuario.domain.dto.PersonDTO;
 import com.crud.cadastrousuario.domain.dto.PersonResponseDTO;
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
+import com.crud.cadastrousuario.domain.exception.BadRequestException;
+import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Author;
 import com.crud.cadastrousuario.domain.model.Person;
 import com.crud.cadastrousuario.domain.service.CrudAuthorService;
 import com.crud.cadastrousuario.domain.service.CrudPersonService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RequestMapping("api/v1/authors")
-@RestController()
+@RestController
+@RequiredArgsConstructor
 public class AuthorController {
 
     @Autowired
@@ -44,13 +48,12 @@ public class AuthorController {
 
     }
 
-    @PostMapping()
-    public ResponseEntity<Object> saveAuthor(@ResponseBody @Valid AuthorDTO authorCreateDTO){
 
+    @PostMapping()
+    public ResponseEntity<Object> saveRegistration(@RequestBody @Valid AuthorDTO authorCreateDTO) {
 
         Author personSave = authorService.save(authorCreateDTO);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(personResponseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(personSave);
     }
 
 

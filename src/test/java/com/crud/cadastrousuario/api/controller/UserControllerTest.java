@@ -64,7 +64,7 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    static final String PESSOA_API = "/api/v1/user";
+    static final String PESSOA_API = "/api/v1/users";
 
     private static UserDTO getUserCreateDTO() {
 

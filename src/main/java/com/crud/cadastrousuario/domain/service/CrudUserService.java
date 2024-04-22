@@ -34,7 +34,7 @@ public class CrudUserService {
 
     public User save(UserDTO userCreateDTO) {
 
-        LOGGER.info("START OF THE SAVE METHOD IN SERVICE");
+        LOGGER.info("\n" + "Executed the process of saving user to the database, userCreateDTO={} ", userCreateDTO);
         User user = userMapper.toEntity(userCreateDTO, User.class);
         isEmailAvailable(user);
         isPhoneAvailable(user);
@@ -48,7 +48,7 @@ public class CrudUserService {
 
     public List<User> findUser(Pageable pageable , UserDTO filter){
 
-        LOGGER.info("START OF THE FINDUSER METHOD IN SERVICE");
+        LOGGER.info("\n" + "Executed the process of searching for user paged user in the database, paeable={} , filter={} ", pageable, filter);
         Page<User> pageUser = userRepository.findAll(
                 UserRepositorySpec.filter(filter),
                 PageRequest.of(pageable.getPageNumber(),
@@ -60,9 +60,9 @@ public class CrudUserService {
 
     }
 
-    public User findUserByID(Long id) throws NotFoundException {
+    public User findUserByID(Long id) {
 
-        LOGGER.info("START OF THE FINDUSERBYID METHOD IN SERVICE");
+        LOGGER.info("\n" + "Executed the process of searching for user by id in the database, id={} ", id);
         isIdAvailable(id);
         Optional<User> opt = userRepository.findById(id);
         User userSave = opt.get();
@@ -73,7 +73,7 @@ public class CrudUserService {
 
     public User updateUserByID(Long id, UserDTO userCreateDTO)  {
 
-        LOGGER.info("START OF THE UPDATEUSERBYID METHOD IN SERVICE");
+        LOGGER.info("\n" + "Executed the process of updating user by id in the database, id={} , userCreateDTO={} ", id , userCreateDTO);
         User user = userMapper.toEntity(userCreateDTO , User.class );
         isIdAvailable(id);
         isEmailAvailable(user);
@@ -86,9 +86,9 @@ public class CrudUserService {
     }
 
 
-    public void deletePeopleByID(Long id)  {
+    public void deleteUserByID(Long id)  {
 
-        LOGGER.info("START OF THE DELETEPEOPLEBYID METHOD IN SERVICE");
+        LOGGER.info("\n" + "Executed the process of delete user by id in the database, id={} ", id );
         isIdAvailable(id);
         User user = findUserByID(id);
         userRepository.delete(user);
@@ -96,7 +96,7 @@ public class CrudUserService {
 
     public void isEmailAvailable(User user) {
 
-        LOGGER.info("START OF THE ISEMAILAVAILABLE METHOD IN SERVICE");
+        LOGGER.info("Executed the process of validating user email in the database, user={}", user);
         if (userRepository.existsByEmail(user.getEmail())){
             throw new BadRequestException("Pessoa com email cadastrado");
         }
@@ -106,7 +106,7 @@ public class CrudUserService {
 
     public void isIdAvailable(Long id) {
 
-        LOGGER.info("START OF THE ISIDAVAILABLE METHOD IN SERVICE");
+        LOGGER.info("Executed the process of validating user id in the database, id={}", id);
         Optional<User> opt = userRepository.findById(id);
         if (opt.isEmpty()){
             throw new NotFoundException("Pessoa com id: " + id + " Inexistente.");
@@ -116,7 +116,7 @@ public class CrudUserService {
 
     private void isPhoneAvailable(User user) {
 
-        LOGGER.info("START OF THE ISPHONEAVAILABLE METHOD IN SERVICE");
+        LOGGER.info("Executed the process of validating user phone numbers in the database, user={}", user);
         if (userRepository.existsByPhone(user.getPhone())){
             throw new BadRequestException("Pessoa com Telefone cadastrado");
         }

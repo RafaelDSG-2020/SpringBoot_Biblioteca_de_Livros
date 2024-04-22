@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -37,7 +37,7 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<List<User>> findUserByParameters(@PageableDefault(size = 5) Pageable pageable, UserDTO filter) {
 
-        LOGGER.info("START OF THE GET METHOD By PARAMETERS");
+        LOGGER.info("\n" + "Method: findUserByParameters searches for a set of paginated users 5 by 5. HTTP Method: GET");
         List<User> user = userService.findUser(pageable , filter);
         return ResponseEntity.status(HttpStatus.OK).body(user);
 
@@ -46,7 +46,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> findUserByID(@PathVariable(value = "id") Long id){
 
-        LOGGER.info("START OF THE GET METHOD By Id");
+        LOGGER.info("\n" + "Method: findUserByID searches for just one user by their ID. HTTP Method: GET");
         User userSave = userService.findUserByID(id);
         return  ResponseEntity.status(HttpStatus.OK).body(userSave);
 
@@ -57,7 +57,7 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userCreateDTO){
 
-        LOGGER.info("START OF THE POST METHOD SAVE USER");
+        LOGGER.info("\n" + "Method: saveUser creates a user in the database. HTTP Method: POST");
 
         User userSave = userService.save(userCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(userSave);
@@ -67,7 +67,7 @@ public class UserController {
     public ResponseEntity<Object> UpdateUser(@PathVariable(value = "id") Long id,
                                              @RequestBody @Valid UserDTO userCreateDTO) {
 
-        LOGGER.info("START OF THE PUT METHOD UPDATE PARAMETERS");
+        LOGGER.info("\n" + "Method: update User has the function of updating a user created in a table. HTTP Method: PU");
 
         User userSave = userService.updateUserByID(id, userCreateDTO);
         return  ResponseEntity.status(HttpStatus.OK).body(userSave);
@@ -78,10 +78,9 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUserByID(@PathVariable(value = "id") Long id) {
 
-        LOGGER.info("START OF THE DELETE METHOD ");
-        userService.deletePeopleByID(id);
+        LOGGER.info("\n" + "Method: deleteUserByID deletes a user by ID in the database. HTTP Method: DELETE ");
+        userService.deleteUserByID(id);
         return ResponseEntity.noContent().build();
-        //return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Foi Removido com Sucesso");
     }
 
 }

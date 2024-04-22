@@ -1,15 +1,16 @@
 package com.crud.cadastrousuario.domain.repository;
 
 
-import com.crud.cadastrousuario.domain.model.Person;
-import com.crud.cadastrousuario.domain.model.Person;
+import com.crud.cadastrousuario.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonRepository extends JpaRepository<Person, Long>, JpaSpecificationExecutor<Person> {
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     boolean existsByEmail(String email);
+
+    boolean existsByPhone(String phone);
 
 
     //List<Pessoa> findByPessoa(<List<Pessoa> pessoa, Pageable pageable);

@@ -1,4 +1,4 @@
-package com.crud.cadastrousuario.domain.validation;
+package com.crud.cadastrousuario.exemplos.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

@@ -1,12 +1,8 @@
-package com.crud.cadastrousuario.domain.validation;
+package com.crud.cadastrousuario.exemplos.validation;
 
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

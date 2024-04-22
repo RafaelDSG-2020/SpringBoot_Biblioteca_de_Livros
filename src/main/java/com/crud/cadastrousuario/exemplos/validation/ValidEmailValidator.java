@@ -1,13 +1,11 @@
-package com.crud.cadastrousuario.domain.validation;
-
+package com.crud.cadastrousuario.exemplos.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class ValidNameValidator implements ConstraintValidator<ValidName, String> {
-
-    public void initialize(ValidName constraintAnnotation) {
-
+public class ValidEmailValidator implements ConstraintValidator<ValidEmail, String> {
+    @Override
+    public void initialize(ValidEmail constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
@@ -16,17 +14,17 @@ public class ValidNameValidator implements ConstraintValidator<ValidName, String
         context.disableDefaultConstraintViolation();
 
         if (value == null) {
-            context.buildConstraintViolationWithTemplate("Nome não pode ser nulo")
+            context.buildConstraintViolationWithTemplate("Email não pode ser nulo")
                     .addConstraintViolation();
             return false;
         }
         if (value.trim().isEmpty()) {
-            context.buildConstraintViolationWithTemplate("Nome não pode ser vazio")
+            context.buildConstraintViolationWithTemplate("Email não pode ser em branco")
                     .addConstraintViolation();
             return false;
         }
-        if (value.trim().length() < 3 || value.trim().length() > 50) {
-            context.buildConstraintViolationWithTemplate("O número de caracteres deve estar entre 3 e 50 caracteres")
+        if (!value.contains("@") || !value.contains(".")) {
+            context.buildConstraintViolationWithTemplate("Email inválido. Colocar um email válido")
                     .addConstraintViolation();
             return false;
         }

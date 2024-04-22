@@ -1,16 +1,11 @@
 package com.crud.cadastrousuario.domain.dto;
 
-import com.crud.cadastrousuario.domain.validation.ValidEmail;
-import com.crud.cadastrousuario.domain.validation.ValidName;
-import com.crud.cadastrousuario.domain.validation.ValidPhone;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Optional;
 
 
 @Data

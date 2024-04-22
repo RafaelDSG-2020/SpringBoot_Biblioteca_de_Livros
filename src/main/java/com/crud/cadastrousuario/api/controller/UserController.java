@@ -21,7 +21,6 @@ import java.util.*;
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
-@Log4j2
 public class UserController {
 
 
@@ -70,7 +69,8 @@ public class UserController {
     public ResponseEntity<Object> deleteUserByID(@PathVariable(value = "id") Long id) {
 
         userService.deletePeopleByID(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Foi Removido com Sucesso");
+        return ResponseEntity.noContent().build();
+        //return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Foi Removido com Sucesso");
     }
 
 }

@@ -96,7 +96,7 @@ public class CrudUserService {
 
     public void isEmailAvailable(User user) {
 
-        LOGGER.info("Executed the process of validating user email in the database, user={}", user);
+        LOGGER.info("\n" + "Executed the process of validating user email in the database, user={}", user);
         if (userRepository.existsByEmail(user.getEmail())){
             throw new BadRequestException("Pessoa com email cadastrado");
         }
@@ -106,7 +106,7 @@ public class CrudUserService {
 
     public void isIdAvailable(Long id) {
 
-        LOGGER.info("Executed the process of validating user id in the database, id={}", id);
+        LOGGER.info("\n" + "Executed the process of validating user id in the database, id={}", id);
         Optional<User> opt = userRepository.findById(id);
         if (opt.isEmpty()){
             throw new NotFoundException("Pessoa com id: " + id + " Inexistente.");
@@ -116,7 +116,7 @@ public class CrudUserService {
 
     private void isPhoneAvailable(User user) {
 
-        LOGGER.info("Executed the process of validating user phone numbers in the database, user={}", user);
+        LOGGER.info("\n" + "Executed the process of validating user phone numbers in the database, user={}", user);
         if (userRepository.existsByPhone(user.getPhone())){
             throw new BadRequestException("Pessoa com Telefone cadastrado");
         }

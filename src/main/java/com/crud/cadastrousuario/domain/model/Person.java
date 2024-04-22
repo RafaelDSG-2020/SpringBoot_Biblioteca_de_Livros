@@ -24,7 +24,7 @@ public class Person implements Serializable  {
     private String name;
     @Column(name = "EMAIL", length = 50, nullable = false, unique=true )
     private String email;
-    @Column(name = "TELEFONE" , length = 50, nullable = false)
+    @Column(name = "TELEFONE" , length = 50, nullable = false, unique = true )
     private String phone;
 
 

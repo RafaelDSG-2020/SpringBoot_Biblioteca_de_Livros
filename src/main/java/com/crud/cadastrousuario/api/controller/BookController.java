@@ -30,11 +30,11 @@ public class BookController {
     public static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
 
 
-    @GetMapping()
-    public ResponseEntity<List<Book>> findBookByParameters(@PageableDefault(size = 5) Pageable pageable, BookDTO filter) {
+    @GetMapping
+    public ResponseEntity<List<BookDTO>> findBookByParameters(@PageableDefault(size = 5) Pageable pageable, BookDTO filter) {
 
         LOGGER.info("Method: findUserByParameters searches for a set of paginated books 5 by 5. HTTP Method: GET");
-        List<Book> books = bookService.findUser(pageable , filter);
+        List<BookDTO> books = bookService.findUser(pageable , filter);
         return ResponseEntity.status(HttpStatus.OK).body(books);
 
     }
@@ -43,18 +43,18 @@ public class BookController {
     public ResponseEntity<Object> findBookByID(@PathVariable(value = "id") Long id){
 
         LOGGER.info("Method: findUserByID searches for just one book by their ID. HTTP Method: GET");
-        Book bookSave = bookService.findBookByID(id);
+        BookDTO bookSave = bookService.findBookByID(id);
         return  ResponseEntity.status(HttpStatus.OK).body(bookSave);
 
     }
 
 
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Object> saveBook(@RequestBody @Valid BookDTO bookCreateDTO){
 
         LOGGER.info("Method: saveUser creates a book in the database. HTTP Method: POST");
-        Book bookSave = bookService.save(bookCreateDTO);
+        BookDTO bookSave = bookService.save(bookCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(bookSave);
     }
 
@@ -64,7 +64,7 @@ public class BookController {
 
         LOGGER.info("Method: update User has the function of updating a book created in a table. HTTP Method: PUT");
 
-        Book bookSave = bookService.updateBookByID(id, bookCreateDTO);
+        BookDTO bookSave = bookService.updateBookByID(id, bookCreateDTO);
         return  ResponseEntity.status(HttpStatus.OK).body(bookSave);
 
     }

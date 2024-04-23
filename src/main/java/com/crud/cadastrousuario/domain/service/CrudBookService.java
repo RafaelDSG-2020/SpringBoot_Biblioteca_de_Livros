@@ -30,7 +30,7 @@ public class CrudBookService {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
 
-    public List<Book> findUser(Pageable pageable, BookDTO filter) {
+    public List<BookDTO> findUser(Pageable pageable, BookDTO filter) {
 
         LOGGER.info("Executed the process of searching for user paged books in the database, paeable={} ", pageable);
         Page<Book> pageBook = bookRepository.findAll(
@@ -40,37 +40,37 @@ public class CrudBookService {
 
         List<Book> books = pageBook.getContent();
 
-        return bookMapper.toDTO(books, Book.class);
+        return bookMapper.toDTO(books, BookDTO.class);
 
     }
 
-    public Book findBookByID(Long id) {
+    public BookDTO findBookByID(Long id) {
 
         LOGGER.info("Executed the process of searching for book by id in the database");
         isIdAvailable(id);
         Optional<Book> opt = bookRepository.findById(id);
         Book bookSave = opt.get();
 
-        return bookMapper.toDTO(bookSave, Book.class);
+        return bookMapper.toDTO(bookSave, BookDTO.class);
     }
 
-    public Book save(BookDTO bookCreateDTO) {
+    public BookDTO save(BookDTO bookCreateDTO) {
 
         LOGGER.info("Executed the process of saving book to the database");
 
         Book book = bookMapper.toEntity(bookCreateDTO, Book.class);
         Book bookSave = bookRepository.save(book);
-        return bookMapper.toDTO(bookSave, Book.class);
+        return bookMapper.toDTO(bookSave, BookDTO.class);
     }
 
-    public Book updateBookByID(Long id, BookDTO bookCreateDTO) {
+    public BookDTO updateBookByID(Long id, BookDTO bookCreateDTO) {
 
         LOGGER.info("Executed the process of updating book by id in the database");
         Book book = bookMapper.toEntity(bookCreateDTO , Book.class );
         isIdAvailable(id);
         book.setId(id);
         Book bookSave = bookRepository.save(book);
-        return  bookMapper.toDTO(bookSave, Book.class);
+        return  bookMapper.toDTO(bookSave, BookDTO.class);
 
     }
 
@@ -78,8 +78,10 @@ public class CrudBookService {
 
         LOGGER.info("Executed the process of delete book by id in the database");
         isIdAvailable(id);
-        Book book = findBookByID(id);
-        bookRepository.delete(book);
+        Optional<Book> opt = bookRepository.findById(id);
+        Book bookSave = opt.get();
+       // Book book = findBookByID(id);
+        bookRepository.delete(bookSave);
     }
 
 

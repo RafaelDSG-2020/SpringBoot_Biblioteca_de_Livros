@@ -22,22 +22,23 @@ import lombok.NoArgsConstructor;
 public class BookDTO {
 
 
-    @NotNull(message = "titulo nao pode ser nulo")
-    @NotBlank(message = "titulo não pode ser vazio")
-    @Size(min = 3 , max = 50,message = "O numero de caracteres deve estar entre 3 e 50 caractesres")
+    @NotNull(message = "title cannot be null")
+    @NotBlank(message = "title cannot be empty")
+    @Size(min = 3 , max = 50,message = "The number of characters must be between 3 and 50 characters")
     private String title;
 
-    @NotNull(message = "Editora nao pode ser nulo")
-    @NotBlank(message = "Editora não pode ser vazio")
+    @NotNull(message = "Publisher cannot be null")
+    @NotBlank(message = "Publisher cannot be empty")
     private String publishing_company;
 
 
-    @NotNull(message = "Data de publicação não pode ser nulo")
-    @NotBlank(message = "Data de publicação não pode ser vazio")
+    @NotNull(message = "Publication date cannot be null")
+    @NotBlank(message = "Publication date cannot be empty")
     private String published_date;
 
 
-    @NotNull(message = "ISBN  não pode ser nulo")
-    @NotBlank(message = "ISBN não pode ser vazio")
+    @NotNull(message = "ISBN cannot be null")
+    @NotBlank(message = "ISBN cannot be empty")
     private String ISBN;
+
 }

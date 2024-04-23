@@ -1,12 +1,18 @@
 package com.crud.cadastrousuario.domain.service;
 
+import com.crud.cadastrousuario.api.controller.UserController;
 import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 
+import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
+import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Author;
+import com.crud.cadastrousuario.domain.model.User;
 import com.crud.cadastrousuario.domain.repository.AuthorRepository;
 import com.crud.cadastrousuario.domain.repository.AuthorRepositorySpec;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,12 +31,15 @@ public class CrudAuthorService {
     @Autowired
     private Mapper authorMapper;
 
-    @Autowired
-    CrudUserService personService;
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 
 
-    public List<Author> findByAuthor(Pageable pageable, AuthorDTO filter) {
+
+    public List<Author> findAuthor(Pageable pageable, AuthorDTO filter) {
+
+        LOGGER.info("Executed the process of searching for author paged user in the database, paeable={} ", pageable);
 
         Page<Author> pageUser = authorRepository.findAll(
                 AuthorRepositorySpec.filter(filter),
@@ -44,7 +53,9 @@ public class CrudAuthorService {
 
     public Author findAuthorByID(Long id) {
 
-        personService.isIdAvailable(id);
+        LOGGER.info("Executed the process of searching for author by id in the database");
+
+        isIdAvailable(id);
         Optional<Author> opt = authorRepository.findById(id);
         Author authorSave = opt.get();
         return authorMapper.toDTO(authorSave, Author.class);
@@ -52,8 +63,40 @@ public class CrudAuthorService {
 
     public Author save(AuthorDTO authorCreateDTO) {
 
-        Author author = authorMapper.toEntity(authorCreateDTO,Author.class);
-        Author authorSave = authorRepository.save(author);
+        LOGGER.info("Executed the process of saving author to the database");
+
+       Author author = authorMapper.toEntity(authorCreateDTO,Author.class);
+       Author authorSave = authorRepository.save(author);
        return authorMapper.toDTO(authorSave, Author.class);
+
+    }
+
+    public Author updateAuthorByID(Long id, AuthorDTO authorCreateDTO) {
+
+        LOGGER.info("Executed the process of updating author by id in the database");
+        Author author = authorMapper.toEntity(authorCreateDTO , Author.class );
+        isIdAvailable(id);
+        author.setId(id);
+        Author authorSave = authorRepository.save(author);
+        return  authorMapper.toDTO(authorSave, Author.class);
+
+    }
+
+    public void deleteAuthorByID(Long id)  {
+
+        LOGGER.info("Executed the process of delete author by id in the database");
+        isIdAvailable(id);
+        Author author = findAuthorByID(id);
+        authorRepository.delete(author);
+    }
+
+    public void isIdAvailable(Long id) {
+
+        LOGGER.info("Executed the process of validating author id in the database");
+        Optional<Author> opt = authorRepository.findById(id);
+        if (opt.isEmpty()){
+            throw new NotFoundException("Pessoa com id: " + id + " Inexistente.");
+        }
+
     }
 }

@@ -33,7 +33,7 @@ public class BookController {
     @GetMapping()
     public ResponseEntity<List<Book>> findBookByParameters(@PageableDefault(size = 5) Pageable pageable, BookDTO filter) {
 
-        LOGGER.info("Method: findUserByParameters searches for a set of paginated users 5 by 5. HTTP Method: GET");
+        LOGGER.info("Method: findUserByParameters searches for a set of paginated books 5 by 5. HTTP Method: GET");
         List<Book> books = bookService.findUser(pageable , filter);
         return ResponseEntity.status(HttpStatus.OK).body(books);
 
@@ -42,8 +42,8 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> findBookByID(@PathVariable(value = "id") Long id){
 
-        LOGGER.info("Method: findUserByID searches for just one user by their ID. HTTP Method: GET");
-        Book bookSave = bookService.findUserByID(id);
+        LOGGER.info("Method: findUserByID searches for just one book by their ID. HTTP Method: GET");
+        Book bookSave = bookService.findBookByID(id);
         return  ResponseEntity.status(HttpStatus.OK).body(bookSave);
 
     }
@@ -51,22 +51,21 @@ public class BookController {
 
 
     @PostMapping()
-    public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userCreateDTO){
+    public ResponseEntity<Object> saveBook(@RequestBody @Valid BookDTO bookCreateDTO){
 
-        LOGGER.info("Method: saveUser creates a user in the database. HTTP Method: POST");
-
-        User userSave = userService.save(userCreateDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userSave);
+        LOGGER.info("Method: saveUser creates a book in the database. HTTP Method: POST");
+        Book bookSave = bookService.save(bookCreateDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> UpdateUser(@PathVariable(value = "id") Long id,
-                                             @RequestBody @Valid UserDTO userCreateDTO) {
+    public ResponseEntity<Object> updateBook(@PathVariable(value = "id") Long id,
+                                             @RequestBody @Valid BookDTO bookCreateDTO) {
 
-        LOGGER.info("Method: update User has the function of updating a user created in a table. HTTP Method: PUT");
+        LOGGER.info("Method: update User has the function of updating a book created in a table. HTTP Method: PUT");
 
-        User userSave = userService.updateUserByID(id, userCreateDTO);
-        return  ResponseEntity.status(HttpStatus.OK).body(userSave);
+        Book bookSave = bookService.updateBookByID(id, bookCreateDTO);
+        return  ResponseEntity.status(HttpStatus.OK).body(bookSave);
 
     }
 
@@ -74,8 +73,8 @@ public class BookController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUserByID(@PathVariable(value = "id") Long id) {
 
-        LOGGER.info("Method: deleteUserByID deletes a user by ID in the database. HTTP Method: DELETE ");
-        userService.deleteUserByID(id);
+        LOGGER.info("Method: deleteUserByID deletes a book by ID in the database. HTTP Method: DELETE ");
+        bookService.deleteBookByID(id);
         return ResponseEntity.noContent().build();
     }
 }

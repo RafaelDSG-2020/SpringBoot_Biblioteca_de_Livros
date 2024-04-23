@@ -3,6 +3,7 @@ package com.crud.cadastrousuario.domain.service;
 import com.crud.cadastrousuario.api.controller.BookController;
 import com.crud.cadastrousuario.domain.dto.BookDTO;
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
+import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.model.User;
 import com.crud.cadastrousuario.domain.repository.BookRepository;
@@ -43,13 +44,55 @@ public class CrudBookService {
 
     }
 
-    public Book findUserByID(Long id) {
+    public Book findBookByID(Long id) {
 
         LOGGER.info("Executed the process of searching for book by id in the database");
-
+        isIdAvailable(id);
         Optional<Book> opt = bookRepository.findById(id);
         Book bookSave = opt.get();
 
         return bookMapper.toDTO(bookSave, Book.class);
     }
+
+    public Book save(BookDTO bookCreateDTO) {
+
+        LOGGER.info("Executed the process of saving book to the database");
+
+        Book book = bookMapper.toEntity(bookCreateDTO, Book.class);
+        Book bookSave = bookRepository.save(book);
+        return bookMapper.toDTO(bookSave, Book.class);
+    }
+
+    public Book updateBookByID(Long id, BookDTO bookCreateDTO) {
+
+        LOGGER.info("Executed the process of updating book by id in the database");
+        Book book = bookMapper.toEntity(bookCreateDTO , Book.class );
+        isIdAvailable(id);
+        book.setId(id);
+        Book bookSave = bookRepository.save(book);
+        return  bookMapper.toDTO(bookSave, Book.class);
+
+    }
+
+    public void deleteBookByID(Long id) {
+
+        LOGGER.info("Executed the process of delete book by id in the database");
+        isIdAvailable(id);
+        Book book = findBookByID(id);
+        bookRepository.delete(book);
+    }
+
+
+
+    public void isIdAvailable(Long id) {
+
+        LOGGER.info("Executed the process of validating book id in the database");
+        Optional<Book> opt = bookRepository.findById(id);
+        if (opt.isEmpty()){
+            throw new NotFoundException("Livro com id: " + id + " Inexistente.");
+        }
+
+    }
+
+
 }

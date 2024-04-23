@@ -34,7 +34,7 @@ public class UserController {
     public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<User>> findUserByParameters(@PageableDefault(size = 5) Pageable pageable, UserDTO filter) {
 
         LOGGER.info("Method: findUserByParameters searches for a set of paginated users 5 by 5. HTTP Method: GET");
@@ -54,7 +54,7 @@ public class UserController {
 
 
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userCreateDTO){
 
         LOGGER.info("Method: saveUser creates a user in the database. HTTP Method: POST");

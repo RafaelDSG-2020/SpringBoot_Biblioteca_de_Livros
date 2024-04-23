@@ -32,7 +32,7 @@ public class CrudAuthorService {
     private Mapper authorMapper;
 
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(CrudAuthorService.class);
 
 
 

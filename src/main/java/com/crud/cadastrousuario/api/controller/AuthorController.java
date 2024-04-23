@@ -35,7 +35,7 @@ public class AuthorController {
     @Autowired
     private Mapper authorMapper;
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
 
 
 
@@ -44,7 +44,7 @@ public class AuthorController {
 
         LOGGER.info("Method: findAuthorByParameters searches for a set of paginated authors 5 by 5. HTTP Method: GET");
 
-        List<Author> authors = authorService.findByAuthor(pageable , filter);
+        List<Author> authors = authorService.findAuthor(pageable , filter);
         return ResponseEntity.status(HttpStatus.OK).body(authors);
 
     }

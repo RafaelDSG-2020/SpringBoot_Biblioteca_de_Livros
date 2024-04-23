@@ -36,7 +36,7 @@ public class CrudAuthorService {
 
 
 
-    public List<Author> findAuthor(Pageable pageable, AuthorDTO filter) {
+    public List<AuthorDTO> findAuthor(Pageable pageable, AuthorDTO filter) {
 
         LOGGER.info("Executed the process of searching for author paged user in the database, paeable={} ", pageable);
 
@@ -47,37 +47,37 @@ public class CrudAuthorService {
 
         List<Author> author = pageUser.getContent();
 
-        return authorMapper.toDTO(author, Author.class);
+        return authorMapper.toDTO(author, AuthorDTO.class);
     }
 
-    public Author findAuthorByID(Long id) {
+    public AuthorDTO findAuthorByID(Long id) {
 
         LOGGER.info("Executed the process of searching for author by id in the database");
 
         isIdAvailable(id);
         Optional<Author> opt = authorRepository.findById(id);
         Author authorSave = opt.get();
-        return authorMapper.toDTO(authorSave, Author.class);
+        return authorMapper.toDTO(authorSave, AuthorDTO.class);
     }
 
-    public Author save(AuthorDTO authorCreateDTO) {
+    public AuthorDTO save(AuthorDTO authorCreateDTO) {
 
         LOGGER.info("Executed the process of saving author to the database");
 
        Author author = authorMapper.toEntity(authorCreateDTO,Author.class);
        Author authorSave = authorRepository.save(author);
-       return authorMapper.toDTO(authorSave, Author.class);
+       return authorMapper.toDTO(authorSave, AuthorDTO.class);
 
     }
 
-    public Author updateAuthorByID(Long id, AuthorDTO authorCreateDTO) {
+    public AuthorDTO updateAuthorByID(Long id, AuthorDTO authorCreateDTO) {
 
         LOGGER.info("Executed the process of updating author by id in the database");
         Author author = authorMapper.toEntity(authorCreateDTO , Author.class );
         isIdAvailable(id);
         author.setId(id);
         Author authorSave = authorRepository.save(author);
-        return  authorMapper.toDTO(authorSave, Author.class);
+        return  authorMapper.toDTO(authorSave, AuthorDTO.class);
 
     }
 
@@ -85,7 +85,8 @@ public class CrudAuthorService {
 
         LOGGER.info("Executed the process of delete author by id in the database");
         isIdAvailable(id);
-        Author author = findAuthorByID(id);
+        Optional<Author> opt = authorRepository.findById(id);
+        Author author= opt.get();
         authorRepository.delete(author);
     }
 

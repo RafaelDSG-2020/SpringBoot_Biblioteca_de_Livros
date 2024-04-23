@@ -40,11 +40,11 @@ public class AuthorController {
 
 
     @GetMapping
-    public ResponseEntity<List<Author>> findAuthorByParameters(@PageableDefault(size = 5) Pageable pageable, AuthorDTO filter ){
+    public ResponseEntity<List<AuthorDTO>> findAuthorByParameters(@PageableDefault(size = 5) Pageable pageable, AuthorDTO filter ){
 
         LOGGER.info("Method: findAuthorByParameters searches for a set of paginated authors 5 by 5. HTTP Method: GET");
 
-        List<Author> authors = authorService.findAuthor(pageable , filter);
+        List<AuthorDTO> authors = authorService.findAuthor(pageable , filter);
         return ResponseEntity.status(HttpStatus.OK).body(authors);
 
     }
@@ -54,7 +54,7 @@ public class AuthorController {
 
         LOGGER.info("Method: findAuthorByID searches for just one author by their ID. HTTP Method: GET");
 
-        Author personSave = authorService.findAuthorByID(id);
+        AuthorDTO personSave = authorService.findAuthorByID(id);
         return  ResponseEntity.status(HttpStatus.OK).body(personSave);
 
     }
@@ -65,7 +65,7 @@ public class AuthorController {
 
         LOGGER.info("Method: saveAuthor creates a author in the database. HTTP Method: POST");
 
-        Author personSave = authorService.save(authorCreateDTO);
+        AuthorDTO personSave = authorService.save(authorCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(personSave);
     }
 
@@ -75,7 +75,7 @@ public class AuthorController {
 
         LOGGER.info("Method: update Author has the function of updating a author created in a table. HTTP Method: PUT");
 
-        Author userSave = authorService.updateAuthorByID(id, authorCreateDTO);
+        AuthorDTO userSave = authorService.updateAuthorByID(id, authorCreateDTO);
         return  ResponseEntity.status(HttpStatus.OK).body(userSave);
 
     }

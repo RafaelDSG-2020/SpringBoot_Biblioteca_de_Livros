@@ -6,6 +6,7 @@ import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
+import com.crud.cadastrousuario.domain.model.Author;
 import com.crud.cadastrousuario.domain.model.User;
 import com.crud.cadastrousuario.domain.repository.UserRepository;
 import com.crud.cadastrousuario.domain.repository.UserRepositorySpec;
@@ -30,23 +31,23 @@ public class CrudUserService {
     @Autowired
     private Mapper userMapper;
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(CrudUserService.class);
 
-    public User save(UserDTO userCreateDTO) {
+    public UserDTO save(UserDTO userCreateDTO) {
 
         LOGGER.info("Executed the process of saving user to the database");
         User user = userMapper.toEntity(userCreateDTO, User.class);
         isEmailAvailable(user);
         isPhoneAvailable(user);
         User userSave = userRepository.save(user);
-        return userMapper.toDTO(userSave, User.class);
+        return userMapper.toDTO(userSave, UserDTO.class);
 
     }
 
 
 
 
-    public List<User> findUser(Pageable pageable , UserDTO filter) {
+    public List<UserDTO> findUser(Pageable pageable , UserDTO filter) {
 
         LOGGER.info("Executed the process of searching for user paged user in the database, paeable={} ", pageable);
         Page<User> pageUser = userRepository.findAll(
@@ -56,22 +57,22 @@ public class CrudUserService {
 
         List<User> user = pageUser.getContent();
 
-        return userMapper.toDTO(user, User.class);
+        return userMapper.toDTO(user, UserDTO.class);
 
     }
 
-    public User findUserByID(Long id) {
+    public UserDTO findUserByID(Long id) {
 
         LOGGER.info("Executed the process of searching for user by id in the database");
         isIdAvailable(id);
         Optional<User> opt = userRepository.findById(id);
         User userSave = opt.get();
 
-        return userMapper.toDTO(userSave, User.class);
+        return userMapper.toDTO(userSave, UserDTO.class);
 
     }
 
-    public User updateUserByID(Long id, UserDTO userCreateDTO)  {
+    public UserDTO updateUserByID(Long id, UserDTO userCreateDTO)  {
 
         LOGGER.info("Executed the process of updating user by id in the database");
         User user = userMapper.toEntity(userCreateDTO , User.class );
@@ -80,7 +81,7 @@ public class CrudUserService {
         isPhoneAvailable(user);
         user.setId(id);
         User userSave = userRepository.save(user);
-        return  userMapper.toDTO(userSave, User.class);
+        return  userMapper.toDTO(userSave, UserDTO.class);
 
 
     }
@@ -90,7 +91,9 @@ public class CrudUserService {
 
         LOGGER.info("Executed the process of delete user by id in the database");
         isIdAvailable(id);
-        User user = findUserByID(id);
+        Optional<User> opt = userRepository.findById(id);
+        User user= opt.get();
+       // User user = findUserByID(id);
         userRepository.delete(user);
     }
 

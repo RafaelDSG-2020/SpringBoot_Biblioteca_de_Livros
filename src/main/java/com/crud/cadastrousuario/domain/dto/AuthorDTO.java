@@ -18,12 +18,6 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthorDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Long id;
-    @Column(name = "NAME" , length = 50, nullable = false)
     private String name;
-    @Column(name = "NATIONALITY" , length = 50, nullable = false)
     private String nationality;
 }

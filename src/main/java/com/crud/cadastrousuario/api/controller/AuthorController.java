@@ -39,7 +39,7 @@ public class AuthorController {
 
 
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<Author>> findAuthorByParameters(@PageableDefault(size = 5) Pageable pageable, AuthorDTO filter ){
 
         LOGGER.info("Method: findAuthorByParameters searches for a set of paginated authors 5 by 5. HTTP Method: GET");
@@ -60,7 +60,7 @@ public class AuthorController {
     }
 
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Object> saveAuthor(@RequestBody @Valid AuthorDTO authorCreateDTO) {
 
         LOGGER.info("Method: saveAuthor creates a author in the database. HTTP Method: POST");

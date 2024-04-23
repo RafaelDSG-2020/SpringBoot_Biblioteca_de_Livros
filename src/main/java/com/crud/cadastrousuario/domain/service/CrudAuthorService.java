@@ -36,7 +36,6 @@ public class CrudAuthorService {
 
 
 
-
     public List<Author> findAuthor(Pageable pageable, AuthorDTO filter) {
 
         LOGGER.info("Executed the process of searching for author paged user in the database, paeable={} ", pageable);

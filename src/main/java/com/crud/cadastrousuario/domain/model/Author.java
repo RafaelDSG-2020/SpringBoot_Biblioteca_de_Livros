@@ -1,5 +1,6 @@
 package com.crud.cadastrousuario.domain.model;
 
+import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +26,9 @@ public class Author {
     private String nationality;
 
 
+    public Author(AuthorDTO author) {
+
+        this.name = author.getName();
+        this.nationality= author.getNationality();
+    }
 }

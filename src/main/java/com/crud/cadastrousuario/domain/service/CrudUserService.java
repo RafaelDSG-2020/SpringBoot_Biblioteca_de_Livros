@@ -1,9 +1,9 @@
 package com.crud.cadastrousuario.domain.service;
 
 
-import com.crud.cadastrousuario.api.controller.UserController;
+import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 import com.crud.cadastrousuario.domain.dto.UserDTO;
-import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
+
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Author;
@@ -11,6 +11,7 @@ import com.crud.cadastrousuario.domain.model.User;
 import com.crud.cadastrousuario.domain.repository.UserRepository;
 import com.crud.cadastrousuario.domain.repository.UserRepositorySpec;
 
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,107 +22,110 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class CrudUserService {
 
     @Autowired
     public UserRepository userRepository;
 
-    @Autowired
-    private Mapper userMapper;
+
 
     public static final Logger LOGGER = LoggerFactory.getLogger(CrudUserService.class);
-
-    public UserDTO save(UserDTO userCreateDTO) {
-
-        LOGGER.info("Executed the process of saving user to the database");
-        User user = userMapper.toEntity(userCreateDTO, User.class);
-        isEmailAvailable(user);
-        isPhoneAvailable(user);
-        User userSave = userRepository.save(user);
-        return userMapper.toDTO(userSave, UserDTO.class);
-
-    }
-
 
 
 
     public List<UserDTO> findUser(Pageable pageable , UserDTO filter) {
 
-        LOGGER.info("Executed the process of searching for user paged user in the database, paeable={} ", pageable);
+        log.info("Executed the process of searching for user paged user in the database, paeable={} ", pageable);
         Page<User> pageUser = userRepository.findAll(
                 UserRepositorySpec.filter(filter),
                 PageRequest.of(pageable.getPageNumber(),
                         pageable.getPageSize()));
 
-        List<User> user = pageUser.getContent();
+        List<User> users = pageUser.getContent();
 
-        return userMapper.toDTO(user, UserDTO.class);
+        return users.stream()
+                .map(user -> new UserDTO(user))
+                .collect(Collectors.toList());
+
 
     }
 
     public UserDTO findUserByID(Long id) {
 
-        LOGGER.info("Executed the process of searching for user by id in the database");
-        isIdAvailable(id);
-        Optional<User> opt = userRepository.findById(id);
-        User userSave = opt.get();
+        log.info("Executed the process of searching for user by id in the database");
 
-        return userMapper.toDTO(userSave, UserDTO.class);
+        Optional<User> opt = isIdAvailable(id);
+        User userSave = opt.get();
+        return new UserDTO(userSave);
 
     }
 
+    public UserDTO save(UserDTO userCreateDTO) {
+
+        log.info("Executed the process of saving user to the database");
+
+        User user = new User(userCreateDTO);
+        user = userRepository.save(user);
+        return new UserDTO(user);
+
+    }
+
+
     public UserDTO updateUserByID(Long id, UserDTO userCreateDTO)  {
 
-        LOGGER.info("Executed the process of updating user by id in the database");
-        User user = userMapper.toEntity(userCreateDTO , User.class );
+        log.info("Executed the process of updating user by id in the database");
+        User user = new User(userCreateDTO);
         isIdAvailable(id);
         isEmailAvailable(user);
         isPhoneAvailable(user);
         user.setId(id);
-        User userSave = userRepository.save(user);
-        return  userMapper.toDTO(userSave, UserDTO.class);
+        user = userRepository.save(user);
 
+        return new UserDTO(user);
 
     }
 
 
     public void deleteUserByID(Long id)  {
 
-        LOGGER.info("Executed the process of delete user by id in the database");
+        log.info("Executed the process of delete user by id in the database");
         isIdAvailable(id);
         Optional<User> opt = userRepository.findById(id);
         User user= opt.get();
-       // User user = findUserByID(id);
         userRepository.delete(user);
     }
 
     public void isEmailAvailable(User user) {
 
-        LOGGER.info("Executed the process of validating user email in the database");
+        log.info("Executed the process of validating user email in the database");
         if (userRepository.existsByEmail(user.getEmail())){
-            throw new BadRequestException("Pessoa com email cadastrado");
+            throw new BadRequestException("User with registered email");
         }
 
     }
 
 
-    public void isIdAvailable(Long id) {
+    public Optional<User> isIdAvailable(Long id) {
 
-        LOGGER.info("Executed the process of validating user id in the database");
+        log.info("Executed the process of validating user id in the database");
         Optional<User> opt = userRepository.findById(id);
         if (opt.isEmpty()){
-            throw new NotFoundException("Pessoa com id: " + id + " Inexistente.");
+            throw new NotFoundException("User with id: " + id + " does not exist.");
         }
+
+        return opt;
 
     }
 
     private void isPhoneAvailable(User user) {
 
-        LOGGER.info("Executed the process of validating user phone numbers in the database");
+        log.info("Executed the process of validating user phone numbers in the database");
         if (userRepository.existsByPhone(user.getPhone())){
-            throw new BadRequestException("Pessoa com Telefone cadastrado");
+            throw new BadRequestException("User with registered phone");
         }
     }
 

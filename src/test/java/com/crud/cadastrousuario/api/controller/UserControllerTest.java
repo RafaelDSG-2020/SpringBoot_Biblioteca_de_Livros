@@ -2,7 +2,7 @@ package com.crud.cadastrousuario.api.controller;
 
 import com.crud.cadastrousuario.domain.dto.UserDTO;
 
-import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
+
 
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
@@ -50,9 +50,6 @@ class UserControllerTest {
 
     @MockBean
     private CrudUserService userService;
-
-    @MockBean
-    private Mapper userMapper;
 
     @MockBean
     private UserRepository userRepository;
@@ -342,7 +339,7 @@ class UserControllerTest {
 
         User pessoa = getUser().get(0);
 
-        when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
+       // when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
         when(userService.save(any(UserDTO.class)))
                 .thenThrow(new BadRequestException("Email ja esta cadastrado"));
 
@@ -366,7 +363,7 @@ class UserControllerTest {
         User pessoa = getUser().get(0);
 
 
-        when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
+       // when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
         when(userService.updateUserByID(any(Long.class), any(UserDTO.class)))
                 .thenThrow(new BadRequestException("E-mail não pode ser vazio"));
 
@@ -406,7 +403,7 @@ class UserControllerTest {
 
         User pessoa = getUser().get(0);
 
-        when(userMapper.toEntity(any(UserDTO.class) , eq(User.class))).thenReturn(pessoa);
+       // when(userMapper.toEntity(any(UserDTO.class) , eq(User.class))).thenReturn(pessoa);
         when(userService.updateUserByID(anyLong(), any(UserDTO.class)))
                 .thenThrow(new BadRequestException("Email ja esta cadastrado"));
 

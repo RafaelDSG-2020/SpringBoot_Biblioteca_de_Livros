@@ -1,5 +1,6 @@
 package com.crud.cadastrousuario.domain.dto;
 
+import com.crud.cadastrousuario.domain.model.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,8 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
 
+
+    private long id;
 
     @NotBlank(message = "Name cannot be empty")
     @NotNull(message = "Name cannot be null")
@@ -33,4 +36,13 @@ public class UserDTO {
     @Size(min = 11 , max = 13, message = "The number must be between 11 and 13 digits")
     @Digits(integer = Integer.MAX_VALUE, fraction = 0, message = "You must only enter numbers")
     private String phone;
+
+
+    public UserDTO(User user) {
+
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+    }
 }

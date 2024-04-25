@@ -42,7 +42,7 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> findBookByID(@PathVariable(value = "id") Long id){
 
-        LOGGER.info("Method: findUserByID searches for just one book by their ID. HTTP Method: GET");
+        log.info("Method: findUserByID searches for just one book by their ID. HTTP Method: GET");
         long start = System.currentTimeMillis();
         BookDTO bookSave = bookService.findBookByID(id);
         log.info("HTTP Method: GET Endpoint: api/v1/books/{id}  payload = {} elapsedTime = {} ms", id , (System.currentTimeMillis() - start));
@@ -55,7 +55,7 @@ public class BookController {
     @PostMapping
     public ResponseEntity<Object> saveBook(@RequestBody @Valid BookDTO bookCreateDTO){
 
-        LOGGER.info("Method: saveUser creates a book in the database. HTTP Method: POST");
+        log.info("Method: saveUser creates a book in the database. HTTP Method: POST");
         long start = System.currentTimeMillis();
         BookDTO bookSave = bookService.save(bookCreateDTO);
         log.info("HTTP Method: POST Endpoint: api/v1/books  payload = {} elapsedTime = {} ms", bookSave , (System.currentTimeMillis() - start));
@@ -66,7 +66,7 @@ public class BookController {
     public ResponseEntity<Object> updateBook(@PathVariable(value = "id") Long id,
                                              @RequestBody @Valid BookDTO bookCreateDTO) {
 
-        LOGGER.info("Method: update User has the function of updating a book created in a table. HTTP Method: PUT");
+        log.info("Method: update User has the function of updating a book created in a table. HTTP Method: PUT");
         long start = System.currentTimeMillis();
         BookDTO bookSave = bookService.updateBookByID(id, bookCreateDTO);
         log.info("HTTP Method: PUT Endpoint: api/v1/books/{id}  payload = {} elapsedTime = {} ms", id , (System.currentTimeMillis() - start));
@@ -78,7 +78,7 @@ public class BookController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUserByID(@PathVariable(value = "id") Long id) {
 
-        LOGGER.info("Method: deleteUserByID deletes a book by ID in the database. HTTP Method: DELETE ");
+        log.info("Method: deleteUserByID deletes a book by ID in the database. HTTP Method: DELETE ");
         long start = System.currentTimeMillis();
         bookService.deleteBookByID(id);
         log.info("HTTP Method: DELETE Endpoint: api/v1/books/{id}  payload = {} elapsedTime = {} ms", id , (System.currentTimeMillis() - start));

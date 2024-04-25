@@ -10,18 +10,22 @@ import com.crud.cadastrousuario.domain.repository.BookRepository;
 import com.crud.cadastrousuario.domain.repository.BookRepositorySpec;
 import com.crud.cadastrousuario.domain.repository.UserRepository;
 import com.crud.cadastrousuario.domain.repository.UserRepositorySpec;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+@Log4j2
+@Service
 public class CrudBookService {
 
     @Autowired
@@ -32,7 +36,7 @@ public class CrudBookService {
 
     public List<BookDTO> findUser(Pageable pageable, BookDTO filter) {
 
-        LOGGER.info("Executed the process of searching for user paged books in the database, paeable={} ", pageable);
+        log.info("Executed the process of searching for user paged books in the database, paeable={} ", pageable);
         Page<Book> pageBook = bookRepository.findAll(
                 BookRepositorySpec.filter(filter),
                 PageRequest.of(pageable.getPageNumber(),
@@ -48,7 +52,7 @@ public class CrudBookService {
 
     public BookDTO findBookByID(Long id) {
 
-        LOGGER.info("Executed the process of searching for book by id in the database");
+        log.info("Executed the process of searching for book by id in the database");
 
         Optional<Book> opt = isIdAvailable(id);
         Book bookSave = opt.get();
@@ -58,7 +62,7 @@ public class CrudBookService {
 
     public BookDTO save(BookDTO bookCreateDTO) {
 
-        LOGGER.info("Executed the process of saving book to the database");
+        log.info("Executed the process of saving book to the database");
 
         Book book = new Book(bookCreateDTO);
         book = bookRepository.save(book);
@@ -67,7 +71,7 @@ public class CrudBookService {
 
     public BookDTO updateBookByID(Long id, BookDTO bookCreateDTO) {
 
-        LOGGER.info("Executed the process of updating book by id in the database");
+        log.info("Executed the process of updating book by id in the database");
 
         Book book = new Book(bookCreateDTO);
         isIdAvailable(id);
@@ -79,7 +83,7 @@ public class CrudBookService {
 
     public void deleteBookByID(Long id) {
 
-        LOGGER.info("Executed the process of delete book by id in the database");
+        log.info("Executed the process of delete book by id in the database");
 
         Optional<Book> opt = isIdAvailable(id);
         Book bookSave = opt.get();
@@ -91,7 +95,7 @@ public class CrudBookService {
 
     public Optional<Book> isIdAvailable(Long id) {
 
-        LOGGER.info("Executed the process of validating book id in the database");
+        log.info("Executed the process of validating book id in the database");
         Optional<Book> opt = bookRepository.findById(id);
         if (opt.isEmpty()){
             throw new NotFoundException("Livro com id: " + id + " Inexistente.");

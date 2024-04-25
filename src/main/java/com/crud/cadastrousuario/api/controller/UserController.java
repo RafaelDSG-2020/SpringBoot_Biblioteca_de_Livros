@@ -30,7 +30,7 @@ public class UserController {
     private CrudUserService userService;
 
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
 
 
     @GetMapping
@@ -83,7 +83,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUserByID(@PathVariable(value = "id") Long id) {
 
-        LOGGER.info("Method: deleteUserByID deletes a user by ID in the database. HTTP Method: DELETE ");
+        log.info("Method: deleteUserByID deletes a user by ID in the database. HTTP Method: DELETE ");
         long start = System.currentTimeMillis();
         userService.deleteUserByID(id);
         log.info("HTTP Method: DELETE Endpoint: api/v1/users elapsedTime = {} ms", (System.currentTimeMillis() - start));

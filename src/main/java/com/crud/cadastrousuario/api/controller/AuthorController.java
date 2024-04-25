@@ -30,8 +30,6 @@ public class AuthorController {
 
 
 
-   // public static final Logger LOGGER = LoggerFactory.getLogger(AuthorController.class);
-
 
 
     @GetMapping

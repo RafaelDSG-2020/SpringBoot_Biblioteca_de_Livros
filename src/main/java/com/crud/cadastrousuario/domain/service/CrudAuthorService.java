@@ -29,7 +29,7 @@ public class CrudAuthorService {
     private AuthorRepository authorRepository;
 
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(CrudAuthorService.class);
+
 
 
 

@@ -33,7 +33,7 @@ public class CrudUserService {
 
 
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(CrudUserService.class);
+
 
 
 

@@ -1,5 +1,6 @@
 package com.crud.cadastrousuario.domain.model;
 
+import com.crud.cadastrousuario.domain.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +10,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Data
-@Entity(name = "Users")
-@Table(name = "users")
+@Entity
+@Table(name = "USER")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -28,6 +29,10 @@ public class User implements Serializable  {
     private String phone;
 
 
+    public User(UserDTO userCreateDTO) {
 
-
+        this.name = userCreateDTO.getName();
+        this.email = userCreateDTO.getEmail();
+        this.phone = userCreateDTO.getPhone();
+    }
 }

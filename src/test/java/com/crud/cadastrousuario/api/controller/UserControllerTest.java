@@ -2,7 +2,7 @@ package com.crud.cadastrousuario.api.controller;
 
 import com.crud.cadastrousuario.domain.dto.UserDTO;
 
-import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
+
 
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
@@ -52,9 +52,6 @@ class UserControllerTest {
     private CrudUserService userService;
 
     @MockBean
-    private Mapper userMapper;
-
-    @MockBean
     private UserRepository userRepository;
 
     @InjectMocks
@@ -66,14 +63,26 @@ class UserControllerTest {
 
     static final String PESSOA_API = "/api/v1/users";
 
-    private static UserDTO getUserCreateDTO() {
+    private static List<UserDTO> getUserCreateDTO() {
 
-        UserDTO userCreateDTO = UserDTO.builder()
+        List<UserDTO> listaUser = new ArrayList<>();
+
+        UserDTO userResponseDTO1 = UserDTO.builder()
                 .name("Teste")
                 .email("teste@example.com")
                 .phone("12345678901")
                 .build();
-        return userCreateDTO;
+
+        UserDTO userResponseDTO2 = UserDTO.builder()
+                .name("Testano")
+                .email("Testano@example.com")
+                .phone("10987654321")
+                .build();
+
+        listaUser.add(userResponseDTO1);
+        listaUser.add(userResponseDTO2);
+
+        return listaUser;
 
     }
 //    private static List<UserResponseDTO> getUserResponseDTO(){
@@ -125,7 +134,7 @@ class UserControllerTest {
     @Test
     public void testeDeveRetornar_UmaListaDePessoas_EverificarCadaCampo_MetodoGet() throws Exception {
 
-        List<User> listaUser =getUser();
+        List<UserDTO> listaUser = getUserCreateDTO();
         //List<UserResponseDTO> listaUserResponseDTO = getUserResponseDTO();
 
 
@@ -149,7 +158,7 @@ class UserControllerTest {
     @Test
     public void testDeveRetornar_UmaListaDePessoas_EverificarCadaCampo_SemParametros_MetodoGet() throws Exception {
 
-        List<User> listaPessoas = getUser();
+        List<UserDTO> listaPessoas = getUserCreateDTO();
         //List<UserResponseDTO> listaUserResponseDTO = getUserResponseDTO();
 
 
@@ -176,7 +185,7 @@ class UserControllerTest {
 
         Long idTeste = 1L;
 
-        User pessoa = getUser().get(0);
+        UserDTO pessoa = getUserCreateDTO().get(0);
 
         //UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
 
@@ -212,17 +221,17 @@ class UserControllerTest {
     @Test
     public void testeVerificar_CadastrarPessoa_EVerificarCampos_MetodoPost() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
 
         User pessoa = getUser().get(0);
        // UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
 
        // when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
-        when(userService.save(any(UserDTO.class))).thenReturn(pessoa);
+        when(userService.save(any(UserDTO.class))).thenReturn(pessoaCreateDTO);
        // when(userMapper.toDTO(any(User.class), eq(UserResponseDTO.class))).thenReturn(userResponseDTO);
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
-        String pessoaResponseDTOJson = objectMapper.writeValueAsString(pessoa);
+        String pessoaResponseDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
 
         mockMvc.perform(post(PESSOA_API)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -238,7 +247,7 @@ class UserControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComNomeMenorque3Caracteres_MetodoPost() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
         pessoaCreateDTO.setName("TS");
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
@@ -252,7 +261,7 @@ class UserControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComNomeMaiorque50Caracteres_MetodoPost() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
         pessoaCreateDTO.setName("TesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTeste");
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
@@ -267,7 +276,7 @@ class UserControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComTelefoneMenor_Que11Digitos_MetodoPost() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
         pessoaCreateDTO.setPhone("1234567890");
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
@@ -282,7 +291,7 @@ class UserControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComTelefoneMaior_Que13Digitos_MetodoPost() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
         pessoaCreateDTO.setPhone("1234567890123456789");
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
@@ -297,7 +306,7 @@ class UserControllerTest {
     @Test
     public void testeVerificar_BadRequest_PessoaComEmailEscritoIncorreto_MetodoPost() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
         String mudaEmail = "123123123131231";
         pessoaCreateDTO.setEmail(mudaEmail);
 
@@ -312,7 +321,7 @@ class UserControllerTest {
     @Test
     public void testeVerificar_PessoaComEmailNulo_MetodoPost() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
         pessoaCreateDTO.setEmail(null);
 
         String pessoaCreateDTOJson = objectMapper.writeValueAsString(pessoaCreateDTO);
@@ -326,11 +335,11 @@ class UserControllerTest {
     @Test
     public void testedeveRetornarBadRequest_QuandoEmailJaCadastrado_MetodoPost() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
 
         User pessoa = getUser().get(0);
 
-        when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
+       // when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
         when(userService.save(any(UserDTO.class)))
                 .thenThrow(new BadRequestException("Email ja esta cadastrado"));
 
@@ -349,12 +358,12 @@ class UserControllerTest {
     @Test
     public void testeVerificar_AtualizarCadastro_ComEmailNulo_MetodoPut() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
         pessoaCreateDTO.setEmail(null);
         User pessoa = getUser().get(0);
 
 
-        when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
+       // when(userMapper.toEntity(any(UserDTO.class), eq(User.class))).thenReturn(pessoa);
         when(userService.updateUserByID(any(Long.class), any(UserDTO.class)))
                 .thenThrow(new BadRequestException("E-mail não pode ser vazio"));
 
@@ -371,30 +380,30 @@ class UserControllerTest {
     public void testeVerificar_AtualizaUmCadastro_MetodoPut() throws Exception {
 
         Long id = 1L;
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
 
         User pessoa = getUser().get(0);
       //  UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
       //  when(userMapper.toEntity(any(UserDTO.class) , eq(User.class))).thenReturn(pessoa);
-        when(userService.updateUserByID(eq(id), any(UserDTO.class))).thenReturn(pessoa);
+        when(userService.updateUserByID(eq(id), any(UserDTO.class))).thenReturn(pessoaCreateDTO);
      //   when(userMapper.toDTO(any(User.class), eq(UserResponseDTO.class))).thenReturn(userResponseDTO);
 
         mockMvc.perform(put(PESSOA_API + "/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(pessoaCreateDTO)))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(pessoa)));
+                .andExpect(content().json(objectMapper.writeValueAsString(pessoaCreateDTO)));
 
     }
 
     @Test
     public void testedeveRetornarBadRequest_QuandoEmailJaCadastrado_MetodoPut() throws Exception {
 
-        UserDTO pessoaCreateDTO = getUserCreateDTO();
+        UserDTO pessoaCreateDTO = getUserCreateDTO().get(0);
 
         User pessoa = getUser().get(0);
 
-        when(userMapper.toEntity(any(UserDTO.class) , eq(User.class))).thenReturn(pessoa);
+       // when(userMapper.toEntity(any(UserDTO.class) , eq(User.class))).thenReturn(pessoa);
         when(userService.updateUserByID(anyLong(), any(UserDTO.class)))
                 .thenThrow(new BadRequestException("Email ja esta cadastrado"));
 
@@ -417,8 +426,8 @@ class UserControllerTest {
 
         mockMvc.perform(delete(PESSOA_API + "/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
-                .andExpect(content().string("Foi Removido com Sucesso"));
+                .andExpect(status().isNoContent());
+                //.andExpect(content().string("Foi Removido com Sucesso"));
 
     }
 

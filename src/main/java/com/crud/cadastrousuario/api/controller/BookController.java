@@ -25,7 +25,7 @@ public class BookController {
     private CrudBookService bookService;
 
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
+
 
 
     @GetMapping

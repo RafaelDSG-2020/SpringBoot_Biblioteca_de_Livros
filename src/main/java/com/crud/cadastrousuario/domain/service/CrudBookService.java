@@ -32,7 +32,7 @@ public class CrudBookService {
     public BookRepository bookRepository;
 
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
+
 
     public List<BookDTO> findUser(Pageable pageable, BookDTO filter) {
 
@@ -98,7 +98,7 @@ public class CrudBookService {
         log.info("Executed the process of validating book id in the database");
         Optional<Book> opt = bookRepository.findById(id);
         if (opt.isEmpty()){
-            throw new NotFoundException("Livro com id: " + id + " Inexistente.");
+            throw new NotFoundException("Book with id: " + id + " does not exist.");
         }
 
         return opt;

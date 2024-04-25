@@ -1,10 +1,7 @@
 package com.crud.cadastrousuario.api.controller;
 
 import com.crud.cadastrousuario.domain.dto.BookDTO;
-import com.crud.cadastrousuario.domain.dto.UserDTO;
-import com.crud.cadastrousuario.domain.dto.mapper.Mapper;
-import com.crud.cadastrousuario.domain.model.Book;
-import com.crud.cadastrousuario.domain.model.User;
+
 import com.crud.cadastrousuario.domain.service.CrudBookService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -24,8 +21,7 @@ public class BookController {
 
     @Autowired
     private CrudBookService bookService;
-    @Autowired
-    private Mapper bookMapper;
+
 
     public static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
 

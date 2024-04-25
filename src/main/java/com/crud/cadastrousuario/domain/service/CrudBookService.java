@@ -19,14 +19,14 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class CrudBookService {
 
     @Autowired
     public BookRepository bookRepository;
 
-    @Autowired
-    private Mapper bookMapper;
 
     public static final Logger LOGGER = LoggerFactory.getLogger(BookController.class);
 
@@ -40,59 +40,64 @@ public class CrudBookService {
 
         List<Book> books = pageBook.getContent();
 
-        return bookMapper.toDTO(books, BookDTO.class);
+        return books.stream().map(book -> new BookDTO(book)).collect(Collectors.toList());
+
+
 
     }
 
     public BookDTO findBookByID(Long id) {
 
         LOGGER.info("Executed the process of searching for book by id in the database");
-        isIdAvailable(id);
-        Optional<Book> opt = bookRepository.findById(id);
+
+        Optional<Book> opt = isIdAvailable(id);
         Book bookSave = opt.get();
 
-        return bookMapper.toDTO(bookSave, BookDTO.class);
+        return new BookDTO(bookSave);
     }
 
     public BookDTO save(BookDTO bookCreateDTO) {
 
         LOGGER.info("Executed the process of saving book to the database");
 
-        Book book = bookMapper.toEntity(bookCreateDTO, Book.class);
-        Book bookSave = bookRepository.save(book);
-        return bookMapper.toDTO(bookSave, BookDTO.class);
+        Book book = new Book(bookCreateDTO);
+        book = bookRepository.save(book);
+        return new BookDTO(book);
     }
 
     public BookDTO updateBookByID(Long id, BookDTO bookCreateDTO) {
 
         LOGGER.info("Executed the process of updating book by id in the database");
-        Book book = bookMapper.toEntity(bookCreateDTO , Book.class );
+
+        Book book = new Book(bookCreateDTO);
         isIdAvailable(id);
         book.setId(id);
-        Book bookSave = bookRepository.save(book);
-        return  bookMapper.toDTO(bookSave, BookDTO.class);
+        book = bookRepository.save(book);
+        return new BookDTO(book);
 
     }
 
     public void deleteBookByID(Long id) {
 
         LOGGER.info("Executed the process of delete book by id in the database");
-        isIdAvailable(id);
-        Optional<Book> opt = bookRepository.findById(id);
+
+        Optional<Book> opt = isIdAvailable(id);
         Book bookSave = opt.get();
-       // Book book = findBookByID(id);
+
         bookRepository.delete(bookSave);
     }
 
 
 
-    public void isIdAvailable(Long id) {
+    public Optional<Book> isIdAvailable(Long id) {
 
         LOGGER.info("Executed the process of validating book id in the database");
         Optional<Book> opt = bookRepository.findById(id);
         if (opt.isEmpty()){
             throw new NotFoundException("Livro com id: " + id + " Inexistente.");
         }
+
+        return opt;
 
     }
 

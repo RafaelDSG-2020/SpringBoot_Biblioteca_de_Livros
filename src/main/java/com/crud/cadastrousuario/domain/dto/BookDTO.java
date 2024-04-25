@@ -1,6 +1,7 @@
 package com.crud.cadastrousuario.domain.dto;
 
 
+import com.crud.cadastrousuario.domain.model.Book;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,8 @@ import lombok.NoArgsConstructor;
 public class BookDTO {
 
 
+    private Long id;
+
     @NotNull(message = "title cannot be null")
     @NotBlank(message = "title cannot be empty")
     @Size(min = 3 , max = 50,message = "The number of characters must be between 3 and 50 characters")
@@ -41,4 +44,10 @@ public class BookDTO {
     @NotBlank(message = "ISBN cannot be empty")
     private String ISBN;
 
+    public BookDTO(Book book) {
+
+        this.id = book.getId();
+        this.title = book.getTitle();
+        this.publishing_company = book.getPublishing_company();
+    }
 }

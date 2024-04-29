@@ -66,6 +66,7 @@ public class CrudAuthorService {
        log.info("Executed the process of saving author to the database");
 
         Author author = new Author(authorCreateDTO);
+        author.setFlag("1");
         author = authorRepository.save(author);
         return new AuthorDTO(author);
 

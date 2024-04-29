@@ -1,12 +1,9 @@
 package com.crud.cadastrousuario.domain.dto;
 
 
+import com.crud.cadastrousuario.domain.model.Author;
 import com.crud.cadastrousuario.domain.model.Book;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,6 +11,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -30,24 +33,33 @@ public class BookDTO {
     @Size(min = 3 , max = 50,message = "The number of characters must be between 3 and 50 characters")
     private String title;
 
-    @NotNull(message = "Publisher cannot be null")
-    @NotBlank(message = "Publisher cannot be empty")
-    private String publishing_company;
-
-
-    @NotNull(message = "Publication date cannot be null")
-    @NotBlank(message = "Publication date cannot be empty")
-    private String published_date;
+    @NotNull(message = "Publisher Company cannot be null")
+    @NotBlank(message = "Publisher Company cannot be empty")
+    private String publishingCompany;
 
 
     @NotNull(message = "ISBN cannot be null")
     @NotBlank(message = "ISBN cannot be empty")
-    private String ISBN;
+    private String isbn;
+
+   // @NotNull(message = "Publication date cannot be null")
+    //@NotBlank(message = "Publication date cannot be empty")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime publishingDate;
+
+    private String flag;
+
+    private List<Author> authors;
 
     public BookDTO(Book book) {
 
         this.id = book.getId();
         this.title = book.getTitle();
-        this.publishing_company = book.getPublishing_company();
+        this.publishingCompany = book.getPublishingCompany();
+        this.isbn = book.getIsbn();
+        this.publishingDate = book.getPublishingDate();
+        this.flag = book.getFlag();
+        this.authors = book.getAuthors();
+
     }
 }

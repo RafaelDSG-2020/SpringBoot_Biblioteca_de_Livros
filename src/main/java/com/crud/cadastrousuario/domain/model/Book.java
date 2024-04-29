@@ -2,11 +2,19 @@ package com.crud.cadastrousuario.domain.model;
 
 
 import com.crud.cadastrousuario.domain.dto.BookDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,17 +31,30 @@ public class Book {
     @Column(name = "TITLE", length = 50, nullable = false)
     private String title;
     @Column(name = "PUBLISHING_COMPANY", length = 50, nullable = false)
-    private String publishing_company;
-    @Column(name = "PUBLISHING_DATE", length = 50, nullable = false)
-    private String published_date;
+    private String publishingCompany;
     @Column(name = "ISBN", length = 50, nullable = false, unique = true)
-    private String ISBN;
+    private String isbn;
+    @Column(name = "PUBLISHING_DATE", length = 50, nullable = false)
+    private LocalDateTime publishingDate;
+    @Column(name = "FLAG" , nullable = false)
+    private String flag;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "BOOK_AUTHOR" ,
+            joinColumns = @JoinColumn(name = "BOOK_ID") ,
+            inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
+    private List<Author> authors;
+
 
     public Book(BookDTO bookCreateDTO) {
 
         this.title = bookCreateDTO.getTitle();
-        this.publishing_company = bookCreateDTO.getPublishing_company();
-        this.published_date = bookCreateDTO.getPublished_date();
-        this.ISBN = bookCreateDTO.getISBN();
+        this.publishingCompany = bookCreateDTO.getPublishingCompany();
+        this.isbn = bookCreateDTO.getIsbn();
+        this.publishingDate = bookCreateDTO.getPublishingDate();
+        this.flag = bookCreateDTO.getFlag();
+        this.authors = bookCreateDTO.getAuthors();
+
     }
 }

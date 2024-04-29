@@ -2,6 +2,7 @@ package com.crud.cadastrousuario.api.controller;
 
 import com.crud.cadastrousuario.domain.dto.BookDTO;
 
+import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.service.CrudBookService;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
@@ -25,15 +26,12 @@ public class BookController {
     private CrudBookService bookService;
 
 
-
-
-
     @GetMapping
     public ResponseEntity<List<BookDTO>> findBookByParameters(@PageableDefault(size = 5) Pageable pageable, BookDTO filter) {
 
         log.info("Method: findUserByParameters searches for a set of paginated books 5 by 5. HTTP Method: GET");
         long start = System.currentTimeMillis();
-        List<BookDTO> books = bookService.findUser(pageable , filter);
+        List<BookDTO> books = bookService.findBook(pageable , filter);
         log.info("HTTP Method: GET Endpoint: api/v1/books  payload = {} elapsedTime = {} ms", filter , (System.currentTimeMillis() - start));
         return ResponseEntity.status(HttpStatus.OK).body(books);
 
@@ -71,6 +69,7 @@ public class BookController {
         BookDTO bookSave = bookService.updateBookByID(id, bookCreateDTO);
         log.info("HTTP Method: PUT Endpoint: api/v1/books/{id}  payload = {} elapsedTime = {} ms", id , (System.currentTimeMillis() - start));
         return  ResponseEntity.status(HttpStatus.OK).body(bookSave);
+
 
     }
 

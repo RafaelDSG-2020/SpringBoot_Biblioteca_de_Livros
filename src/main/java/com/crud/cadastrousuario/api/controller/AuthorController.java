@@ -30,8 +30,6 @@ public class AuthorController {
 
 
 
-
-
     @GetMapping
     public ResponseEntity<List<AuthorDTO>> findAuthorByParameters(@PageableDefault(size = 5) Pageable pageable, AuthorDTO filter ){
 

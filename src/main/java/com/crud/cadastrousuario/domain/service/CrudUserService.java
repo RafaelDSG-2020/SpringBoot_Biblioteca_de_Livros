@@ -33,10 +33,6 @@ public class CrudUserService {
 
 
 
-
-
-
-
     public List<UserDTO> findUser(Pageable pageable , UserDTO filter) {
 
         log.info("Executed the process of searching for user paged user in the database, paeable={} ", pageable);
@@ -69,6 +65,8 @@ public class CrudUserService {
         log.info("Executed the process of saving user to the database");
 
         User user = new User(userCreateDTO);
+        isEmailAvailable(user);
+        user.setFlag("1");
         user = userRepository.save(user);
         return new UserDTO(user);
 
@@ -93,10 +91,11 @@ public class CrudUserService {
     public void deleteUserByID(Long id)  {
 
         log.info("Executed the process of delete user by id in the database");
-        isIdAvailable(id);
-        Optional<User> opt = userRepository.findById(id);
+
+        Optional<User> opt = isIdAvailable(id);
         User user= opt.get();
-        userRepository.delete(user);
+        user.setFlag("0");
+        userRepository.save(user);
     }
 
     public void isEmailAvailable(User user) {

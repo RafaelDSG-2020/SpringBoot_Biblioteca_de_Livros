@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,9 +36,9 @@ public class Book {
     @Column(name = "ISBN", length = 50, nullable = false, unique = true)
     private String isbn;
     @Column(name = "PUBLISHING_DATE", length = 50, nullable = false)
-    private LocalDateTime publishingDate;
+    private LocalDate publishingDate;
     @Column(name = "FLAG" , nullable = false)
-    private String flag;
+    private Integer flag;
 
     @JsonIgnore
     @ManyToMany
@@ -53,7 +54,7 @@ public class Book {
         this.publishingCompany = bookCreateDTO.getPublishingCompany();
         this.isbn = bookCreateDTO.getIsbn();
         this.publishingDate = bookCreateDTO.getPublishingDate();
-        this.flag = bookCreateDTO.getFlag();
+        this.flag = 1;
         this.authors = bookCreateDTO.getAuthors();
 
     }

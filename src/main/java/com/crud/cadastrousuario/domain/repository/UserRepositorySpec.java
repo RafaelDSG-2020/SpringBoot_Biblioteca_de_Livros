@@ -21,7 +21,7 @@ public class UserRepositorySpec {
                 .where(filterWhereIn("name", filter.getName()))
                 .and(filterWhereIn("email", filter.getEmail()))
                 .and(filterWhereIn("phone", filter.getPhone()))
-                .and(flagIsNotZero("flag", "0"));
+                .and(flagIsNotZero("flag", "1"));
     }
 
 
@@ -38,7 +38,7 @@ public class UserRepositorySpec {
             return null;
         }
 
-        return ((root, query, builder) -> builder.notEqual(root.get(field), value));
+        return ((root, query, builder) -> builder.equal(root.get(field), value));
     }
 
     private static List<String> prepareValuesToFilter(String value) {

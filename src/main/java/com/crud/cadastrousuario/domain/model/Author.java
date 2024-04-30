@@ -29,7 +29,7 @@ public class Author {
     private String nationality;
 
     @Column(name = "FLAG" , nullable = false)
-    private String flag;
+    private Integer flag;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "authors")
@@ -40,7 +40,7 @@ public class Author {
 
         this.name = author.getName();
         this.nationality = author.getNationality();
-        this.flag = author.getFlag();
+        this.flag = 1;
         this.books = author.getBooks();
     }
 }

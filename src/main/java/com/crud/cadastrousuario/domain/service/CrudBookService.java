@@ -5,8 +5,10 @@ import com.crud.cadastrousuario.domain.dto.BookDTO;
 import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
+import com.crud.cadastrousuario.domain.model.Author;
 import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.model.User;
+import com.crud.cadastrousuario.domain.repository.AuthorRepository;
 import com.crud.cadastrousuario.domain.repository.BookRepository;
 import com.crud.cadastrousuario.domain.repository.BookRepositorySpec;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -30,6 +33,12 @@ public class CrudBookService {
 
     @Autowired
     public BookRepository bookRepository;
+
+    @Autowired
+    public CrudAuthorService authorService;
+
+
+
 
 
 
@@ -68,10 +77,12 @@ public class CrudBookService {
         Book book = new Book(bookCreateDTO);
         isIsbnAvailable(book);
         isDateAvailable(book);
-        book.setFlag("1");
+        authorService.isAuthorAvailable();
         book = bookRepository.save(book);
         return new BookDTO(book);
     }
+
+
 
     public BookDTO updateBookByID(Long id, BookDTO bookCreateDTO) {
 
@@ -94,8 +105,7 @@ public class CrudBookService {
 
         Optional<Book> opt = isIdAvailable(id);
         Book bookSave = opt.get();
-        isFlagAvailable( bookSave);
-        bookSave.setFlag("0");
+        bookSave.setFlag(0);
         bookRepository.save(bookSave);
     }
 
@@ -131,13 +141,11 @@ public class CrudBookService {
 
     private void isDateAvailable(Book book){
 
-        LocalDateTime publishingDate = book.getPublishingDate();
+        LocalDate publishingDate = book.getPublishingDate();
         LocalDateTime currentDate = LocalDateTime.now();
         long daysDifference = ChronoUnit.DAYS.between(publishingDate, currentDate);
-        long hoursDifference = ChronoUnit.HOURS.between(publishingDate, currentDate);
+
         if (daysDifference < 0){
-            throw new BadRequestException("the Publication date has a value greater than the current date");
-        } else if (hoursDifference < 0) {
             throw new BadRequestException("the Publication date has a value greater than the current date");
         }
     }

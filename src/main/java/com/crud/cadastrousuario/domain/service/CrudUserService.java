@@ -7,6 +7,7 @@ import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Author;
+import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.model.User;
 import com.crud.cadastrousuario.domain.repository.UserRepository;
 import com.crud.cadastrousuario.domain.repository.UserRepositorySpec;
@@ -56,6 +57,7 @@ public class CrudUserService {
 
         Optional<User> opt = isIdAvailable(id);
         User userSave = opt.get();
+        isFlagAvailable(userSave);
         return new UserDTO(userSave);
 
     }
@@ -66,7 +68,6 @@ public class CrudUserService {
 
         User user = new User(userCreateDTO);
         isEmailAvailable(user);
-        user.setFlag("1");
         user = userRepository.save(user);
         return new UserDTO(user);
 
@@ -80,6 +81,7 @@ public class CrudUserService {
         isIdAvailable(id);
         isEmailAvailable(user);
         isPhoneAvailable(user);
+        isFlagAvailable(user);
         user.setId(id);
         user = userRepository.save(user);
 
@@ -94,7 +96,7 @@ public class CrudUserService {
 
         Optional<User> opt = isIdAvailable(id);
         User user= opt.get();
-        user.setFlag("0");
+        user.setFlag(0);
         userRepository.save(user);
     }
 
@@ -127,6 +129,15 @@ public class CrudUserService {
             throw new BadRequestException("User with registered phone");
         }
     }
+
+    private void isFlagAvailable(User user) {
+
+        log.info("Executed the process of validating book Flag numbers in the database");
+        if (userRepository.existsByFlag(user.getFlag())){
+            throw new BadRequestException("Book with  flag disabled ");
+        }
+    }
+
 
 
 }

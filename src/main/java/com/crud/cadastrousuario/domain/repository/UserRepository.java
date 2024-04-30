@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     boolean existsByPhone(String phone);
 
+    boolean existsByFlag(Integer flag);
+
 
     //List<Pessoa> findByPessoa(<List<Pessoa> pessoa, Pageable pageable);
 }

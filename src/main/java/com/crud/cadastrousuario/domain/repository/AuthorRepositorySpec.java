@@ -15,7 +15,7 @@ public class AuthorRepositorySpec {
         return Specification
                 .where(filterWhereIn("name", filter.getName()))
                 .and(filterWhereIn("nationality", filter.getNationality()))
-                .and(flagIsNotZero("flag", "0"));
+                .and(flagIsNotZero("flag", "1"));
     }
 
     public static Specification<Author> filterWhereIn(String field, String value) {
@@ -32,7 +32,7 @@ public class AuthorRepositorySpec {
             return null;
         }
 
-        return ((root, query, builder) -> builder.notEqual(root.get(field), value));
+        return ((root, query, builder) -> builder.equal(root.get(field), value));
     }
 
     private static List<String> prepareValuesToFilter(String value) {

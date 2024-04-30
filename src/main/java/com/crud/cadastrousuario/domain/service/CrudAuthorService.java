@@ -3,8 +3,10 @@ package com.crud.cadastrousuario.domain.service;
 import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 
 
+import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Author;
+import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.repository.AuthorRepository;
 import com.crud.cadastrousuario.domain.repository.AuthorRepositorySpec;
 
@@ -37,12 +39,12 @@ public class CrudAuthorService {
 
         log.info("Executed the process of searching for author paged user in the database, paeable={} ", pageable);
 
-        Page<Author> pageUser = authorRepository.findAll(
+        Page<Author> pageAuthor = authorRepository.findAll(
                 AuthorRepositorySpec.filter(filter),
                 PageRequest.of(pageable.getPageNumber(),
                         pageable.getPageSize()));
 
-        List<Author> authors = pageUser.getContent();
+        List<Author> authors = pageAuthor.getContent();
 
         return authors.stream()
                 .map(author -> new AuthorDTO(author))
@@ -66,7 +68,7 @@ public class CrudAuthorService {
        log.info("Executed the process of saving author to the database");
 
         Author author = new Author(authorCreateDTO);
-        author.setFlag("1");
+        isFlagAvailable(author);
         author = authorRepository.save(author);
         return new AuthorDTO(author);
 
@@ -78,6 +80,7 @@ public class CrudAuthorService {
 
         Author author = new Author(authorCreateDTO);
         isIdAvailable(id);
+        isFlagAvailable(author);
         author.setId(id);
         author = authorRepository.save(author);
         return new AuthorDTO(author);
@@ -90,7 +93,8 @@ public class CrudAuthorService {
 
         Optional<Author> opt = isIdAvailable(id);
         Author author= opt.get();
-        authorRepository.delete(author);
+        author.setFlag(0);
+        authorRepository.save(author);
     }
 
     public Optional<Author> isIdAvailable(Long id) {
@@ -104,4 +108,24 @@ public class CrudAuthorService {
         return  opt;
 
     }
+
+    public void isAuthorAvailable() {
+
+        Pageable pageable = PageRequest.of(0,1);
+        Page<Author> page = authorRepository.findAll(pageable);
+         List<Author> authors = page.getContent();
+         if (authors.isEmpty()) {
+             throw new BadRequestException("There are no authors");
+         }
+
+    }
+
+    private void isFlagAvailable(Author author) {
+
+        log.info("Executed the process of validating book Flag numbers in the database");
+        if (authorRepository.existsByFlag(author.getFlag())){
+            throw new BadRequestException("Author with  flag disabled ");
+        }
+    }
+
 }

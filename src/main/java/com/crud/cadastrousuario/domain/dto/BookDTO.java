@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,12 +43,11 @@ public class BookDTO {
     @NotBlank(message = "ISBN cannot be empty")
     private String isbn;
 
-   // @NotNull(message = "Publication date cannot be null")
-    //@NotBlank(message = "Publication date cannot be empty")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime publishingDate;
 
-    private String flag;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate publishingDate;
+
+    private Integer flag;
 
     private List<Author> authors;
 

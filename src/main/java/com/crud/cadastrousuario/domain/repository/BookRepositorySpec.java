@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Predicate;
@@ -22,9 +23,9 @@ public class BookRepositorySpec {
         return Specification
                 .where(filterWhereIn("title", filter.getTitle()))
                .and(filterWhereIn("publishingCompany", filter.getPublishingCompany()))
-               .and(filterWhereDate("publishingDate", filter.getPublishingDate(), LocalDateTime.now()))
+               .and(filterWhereDate("publishingDate", filter.getPublishingDate(), LocalDate.now()))
                 .and(filterWhereIn("isbn", filter.getIsbn()))
-                .and(flagIsNotZero("flag", "0"));
+                .and(flagIsNotZero("flag", "1"));
     }
 
 
@@ -42,16 +43,16 @@ public class BookRepositorySpec {
             return null;
         }
 
-        return ((root, query, builder) -> builder.notEqual(root.get(field), value));
+        return ((root, query, builder) -> builder.equal(root.get(field), value));
     }
 
-    public static Specification<Book> filterWhereDate(String field, LocalDateTime valueStart, LocalDateTime valueEnd) {
+    public static Specification<Book> filterWhereDate(String field, LocalDate valueStart, LocalDate valueEnd) {
         if (field == null || field.trim().isEmpty() || valueStart == null || valueEnd == null) {
             return null;
         }
 
         return (Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
-            Path<LocalDateTime> dateField = root.get(field);
+            Path<LocalDate> dateField = root.get(field);
             return builder.between(dateField, valueStart, valueEnd);
         };
     }

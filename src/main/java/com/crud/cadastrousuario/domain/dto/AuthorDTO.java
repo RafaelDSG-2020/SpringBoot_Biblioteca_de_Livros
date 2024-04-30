@@ -33,7 +33,7 @@ public class AuthorDTO {
     private String nationality;
 
 
-    private String flag;
+    private Integer flag;
 
     private List<Book> books;
 

@@ -38,7 +38,7 @@ public class UserDTO {
     private String phone;
 
 
-    private String flag;
+    private Integer flag;
 
 
     public UserDTO(User user) {

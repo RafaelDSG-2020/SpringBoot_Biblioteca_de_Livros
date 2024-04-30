@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> , JpaSpecificationExecutor<Author> {
+    boolean existsByFlag(Integer flag);
 }

@@ -68,7 +68,13 @@ public class CrudUserService {
 
         log.info("Executed the process of saving user to the database");
 
-        User user = new User(userCreateDTO);
+        User user = User.builder()
+                    .id(userCreateDTO.getId())
+                    .name(userCreateDTO.getName())
+                    .email(userCreateDTO.getEmail())
+                    .phone(userCreateDTO.getPhone())
+                    .build();
+      //  User user = new User(userCreateDTO);
         user = userRepository.save(user);
         return new UserDTO(user);
 

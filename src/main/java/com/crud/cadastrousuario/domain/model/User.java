@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "USER")
+@Table(name = "USERS")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

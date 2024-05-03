@@ -38,11 +38,15 @@ public class UserDTO {
     private String phone;
 
 
+    private Integer flag;
+
+
     public UserDTO(User user) {
 
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.phone = user.getPhone();
+        this.flag = user.getFlag();
     }
 }

@@ -27,6 +27,8 @@ public class User implements Serializable  {
     private String email;
     @Column(name = "PHONE" , length = 50, nullable = false)
     private String phone;
+    @Column(name = "FLAG" , nullable = false)
+    private Integer flag;
 
 
     public User(UserDTO userCreateDTO) {
@@ -34,5 +36,6 @@ public class User implements Serializable  {
         this.name = userCreateDTO.getName();
         this.email = userCreateDTO.getEmail();
         this.phone = userCreateDTO.getPhone();
+        this.flag = 1;
     }
 }

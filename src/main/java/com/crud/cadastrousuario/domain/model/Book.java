@@ -49,6 +49,14 @@ public class Book {
     private List<Author> authors = new ArrayList<>();
 
 
+
+//    @ManyToOne
+//    @JoinColumn(name = "stock_id")
+//    private Stock stock;
+
+
+
+
     public Book(BookDTO bookCreateDTO) {
 
         this.title = bookCreateDTO.getTitle();

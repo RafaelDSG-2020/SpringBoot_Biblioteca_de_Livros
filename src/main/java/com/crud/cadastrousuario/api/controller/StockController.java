@@ -1,5 +1,6 @@
 package com.crud.cadastrousuario.api.controller;
 
+import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 import com.crud.cadastrousuario.domain.dto.StockDTO;
 import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.model.Stock;
@@ -12,10 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,12 +28,26 @@ public class StockController {
     StockService stockService;
 
     @GetMapping
-    public ResponseEntity<List<StockDTO>> findStockByParameters(@PageableDefault(size = 5) Pageable pageable) {
+    public ResponseEntity<List<StockDTO>> findBooksInStock(@PageableDefault(size = 5) Pageable pageable){
 
-        log.info("Method: findUserByParameters searches for a set of paginated users 5 by 5. HTTP Method: GET");
+        log.info("Method: findBooksInStock searches for a set of paginated stock 5 by 5. HTTP Method: GET");
         long start = System.currentTimeMillis();
-        List<StockDTO> user = stockService.findStock(pageable );
-        log.info("HTTP Method: GET Endpoint: api/v1/users   elapsedTime = {} ms",  (System.currentTimeMillis() - start));
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        List<StockDTO> stocks = stockService.findBooksInStock(pageable);
+        log.info("HTTP Method: GET Endpoint: api/v1/stock  elapsedTime = {} ms" , (System.currentTimeMillis() - start));
+        return ResponseEntity.status(HttpStatus.OK).body(stocks);
+
+    }
+
+
+
+
+    @PostMapping("/{bookID}")
+    public ResponseEntity<Object> saveUser(@PathVariable Long bookID , @RequestBody @Valid StockDTO stockCreateDTO){
+
+        log.info("Method: saveUser creates a user in the database. HTTP Method: POST");
+        long start = System.currentTimeMillis();
+        StockDTO stockSave = stockService.save(bookID , stockCreateDTO);
+        log.info("HTTP Method: POST Endpoint: api/v1/users  payload = {} elapsedTime = {} ms", stockSave , (System.currentTimeMillis() - start));
+        return ResponseEntity.status(HttpStatus.CREATED).body(stockSave);
     }
 }

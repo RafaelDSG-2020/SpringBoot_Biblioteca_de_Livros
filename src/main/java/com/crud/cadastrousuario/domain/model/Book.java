@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -41,11 +42,11 @@ public class Book {
     private Integer flag;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "BOOK_AUTHOR" ,
             joinColumns = @JoinColumn(name = "BOOK_ID") ,
             inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
-    private List<Author> authors;
+    private List<Author> authors = new ArrayList<>();
 
 
     public Book(BookDTO bookCreateDTO) {

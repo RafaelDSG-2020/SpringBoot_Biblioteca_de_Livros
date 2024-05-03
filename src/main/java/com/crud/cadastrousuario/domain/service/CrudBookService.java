@@ -2,18 +2,12 @@ package com.crud.cadastrousuario.domain.service;
 
 
 import com.crud.cadastrousuario.domain.dto.BookDTO;
-import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
-import com.crud.cadastrousuario.domain.model.Author;
 import com.crud.cadastrousuario.domain.model.Book;
-import com.crud.cadastrousuario.domain.model.User;
-import com.crud.cadastrousuario.domain.repository.AuthorRepository;
 import com.crud.cadastrousuario.domain.repository.BookRepository;
 import com.crud.cadastrousuario.domain.repository.BookRepositorySpec;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +18,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -59,14 +52,11 @@ public class CrudBookService {
 
     }
 
-    public BookDTO findBookByID(Long id) {
+    public BookDTO findBookByIDActive(Long id) {
 
         log.info("Executed the process of searching for book by id in the database");
 
-        Optional<Book> opt = isIdAvailable(id);
-        Book bookSave = opt.get();
-        isFlagAvailable(bookSave);
-
+        Book bookSave = isIdandFlagActive(id);
         return new BookDTO(bookSave);
     }
 
@@ -84,15 +74,13 @@ public class CrudBookService {
 
 
 
-    public BookDTO updateBookByID(Long id, BookDTO bookCreateDTO) {
+    public BookDTO updateBookActive(Long id, BookDTO bookCreateDTO) {
 
         log.info("Executed the process of updating book by id in the database");
 
         Book book = new Book(bookCreateDTO);
-        isIdAvailable(id);
-        isIsbnAvailable(book);
+        isIdAndFlagAndIsbnActive(id , book);
         isDateAvailable(book);
-        isFlagAvailable(book);
         book.setId(id);
         book = bookRepository.save(book);
         return new BookDTO(book);
@@ -103,40 +91,38 @@ public class CrudBookService {
 
         log.info("Executed the process of delete book by id in the database");
 
-        Optional<Book> opt = isIdAvailable(id);
-        Book bookSave = opt.get();
+        Book bookSave = isIdandFlagActive(id);
         bookSave.setFlag(0);
         bookRepository.save(bookSave);
     }
 
 
 
-    public Optional<Book> isIdAvailable(Long id) {
+    public Book isIdandFlagActive(Long id) {
 
         log.info("Executed the process of validating book id in the database");
-        Optional<Book> opt = bookRepository.findById(id);
-        if (opt.isEmpty()){
-            throw new NotFoundException("Book with id: " + id + " does not exist.");
-        }
 
-        return opt;
+        return bookRepository.findByIdAndFlagEquals(id , 1)
+                .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
     }
 
     private void isIsbnAvailable(Book book) {
 
         log.info("Executed the process of validating book isbn numbers in the database");
+
         if (bookRepository.existsByIsbn(book.getIsbn())){
             throw new BadRequestException("Book with registered isbn");
         }
     }
 
-    private void isFlagAvailable(Book book) {
+    private void isIdAndFlagAndIsbnActive(Long id ,  Book book) {
 
-        log.info("Executed the process of validating book Flag numbers in the database");
-        if (bookRepository.existsByFlag(book.getFlag())){
-            throw new BadRequestException("Book with  flag disabled ");
-        }
+        log.info("Executed the process of validating book Active ID,Flag,Isbn numbers in the database");
+
+        bookRepository.findByIdAndFlagEqualsAndIsbn(id, 1, book.getIsbn())
+                .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
+
     }
 
     private void isDateAvailable(Book book){

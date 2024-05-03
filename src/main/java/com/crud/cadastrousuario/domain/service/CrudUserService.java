@@ -51,16 +51,14 @@ public class CrudUserService {
 
     }
 
-    public UserDTO findUserByID(Long id) {
+    public UserDTO findUserByIDActive(Long id) {
 
-        log.info("Executed the process of searching for user by id in the database");
-
-        Optional<User> opt = isIdAvailable(id);
-        User userSave = opt.get();
-        isFlagAvailable(userSave);
+        log.info("Executed the process of searching for user by id active in the database");
+        User userSave = isIdAndFlagActive(id);
         return new UserDTO(userSave);
 
     }
+
 
     public UserDTO save(UserDTO userCreateDTO) {
 
@@ -80,8 +78,6 @@ public class CrudUserService {
         User user = new User(userCreateDTO);
         isIdAvailable(id);
         isEmailAvailable(user);
-        isPhoneAvailable(user);
-        isFlagAvailable(user);
         user.setId(id);
         user = userRepository.save(user);
 
@@ -94,15 +90,15 @@ public class CrudUserService {
 
         log.info("Executed the process of delete user by id in the database");
 
-        Optional<User> opt = isIdAvailable(id);
-        User user= opt.get();
-        user.setFlag(0);
-        userRepository.save(user);
+        User userSave = isIdAndFlagActive(id);
+        userSave.setFlag(0);
+        userRepository.save(userSave);
     }
 
     public void isEmailAvailable(User user) {
 
         log.info("Executed the process of validating user email in the database");
+
         if (userRepository.existsByEmail(user.getEmail())){
             throw new BadRequestException("User with registered email");
         }
@@ -110,32 +106,24 @@ public class CrudUserService {
     }
 
 
-    public Optional<User> isIdAvailable(Long id) {
+    public User isIdAvailable(Long id) {
 
         log.info("Executed the process of validating user id in the database");
-        Optional<User> opt = userRepository.findById(id);
-        if (opt.isEmpty()){
-            throw new NotFoundException("User with id: " + id + " does not exist.");
-        }
 
-        return opt;
+        return userRepository.findById(id )
+                .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
+
 
     }
 
-    private void isPhoneAvailable(User user) {
+    public User isIdAndFlagActive(Long id) {
 
-        log.info("Executed the process of validating user phone numbers in the database");
-        if (userRepository.existsByPhone(user.getPhone())){
-            throw new BadRequestException("User with registered phone");
-        }
-    }
+        log.info("Executed the process of validating user id  and flag Active in the database");
 
-    private void isFlagAvailable(User user) {
+        return userRepository.findByIdAndFlagEquals(id , 1)
+                .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
-        log.info("Executed the process of validating book Flag numbers in the database");
-        if (userRepository.existsByFlag(user.getFlag())){
-            throw new BadRequestException("Book with  flag disabled ");
-        }
+
     }
 
 

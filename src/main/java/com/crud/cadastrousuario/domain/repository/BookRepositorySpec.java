@@ -25,7 +25,7 @@ public class BookRepositorySpec {
                .and(filterWhereIn("publishingCompany", filter.getPublishingCompany()))
                .and(filterWhereDate("publishingDate", filter.getPublishingDate(), LocalDate.now()))
                 .and(filterWhereIn("isbn", filter.getIsbn()))
-                .and(flagIsNotZero("flag", "1"));
+                .and(flagIsNotZero("flag", filter.getFlag().toString()));
     }
 
 

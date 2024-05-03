@@ -15,7 +15,7 @@ public class AuthorRepositorySpec {
         return Specification
                 .where(filterWhereIn("name", filter.getName()))
                 .and(filterWhereIn("nationality", filter.getNationality()))
-                .and(flagIsNotZero("flag", "1"));
+                .and(flagIsNotZero("flag", filter.getFlag().toString()));
     }
 
     public static Specification<Author> filterWhereIn(String field, String value) {

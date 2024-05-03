@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,8 +33,8 @@ public class Author {
     private Integer flag;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "authors")
-    private List<Book> books;
+    @ManyToMany(mappedBy = "authors" , cascade = CascadeType.ALL)
+    private List<Book> books = new ArrayList<>();
 
 
     public Author(AuthorDTO author) {

@@ -10,6 +10,7 @@ import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.repository.AuthorRepository;
 import com.crud.cadastrousuario.domain.repository.AuthorRepositorySpec;
 
+import com.crud.cadastrousuario.domain.repository.BookRepository;
 import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,9 +32,8 @@ public class CrudAuthorService {
     @Autowired
     private AuthorRepository authorRepository;
 
-
-
-
+    @Autowired
+    private BookRepository bookRepository;
 
 
     public List<AuthorDTO> findAuthor(Pageable pageable, AuthorDTO filter) {
@@ -53,12 +54,11 @@ public class CrudAuthorService {
 
     }
 
-    public AuthorDTO findAuthorByID(Long id) {
+    public AuthorDTO findAuthorByIDActive(Long id) {
 
         log.info("Executed the process of searching for author by id in the database");
 
-        Optional<Author> opt = isIdAvailable(id);
-        Author authorSave = opt.get();
+        Author authorSave  = isIdAndFlagActive(id);
         return  new AuthorDTO(authorSave);
 
     }
@@ -68,7 +68,6 @@ public class CrudAuthorService {
        log.info("Executed the process of saving author to the database");
 
         Author author = new Author(authorCreateDTO);
-        isFlagAvailable(author);
         author = authorRepository.save(author);
         return new AuthorDTO(author);
 
@@ -79,8 +78,7 @@ public class CrudAuthorService {
         log.info("Executed the process of updating author by id in the database");
 
         Author author = new Author(authorCreateDTO);
-        isIdAvailable(id);
-        isFlagAvailable(author);
+        isIdAndFlagActive(id);
         author.setId(id);
         author = authorRepository.save(author);
         return new AuthorDTO(author);
@@ -91,21 +89,19 @@ public class CrudAuthorService {
 
         log.info("Executed the process of delete author by id in the database");
 
-        Optional<Author> opt = isIdAvailable(id);
-        Author author= opt.get();
+        Author author = isIdAndFlagActive(id);
         author.setFlag(0);
         authorRepository.save(author);
     }
 
-    public Optional<Author> isIdAvailable(Long id) {
+    public Author isIdAndFlagActive(Long id) {
 
         log.info("Executed the process of validating author id in the database");
-        Optional<Author> opt = authorRepository.findById(id);
-        if (opt.isEmpty()){
-            throw new NotFoundException("Author with id: " + id + " does not exist.");
-        }
 
-        return  opt;
+        return authorRepository.findByIdAndFlagEquals(id , 1)
+                .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
+
+
 
     }
 
@@ -128,4 +124,16 @@ public class CrudAuthorService {
         }
     }
 
+    @Transactional
+    public Author addBookToAuthor(Long bookId, Long authorId) {
+        Book book = bookRepository.findById(bookId).orElseThrow();
+        Author author = authorRepository.findById(authorId).orElseThrow();
+
+        book.getAuthors().add(author);
+        author.getBooks().add(book);
+
+//        author.getBooks().add(book);
+        authorRepository.save(author);
+        return author;
+    }
 }

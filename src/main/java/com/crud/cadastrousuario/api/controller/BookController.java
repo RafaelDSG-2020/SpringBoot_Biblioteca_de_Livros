@@ -42,12 +42,11 @@ public class BookController {
 
         log.info("Method: findUserByID searches for just one book by their ID. HTTP Method: GET");
         long start = System.currentTimeMillis();
-        BookDTO bookSave = bookService.findBookByID(id);
+        BookDTO bookSave = bookService.findBookByIDActive(id);
         log.info("HTTP Method: GET Endpoint: api/v1/books/{id}  payload = {} elapsedTime = {} ms", id , (System.currentTimeMillis() - start));
         return  ResponseEntity.status(HttpStatus.OK).body(bookSave);
 
     }
-
 
 
     @PostMapping
@@ -66,7 +65,7 @@ public class BookController {
 
         log.info("Method: update User has the function of updating a book created in a table. HTTP Method: PUT");
         long start = System.currentTimeMillis();
-        BookDTO bookSave = bookService.updateBookByID(id, bookCreateDTO);
+        BookDTO bookSave = bookService.updateBookActive(id, bookCreateDTO);
         log.info("HTTP Method: PUT Endpoint: api/v1/books/{id}  payload = {} elapsedTime = {} ms", id , (System.currentTimeMillis() - start));
         return  ResponseEntity.status(HttpStatus.OK).body(bookSave);
 

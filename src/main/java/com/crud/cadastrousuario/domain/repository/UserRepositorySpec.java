@@ -14,14 +14,13 @@ import java.util.Objects;
 public class UserRepositorySpec {
 
 
-    private static CriteriaBuilder criteriaBuilder;
 
     public static Specification<User> filter(UserDTO filter) {
         return Specification
                 .where(filterWhereIn("name", filter.getName()))
                 .and(filterWhereIn("email", filter.getEmail()))
                 .and(filterWhereIn("phone", filter.getPhone()))
-                .and(flagIsNotZero("flag", "1"));
+                .and(filterFlag("flag",     filter.getFlag().toString()));
     }
 
 
@@ -33,7 +32,7 @@ public class UserRepositorySpec {
 
         return ((root, query, builder) -> builder.like(builder.lower(root.get(field)), "%"+value.toLowerCase()+"%"));
     }
-    public static Specification<User> flagIsNotZero(String field, String value) {
+    public static Specification<User> filterFlag(String field, String value) {
         if (field == null || field.trim().isEmpty() || value == null || value.trim().isEmpty()) {
             return null;
         }

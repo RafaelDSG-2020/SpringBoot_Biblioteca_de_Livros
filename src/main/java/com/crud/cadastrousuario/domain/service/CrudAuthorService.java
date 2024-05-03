@@ -116,13 +116,6 @@ public class CrudAuthorService {
 
     }
 
-    private void isFlagAvailable(Author author) {
-
-        log.info("Executed the process of validating book Flag numbers in the database");
-        if (authorRepository.existsByFlag(author.getFlag())){
-            throw new BadRequestException("Author with  flag disabled ");
-        }
-    }
 
     @Transactional
     public Author addBookToAuthor(Long bookId, Long authorId) {
@@ -132,7 +125,7 @@ public class CrudAuthorService {
         book.getAuthors().add(author);
         author.getBooks().add(book);
 
-//        author.getBooks().add(book);
+
         authorRepository.save(author);
         return author;
     }

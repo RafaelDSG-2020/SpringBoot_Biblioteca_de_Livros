@@ -67,8 +67,13 @@ public class AuthorController {
 
     @PostMapping("/{bookId}/authors/{authorId}")
     public ResponseEntity<Author> addAuthorToBook(@PathVariable Long bookId, @PathVariable Long authorId) {
+
+        log.info("Method: saveBookInAuthor creates a author in the database. HTTP Method: POST");
+        long start = System.currentTimeMillis();
         Author authorSave = authorService.addBookToAuthor(bookId, authorId);
+        log.info("HTTP Method: POST Endpoint: api/v1/authors/{bookId}/authors/{authorId}   elapsedTime = {} ms",  (System.currentTimeMillis() - start));
         return ResponseEntity.status(HttpStatus.CREATED).body(authorSave);
+
     }
 
 

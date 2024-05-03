@@ -30,9 +30,6 @@ public class UserController {
     private CrudUserService userService;
 
 
-
-
-
     @GetMapping
     public ResponseEntity<List<UserDTO>> findUserByParameters(@PageableDefault(size = 5) Pageable pageable, UserDTO filter) {
 
@@ -45,11 +42,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findUserByID(@PathVariable(value = "id") Long id){
+    public ResponseEntity<Object> findUserByIDActive(@PathVariable(value = "id") Long id){
 
         log.info("Method: findUserByID searches for just one user by their ID. HTTP Method: GET");
         long start = System.currentTimeMillis();
-        UserDTO userSave = userService.findUserByID(id);
+        UserDTO userSave = userService.findUserByIDActive(id);
         log.info("HTTP Method: GET Endpoint: api/v1/users/{id}  payload = {} elapsedTime = {} ms", id , (System.currentTimeMillis() - start));
         return  ResponseEntity.status(HttpStatus.OK).body(userSave);
 

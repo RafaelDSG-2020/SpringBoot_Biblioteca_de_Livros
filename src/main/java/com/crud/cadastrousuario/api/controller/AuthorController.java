@@ -3,7 +3,7 @@ package com.crud.cadastrousuario.api.controller;
 import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 
 
-
+import com.crud.cadastrousuario.domain.model.Author;
 import com.crud.cadastrousuario.domain.service.CrudAuthorService;
 
 import jakarta.validation.Valid;
@@ -30,8 +30,6 @@ public class AuthorController {
 
 
 
-
-
     @GetMapping
     public ResponseEntity<List<AuthorDTO>> findAuthorByParameters(@PageableDefault(size = 5) Pageable pageable, AuthorDTO filter ){
 
@@ -48,7 +46,7 @@ public class AuthorController {
 
         log.info("Method: findAuthorByID searches for just one author by their ID. HTTP Method: GET");
         long start = System.currentTimeMillis();
-        AuthorDTO personSave = authorService.findAuthorByID(id);
+        AuthorDTO personSave = authorService.findAuthorByIDActive(id);
 
         log.info("HTTP Method: GET Endpoint: api/v1/authors/{id}  payload = {} elapsedTime = {} ms", id , (System.currentTimeMillis() - start));
         return  ResponseEntity.status(HttpStatus.OK).body(personSave);
@@ -66,6 +64,21 @@ public class AuthorController {
         log.info("HTTP Method: POST Endpoint: api/v1/authors  payload = {} elapsedTime = {} ms", authorSave , (System.currentTimeMillis() - start));
         return ResponseEntity.status(HttpStatus.CREATED).body(authorSave);
     }
+
+    @PostMapping("/{bookId}/authors/{authorId}")
+    public ResponseEntity<Author> addAuthorToBook(@PathVariable Long bookId, @PathVariable Long authorId) {
+
+        log.info("Method: saveBookInAuthor creates a author in the database. HTTP Method: POST");
+        long start = System.currentTimeMillis();
+        Author authorSave = authorService.addBookToAuthor(bookId, authorId);
+        log.info("HTTP Method: POST Endpoint: api/v1/authors/{bookId}/authors/{authorId}   elapsedTime = {} ms",  (System.currentTimeMillis() - start));
+        return ResponseEntity.status(HttpStatus.CREATED).body(authorSave);
+
+    }
+
+
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> UpdateUser(@PathVariable(value = "id") Long id,

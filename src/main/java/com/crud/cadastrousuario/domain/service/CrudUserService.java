@@ -7,6 +7,7 @@ import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Author;
+import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.model.User;
 import com.crud.cadastrousuario.domain.repository.UserRepository;
 import com.crud.cadastrousuario.domain.repository.UserRepositorySpec;
@@ -33,10 +34,6 @@ public class CrudUserService {
 
 
 
-
-
-
-
     public List<UserDTO> findUser(Pageable pageable , UserDTO filter) {
 
         log.info("Executed the process of searching for user paged user in the database, paeable={} ", pageable);
@@ -54,21 +51,21 @@ public class CrudUserService {
 
     }
 
-    public UserDTO findUserByID(Long id) {
+    public UserDTO findUserByIDActive(Long id) {
 
-        log.info("Executed the process of searching for user by id in the database");
-
-        Optional<User> opt = isIdAvailable(id);
-        User userSave = opt.get();
+        log.info("Executed the process of searching for user by id active in the database");
+        User userSave = isIdAndFlagActive(id);
         return new UserDTO(userSave);
 
     }
+
 
     public UserDTO save(UserDTO userCreateDTO) {
 
         log.info("Executed the process of saving user to the database");
 
         User user = new User(userCreateDTO);
+        isEmailAvailable(user);
         user = userRepository.save(user);
         return new UserDTO(user);
 
@@ -81,7 +78,6 @@ public class CrudUserService {
         User user = new User(userCreateDTO);
         isIdAvailable(id);
         isEmailAvailable(user);
-        isPhoneAvailable(user);
         user.setId(id);
         user = userRepository.save(user);
 
@@ -93,15 +89,16 @@ public class CrudUserService {
     public void deleteUserByID(Long id)  {
 
         log.info("Executed the process of delete user by id in the database");
-        isIdAvailable(id);
-        Optional<User> opt = userRepository.findById(id);
-        User user= opt.get();
-        userRepository.delete(user);
+
+        User userSave = isIdAndFlagActive(id);
+        userSave.setFlag(0);
+        userRepository.save(userSave);
     }
 
     public void isEmailAvailable(User user) {
 
         log.info("Executed the process of validating user email in the database");
+
         if (userRepository.existsByEmail(user.getEmail())){
             throw new BadRequestException("User with registered email");
         }
@@ -109,25 +106,26 @@ public class CrudUserService {
     }
 
 
-    public Optional<User> isIdAvailable(Long id) {
+    public User isIdAvailable(Long id) {
 
         log.info("Executed the process of validating user id in the database");
-        Optional<User> opt = userRepository.findById(id);
-        if (opt.isEmpty()){
-            throw new NotFoundException("User with id: " + id + " does not exist.");
-        }
 
-        return opt;
+        return userRepository.findById(id )
+                .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
+
 
     }
 
-    private void isPhoneAvailable(User user) {
+    public User isIdAndFlagActive(Long id) {
 
-        log.info("Executed the process of validating user phone numbers in the database");
-        if (userRepository.existsByPhone(user.getPhone())){
-            throw new BadRequestException("User with registered phone");
-        }
+        log.info("Executed the process of validating user id  and flag Active in the database");
+
+        return userRepository.findByIdAndFlagEquals(id , 1)
+                .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
+
+
     }
+
 
 
 }

@@ -18,6 +18,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+
+
 @Data
 @Entity
 @Table(name = "BOOK")
@@ -26,18 +28,25 @@ import java.util.List;
 @Builder
 public class Book {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
+
     @Column(name = "TITLE", length = 50, nullable = false)
     private String title;
+
     @Column(name = "PUBLISHING_COMPANY", length = 50, nullable = false)
     private String publishingCompany;
+
     @Column(name = "ISBN", length = 50, nullable = false, unique = true)
     private String isbn;
+
     @Column(name = "PUBLISHING_DATE", length = 50, nullable = false)
+    @Temporal(TemporalType.DATE)
     private LocalDate publishingDate;
+
     @Column(name = "FLAG" , nullable = false)
     private Integer flag;
 
@@ -49,10 +58,10 @@ public class Book {
     private List<Author> authors = new ArrayList<>();
 
 
+//
+//    @OneToMany(mappedBy = "bookID")
+//    private List<LoanOfBooks> loan;
 
-//    @ManyToOne
-//    @JoinColumn(name = "stock_id")
-//    private Stock stock;
 
 
 

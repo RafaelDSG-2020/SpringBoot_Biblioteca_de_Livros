@@ -2,6 +2,7 @@ package com.crud.cadastrousuario.domain.service;
 
 import com.crud.cadastrousuario.domain.dto.StockDTO;
 import com.crud.cadastrousuario.domain.dto.UserDTO;
+import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.model.Stock;
 import com.crud.cadastrousuario.domain.model.User;
@@ -50,7 +51,7 @@ public class StockService {
     @Transactional
     public StockDTO save(Long bookID , StockDTO stockCreateDTO) {
 
-        Book book = bookRepository.findById(bookID).orElseThrow(() -> new RuntimeException("Book not found"));
+        Book book = bookRepository.findById(bookID).orElseThrow(() -> new BadRequestException("Book not found"));
 
         Stock stock = new Stock(stockCreateDTO);
         stock.setBook(book);

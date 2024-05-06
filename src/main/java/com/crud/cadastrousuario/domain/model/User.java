@@ -1,6 +1,7 @@
 package com.crud.cadastrousuario.domain.model;
 
 import com.crud.cadastrousuario.domain.dto.UserDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 @Data
 @Entity
@@ -29,6 +34,9 @@ public class User implements Serializable  {
     private String phone;
     @Column(name = "FLAG" , nullable = false)
     private Integer flag;
+
+//    @OneToMany(mappedBy = "usersID")
+//    private List<LoanOfBooks> loan;
 
 
     public User(UserDTO userCreateDTO) {

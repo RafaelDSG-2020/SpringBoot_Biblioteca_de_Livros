@@ -35,8 +35,8 @@ public class User implements Serializable  {
     @Column(name = "FLAG" , nullable = false)
     private Integer flag;
 
-//    @OneToMany(mappedBy = "usersID")
-//    private List<LoanOfBooks> loan;
+    @OneToMany(mappedBy = "usersID")
+    private List<LoanOfBooks> loan;
 
 
     public User(UserDTO userCreateDTO) {

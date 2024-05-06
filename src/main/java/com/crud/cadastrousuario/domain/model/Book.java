@@ -58,9 +58,9 @@ public class Book {
     private List<Author> authors = new ArrayList<>();
 
 
-//
-//    @OneToMany(mappedBy = "bookID")
-//    private List<LoanOfBooks> loan;
+
+    @OneToMany(mappedBy = "bookID")
+    private List<LoanOfBooks> loan;
 
 
 

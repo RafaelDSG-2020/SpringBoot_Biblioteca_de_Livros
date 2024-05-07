@@ -32,6 +32,11 @@ public class CrudUserService {
     @Autowired
     public UserRepository userRepository;
 
+    private final Integer STATUSFLAGACTIVE = 1;
+
+    private final Integer STATUSFLAGINACTIVE = 0;
+
+
 
 
     public List<UserDTO> findUser(Pageable pageable , UserDTO filter) {
@@ -91,7 +96,7 @@ public class CrudUserService {
         log.info("Executed the process of delete user by id in the database");
 
         User userSave = isIdAndFlagActive(id);
-        userSave.setFlag(0);
+        userSave.setFlag(STATUSFLAGINACTIVE);
         userRepository.save(userSave);
     }
 
@@ -120,7 +125,7 @@ public class CrudUserService {
 
         log.info("Executed the process of validating user id  and flag Active in the database");
 
-        return userRepository.findByIdAndFlagEquals(id , 1)
+        return userRepository.findByIdAndFlagEquals(id , STATUSFLAGACTIVE)
                 .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
 

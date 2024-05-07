@@ -51,7 +51,7 @@ public class Book {
     private Integer flag;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL )
     @JoinTable(name = "BOOK_AUTHOR" ,
             joinColumns = @JoinColumn(name = "BOOK_ID") ,
             inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
@@ -59,7 +59,7 @@ public class Book {
 
 
 
-    @OneToMany(mappedBy = "bookID")
+    @OneToMany(mappedBy = "bookID" , fetch = FetchType.EAGER)
     private List<LoanOfBooks> loan;
 
 

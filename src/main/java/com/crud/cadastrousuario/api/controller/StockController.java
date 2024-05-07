@@ -5,6 +5,7 @@ import com.crud.cadastrousuario.domain.dto.StockDTO;
 import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.model.Stock;
 import com.crud.cadastrousuario.domain.service.StockService;
+import jakarta.persistence.PostUpdate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -49,5 +50,17 @@ public class StockController {
         StockDTO stockSave = stockService.save(bookID , stockCreateDTO);
         log.info("HTTP Method: POST Endpoint: api/v1/users  payload = {} elapsedTime = {} ms", stockSave , (System.currentTimeMillis() - start));
         return ResponseEntity.status(HttpStatus.CREATED).body(stockSave);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> UpdateStock(@PathVariable(value = "id") Long id,
+                                             @RequestBody @Valid StockDTO stockCreateDTO) {
+
+        log.info("Method: update User has the function of updating a user created in a table. HTTP Method: PUT");
+        long start = System.currentTimeMillis();
+        StockDTO stockSave = stockService.updateStockByID(id , stockCreateDTO);
+        log.info("HTTP Method: PUT Endpoint: api/v1/users  payload = {} elapsedTime = {} ms", stockSave , (System.currentTimeMillis() - start));
+        return  ResponseEntity.status(HttpStatus.OK).body(stockSave);
+
     }
 }

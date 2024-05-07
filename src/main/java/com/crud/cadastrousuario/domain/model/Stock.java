@@ -26,14 +26,14 @@ public class Stock {
     @Column(name = "AMOUNT" , nullable = false)
     private Integer amount;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "BOOK_ID")
     private Book book;
 
 
     public Stock(StockDTO stockCreateDTO) {
 
-        this.id = stockCreateDTO.getId();
+
         this.amount = stockCreateDTO.getAmount();
 
     }

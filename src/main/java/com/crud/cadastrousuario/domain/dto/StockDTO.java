@@ -31,7 +31,7 @@ public class StockDTO {
     private Long id;
 
     @NotNull(message = "Quantity cannot be null")
-    @Min(value = 1, message = "Quantity must be at least 1")
+    @Min(value = 0, message = "Quantity must be at least 0")
     private Integer amount;
 
     private List<Book> books;

@@ -35,6 +35,10 @@ public class CrudAuthorService {
     @Autowired
     private BookRepository bookRepository;
 
+    private final Integer STATUSFLAGACTIVE = 1;
+
+    private final Integer STATUSFLAGINACTIVE = 0;
+
 
     public List<AuthorDTO> findAuthor(Pageable pageable, AuthorDTO filter) {
 
@@ -90,7 +94,7 @@ public class CrudAuthorService {
         log.info("Executed the process of delete author by id in the database");
 
         Author author = isIdAndFlagActive(id);
-        author.setFlag(0);
+        author.setFlag(STATUSFLAGINACTIVE);
         authorRepository.save(author);
     }
 
@@ -98,7 +102,7 @@ public class CrudAuthorService {
 
         log.info("Executed the process of validating author id in the database");
 
-        return authorRepository.findByIdAndFlagEquals(id , 1)
+        return authorRepository.findByIdAndFlagEquals(id , STATUSFLAGACTIVE)
                 .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
 

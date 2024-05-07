@@ -30,6 +30,12 @@ public class CrudBookService {
     @Autowired
     public CrudAuthorService authorService;
 
+    private final Integer STATUSFLAGACTIVE = 1;
+
+    private final Integer STATUSFLAGINACTIVE = 0;
+
+    private final Integer MINIMUMVALUEOFDAYS = 0;
+
 
 
 
@@ -92,7 +98,7 @@ public class CrudBookService {
         log.info("Executed the process of delete book by id in the database");
 
         Book bookSave = isIdandFlagActive(id);
-        bookSave.setFlag(0);
+        bookSave.setFlag(STATUSFLAGINACTIVE);
         bookRepository.save(bookSave);
     }
 
@@ -102,7 +108,7 @@ public class CrudBookService {
 
         log.info("Executed the process of validating book id in the database");
 
-        return bookRepository.findByIdAndFlagEquals(id , 1)
+        return bookRepository.findByIdAndFlagEquals(id , STATUSFLAGACTIVE)
                 .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
     }
@@ -120,7 +126,7 @@ public class CrudBookService {
 
         log.info("Executed the process of validating book Active ID,Flag,Isbn numbers in the database");
 
-        bookRepository.findByIdAndFlagEqualsAndIsbn(id, 1, book.getIsbn())
+        bookRepository.findByIdAndFlagEqualsAndIsbn(id, STATUSFLAGACTIVE, book.getIsbn())
                 .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
     }
@@ -131,7 +137,7 @@ public class CrudBookService {
         LocalDateTime currentDate = LocalDateTime.now();
         long daysDifference = ChronoUnit.DAYS.between(publishingDate, currentDate);
 
-        if (daysDifference < 0){
+        if (daysDifference < MINIMUMVALUEOFDAYS){
             throw new BadRequestException("the Publication date has a value greater than the current date");
         }
     }

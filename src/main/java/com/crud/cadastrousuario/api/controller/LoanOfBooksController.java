@@ -29,7 +29,7 @@ public class LoanOfBooksController {
     @GetMapping
     public ResponseEntity<List<LoanOfBooksDTO>> findLoansByParameters(@PageableDefault(size = 5) Pageable pageable, LoanOfBooksDTO filter) {
 
-        log.info("Method: findUserByParameters searches for a set of paginated users 5 by 5. HTTP Method: GET");
+        log.info("Method: findLoansByParameters searches for a set of paginated users 5 by 5. HTTP Method: GET");
         long start = System.currentTimeMillis();
         List<LoanOfBooksDTO> loan = loanOfBooksService.findLoans(pageable , filter);
         log.info("HTTP Method: GET Endpoint: api/v1/users  payload = {} elapsedTime = {} ms", filter , (System.currentTimeMillis() - start));

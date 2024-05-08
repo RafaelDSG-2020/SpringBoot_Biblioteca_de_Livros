@@ -2,7 +2,6 @@ package com.crud.cadastrousuario.domain.service;
 
 
 import com.crud.cadastrousuario.domain.dto.LoanOfBooksDTO;
-import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.model.LoanOfBooks;
@@ -18,7 +17,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,11 +38,14 @@ public class LoanOfBooksService {
     @Autowired
     private StockRepository stockRepository;
 
-    private final Integer STATUSFLAGACTIVE = 1;
+    private final Integer STATUS_FLAG_ACTIVE = 1;
 
-    private final Integer STATUSFLAGINACTIVE = 0;
+    private final Integer STATUS_FLAG_INACTIVE = 0;
 
-    private final Integer DECREASEVALUE = 1;
+    private final Integer DECREASE_VALUE = 1;
+
+    private final Integer THRESSHOLD_VALUE = 0;
+
 
 
     @Transactional
@@ -92,15 +93,15 @@ public class LoanOfBooksService {
     }
 
     private void checkAndDecrementStock(Stock stock) {
-        if (stock.getAmount().equals(0) && bookRepository.existsByFlag(STATUSFLAGACTIVE)) {
+        if (stock.getAmount().equals(THRESSHOLD_VALUE) && bookRepository.existsByFlag(STATUS_FLAG_ACTIVE)) {
             throw new BadRequestException("The stock of book is empty");
         }
 
-        stock.setAmount(stock.getAmount() - DECREASEVALUE);
+        stock.setAmount(stock.getAmount() - DECREASE_VALUE);
 
-        if (stock.getAmount().equals(STATUSFLAGINACTIVE)) {
+        if (stock.getAmount().equals(THRESSHOLD_VALUE)) {
             Book book = stock.getBook();
-            book.setFlag(STATUSFLAGINACTIVE);
+            book.setFlag(STATUS_FLAG_INACTIVE);
             bookRepository.save(book);
         }
     }

@@ -1,15 +1,11 @@
 package com.crud.cadastrousuario.domain.service;
 
 import com.crud.cadastrousuario.domain.dto.StockDTO;
-import com.crud.cadastrousuario.domain.dto.UserDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
-import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.model.Stock;
-import com.crud.cadastrousuario.domain.model.User;
 import com.crud.cadastrousuario.domain.repository.BookRepository;
 import com.crud.cadastrousuario.domain.repository.StockRepository;
-import com.crud.cadastrousuario.domain.repository.UserRepositorySpec;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -34,7 +29,7 @@ public class StockService {
     BookRepository bookRepository;
 
 
-    private final Integer STATUSFLAGACTIVE = 1;
+    private final Integer STATUS_FLAG_ACTIVE = 1;
 
 
 
@@ -82,7 +77,7 @@ public class StockService {
 
 
         Book book = stockBook.getBook();
-        book.setFlag(STATUSFLAGACTIVE);
+        book.setFlag(STATUS_FLAG_ACTIVE);
         bookRepository.save(book);
 
         return new StockDTO(stockBook);

@@ -35,6 +35,7 @@ public class User implements Serializable  {
     @Column(name = "FLAG" , nullable = false)
     private Integer flag;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usersID" , fetch = FetchType.EAGER)
     private List<LoanOfBooks> loan;
 

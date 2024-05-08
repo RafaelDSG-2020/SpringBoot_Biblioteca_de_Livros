@@ -12,8 +12,6 @@ import com.crud.cadastrousuario.domain.repository.AuthorRepositorySpec;
 
 import com.crud.cadastrousuario.domain.repository.BookRepository;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -35,9 +32,9 @@ public class CrudAuthorService {
     @Autowired
     private BookRepository bookRepository;
 
-    private final Integer STATUSFLAGACTIVE = 1;
+    private final Integer STATUS_FLAG_ACTIVE = 1;
 
-    private final Integer STATUSFLAGINACTIVE = 0;
+    private final Integer STATUS_FLAG_INACTIVE = 0;
 
 
     public List<AuthorDTO> findAuthor(Pageable pageable, AuthorDTO filter) {
@@ -94,7 +91,7 @@ public class CrudAuthorService {
         log.info("Executed the process of delete author by id in the database");
 
         Author author = isIdAndFlagActive(id);
-        author.setFlag(STATUSFLAGINACTIVE);
+        author.setFlag(STATUS_FLAG_INACTIVE);
         authorRepository.save(author);
     }
 
@@ -102,7 +99,7 @@ public class CrudAuthorService {
 
         log.info("Executed the process of validating author id in the database");
 
-        return authorRepository.findByIdAndFlagEquals(id , STATUSFLAGACTIVE)
+        return authorRepository.findByIdAndFlagEquals(id , STATUS_FLAG_ACTIVE)
                 .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
 

@@ -30,11 +30,11 @@ public class CrudBookService {
     @Autowired
     public CrudAuthorService authorService;
 
-    private final Integer STATUSFLAGACTIVE = 1;
+    private final Integer STATUS_FLAG_ACTIVE = 1;
 
-    private final Integer STATUSFLAGINACTIVE = 0;
+    private final Integer STATUS_FLAG_INACTIVE = 0;
 
-    private final Integer MINIMUMVALUEOFDAYS = 0;
+    private final Integer MINIMUM_VALUE_OF_DAYS = 0;
 
 
 
@@ -98,7 +98,7 @@ public class CrudBookService {
         log.info("Executed the process of delete book by id in the database");
 
         Book bookSave = isIdandFlagActive(id);
-        bookSave.setFlag(STATUSFLAGINACTIVE);
+        bookSave.setFlag(STATUS_FLAG_INACTIVE);
         bookRepository.save(bookSave);
     }
 
@@ -108,7 +108,7 @@ public class CrudBookService {
 
         log.info("Executed the process of validating book id in the database");
 
-        return bookRepository.findByIdAndFlagEquals(id , STATUSFLAGACTIVE)
+        return bookRepository.findByIdAndFlagEquals(id , STATUS_FLAG_ACTIVE)
                 .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
     }
@@ -126,7 +126,7 @@ public class CrudBookService {
 
         log.info("Executed the process of validating book Active ID,Flag,Isbn numbers in the database");
 
-        bookRepository.findByIdAndFlagEqualsAndIsbn(id, STATUSFLAGACTIVE, book.getIsbn())
+        bookRepository.findByIdAndFlagEqualsAndIsbn(id, STATUS_FLAG_ACTIVE, book.getIsbn())
                 .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
     }
@@ -137,7 +137,7 @@ public class CrudBookService {
         LocalDateTime currentDate = LocalDateTime.now();
         long daysDifference = ChronoUnit.DAYS.between(publishingDate, currentDate);
 
-        if (daysDifference < MINIMUMVALUEOFDAYS){
+        if (daysDifference < MINIMUM_VALUE_OF_DAYS){
             throw new BadRequestException("the Publication date has a value greater than the current date");
         }
     }

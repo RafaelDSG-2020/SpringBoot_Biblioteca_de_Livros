@@ -59,6 +59,7 @@ public class Book {
 
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bookID" , fetch = FetchType.EAGER)
     private List<LoanOfBooks> loan;
 

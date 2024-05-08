@@ -2,7 +2,7 @@ package com.crud.cadastrousuario.domain.dto;
 
 
 import com.crud.cadastrousuario.domain.model.Book;
-import com.crud.cadastrousuario.domain.model.LoanOfBooks;
+import com.crud.cadastrousuario.domain.model.Historic;
 import com.crud.cadastrousuario.domain.model.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -10,43 +10,51 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LoanOfBooksDTO {
+public class HistoricDTO {
+
 
 
 
     private Long id;
 
-    private Book bookId;
 
-    private User usersId;
+    private Long bookID;
+
+
+    private Long usersID;
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateRemoval;
 
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateReturn;
+    private LocalDate dateReturnExpected;
 
 
-    public LoanOfBooksDTO(LoanOfBooks loanOfBooks) {
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateReturnUser;
 
 
-        this.id = loanOfBooks.getId();
-        this.bookId = loanOfBooks.getBookID();
-        this.usersId = loanOfBooks.getUsersID();
-        this.dateRemoval = loanOfBooks.getDateRemoval();
-        this.dateReturn = loanOfBooks.getDateReturn();
+    private Double fineBook;
 
+    public HistoricDTO(Historic historic) {
+
+        this.bookID = historic.getBookID().getId();
+        this.usersID = historic.getUsersID().getId();
+        this.dateRemoval = historic.getDateRemoval();
+        this.dateReturnExpected = historic.getDateReturnExpected();
+        this.dateReturnUser = historic.getDateReturnUser();
+        this.fineBook = historic.getFineBook();
 
     }
 }

@@ -21,11 +21,11 @@ public class LoanOfBooks {
     private Long id;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "BOOK_ID")
     private Book bookID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USERS_ID")
     private User usersID;
 

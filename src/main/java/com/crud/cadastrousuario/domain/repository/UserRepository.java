@@ -13,12 +13,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     boolean existsByEmail(String email);
 
-    boolean existsByPhone(String phone);
-
-    boolean existsByFlag(Integer flag);
-
     Optional<User> findByIdAndFlagEquals(Long id, Integer flag);
 
 
-    //List<Pessoa> findByPessoa(<List<Pessoa> pessoa, Pageable pageable);
 }

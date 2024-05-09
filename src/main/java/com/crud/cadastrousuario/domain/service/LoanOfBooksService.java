@@ -55,15 +55,8 @@ public class LoanOfBooksService {
         User user = findEntityById(userRepository, usersID, "User not found");
         Stock stock = findEntityById(stockRepository, bookID, "Stock not found");
 
-//        Book book = bookRepository.findById(bookID).orElseThrow(() -> new BadRequestException("Book not found"));
-//        User user = userRepository.findById(usersID).orElseThrow(() -> new BadRequestException("User not found"));
-//        Stock stock = stockRepository.findByBook_Id(bookID).orElseThrow(() -> new BadRequestException("Stock not found"));
-
         checkAndDecrementStock(stock);
-//        if(stock.getAmount().equals(0)){
-//            throw new BadRequestException("The stock of book is empty");
-//        }
-//        stock.setAmount((stock.getAmount()-1));
+
         LoanOfBooks loanOfBooks = new LoanOfBooks();
         loanOfBooks.setBookID(book);
         loanOfBooks.setUsersID(user);

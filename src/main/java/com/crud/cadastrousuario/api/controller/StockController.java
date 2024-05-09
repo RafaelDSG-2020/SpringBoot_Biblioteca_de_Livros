@@ -43,7 +43,7 @@ public class StockController {
 
 
     @PostMapping("/{bookID}")
-    public ResponseEntity<Object> saveUser(@PathVariable Long bookID , @RequestBody @Valid StockDTO stockCreateDTO){
+    public ResponseEntity<Object> saveStock(@PathVariable Long bookID , @RequestBody @Valid StockDTO stockCreateDTO){
 
         log.info("Method: saveUser creates a user in the database. HTTP Method: POST");
         long start = System.currentTimeMillis();

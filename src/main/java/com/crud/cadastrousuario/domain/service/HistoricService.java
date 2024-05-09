@@ -63,7 +63,6 @@ public class HistoricService {
                 -> new BadRequestException("Loan is not Exist"));
 
         Historic historic = new Historic(loan);
-        historic.setDateReturnUser(LocalDate.of(2024, 6, 5));
         fineCalculad(historic);
         historic = historicRepository.save(historic);
 

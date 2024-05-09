@@ -33,7 +33,6 @@ public class Stock {
 
     public Stock(StockDTO stockCreateDTO) {
 
-
         this.amount = stockCreateDTO.getAmount();
 
     }

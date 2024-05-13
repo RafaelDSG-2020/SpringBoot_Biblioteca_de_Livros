@@ -58,7 +58,7 @@ public class BookDTO {
         this.publishingCompany = book.getPublishingCompany();
         this.isbn = book.getIsbn();
         this.publishingDate = book.getPublishingDate();
-        this.flag = 1;
+        this.flag = book.getFlag();
         this.authors = book.getAuthors();
 
     }

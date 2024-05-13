@@ -73,6 +73,8 @@ public class GlobalException_Com_Teste {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
+    //exemplo de setar uma data em um tipo LocalDate
+    //historic.setDateReturnUser(LocalDate.of(2024, 6, 5));
 
 
 }

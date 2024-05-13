@@ -85,28 +85,6 @@ class UserControllerTest {
         return listaUser;
 
     }
-//    private static List<UserResponseDTO> getUserResponseDTO(){
-//
-//        List<UserResponseDTO> listaUserResponseDTO = new ArrayList<>();
-//
-//        UserResponseDTO userResponseDTO1 = UserResponseDTO.builder()
-//                .name("Teste")
-//                .email("teste@example.com")
-//                .phone("12345678901")
-//                .build();
-//
-//        UserResponseDTO userResponseDTO2 = UserResponseDTO.builder()
-//                .name("Testano")
-//                .email("Testano@example.com")
-//                .phone("10987654321")
-//                .build();
-//
-//        listaUserResponseDTO.add(userResponseDTO1);
-//        listaUserResponseDTO.add(userResponseDTO2);
-//
-//        return listaUserResponseDTO;
-//
-//    }
 
     private static List<User> getUser() {
 
@@ -189,7 +167,7 @@ class UserControllerTest {
 
         //UserResponseDTO userResponseDTO = getUserResponseDTO().get(0);
 
-        when(userService.findUserByID(idTeste)).thenReturn(pessoa);
+        when(userService.findUserByIDActive(idTeste)).thenReturn(pessoa);
         //when(userMapper.toDTO(pessoa, UserResponseDTO.class)).thenReturn(userResponseDTO);
 
 
@@ -208,7 +186,7 @@ class UserControllerTest {
 
         Long idTeste = 100L;
 
-       when(userService.findUserByID(idTeste)).thenThrow(new NotFoundException("Pessoa com o ID inexistente"));
+       when(userService.findUserByIDActive(idTeste)).thenThrow(new NotFoundException("Pessoa com o ID inexistente"));
 
 
         mockMvc.perform(get(PESSOA_API + "/{id}", idTeste)

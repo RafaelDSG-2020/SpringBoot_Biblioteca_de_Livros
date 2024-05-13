@@ -1,20 +1,15 @@
 package com.crud.cadastrousuario.domain.service;
 
 
-import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 import com.crud.cadastrousuario.domain.dto.UserDTO;
 
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
-import com.crud.cadastrousuario.domain.model.Author;
-import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.model.User;
 import com.crud.cadastrousuario.domain.repository.UserRepository;
 import com.crud.cadastrousuario.domain.repository.UserRepositorySpec;
 
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -31,6 +25,11 @@ public class CrudUserService {
 
     @Autowired
     public UserRepository userRepository;
+
+    private final Integer STATUS_FLAG_ACTIVE = 1;
+
+    private final Integer STATUS_FLAG_INACTIVE = 0;
+
 
 
 
@@ -91,7 +90,7 @@ public class CrudUserService {
         log.info("Executed the process of delete user by id in the database");
 
         User userSave = isIdAndFlagActive(id);
-        userSave.setFlag(0);
+        userSave.setFlag(STATUS_FLAG_INACTIVE);
         userRepository.save(userSave);
     }
 
@@ -120,7 +119,7 @@ public class CrudUserService {
 
         log.info("Executed the process of validating user id  and flag Active in the database");
 
-        return userRepository.findByIdAndFlagEquals(id , 1)
+        return userRepository.findByIdAndFlagEquals(id , STATUS_FLAG_ACTIVE)
                 .orElseThrow(() -> new NotFoundException("User with id: " + id + " does not exist or Flag inactive."));
 
 

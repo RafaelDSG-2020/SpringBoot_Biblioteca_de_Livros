@@ -36,7 +36,7 @@ public class User implements Serializable  {
     private Integer flag;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usersID" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "usersID" , fetch = FetchType.LAZY)
     private List<LoanOfBooks> loan;
 
 

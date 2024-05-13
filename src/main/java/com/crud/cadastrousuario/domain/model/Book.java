@@ -60,7 +60,7 @@ public class Book {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "bookID" , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "bookID" , fetch = FetchType.LAZY)
     private List<LoanOfBooks> loan;
 
 

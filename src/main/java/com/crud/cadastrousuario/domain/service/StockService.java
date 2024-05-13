@@ -68,6 +68,7 @@ public class StockService {
 
     public StockDTO updateStockByID(Long id , StockDTO stockCreateDTO) {
 
+
         log.info("Executed the process of updating stock by id in the database");
         Stock stockBook = stockRepository.findById(id).orElseThrow(() -> new BadRequestException("Stock not found"));
 

@@ -33,7 +33,8 @@ public class CrudBookService {
     @Autowired
     public RestTemplate restTemplate;
 
-    private String authorServiceUrl = "http://localhost:8082/author-ms/api/v1/authors";
+
+    private String authorServiceUrl = "http://library-gateway:8082/author-ms/api/v1/authors";
 
 
     private final Integer STATUS_FLAG_ACTIVE = 1;

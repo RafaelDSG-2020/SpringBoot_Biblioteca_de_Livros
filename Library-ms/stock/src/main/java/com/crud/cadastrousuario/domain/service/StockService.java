@@ -31,7 +31,7 @@ public class StockService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String bookServiceUrl = "http://localhost:8082/book-ms/api/v1/books";
+    private String bookServiceUrl = "http://library-gateway:8082/book-ms/api/v1/books";
 
 
 

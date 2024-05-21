@@ -29,9 +29,9 @@ public class LoanOfBooksService {
     @Autowired
     RestTemplate restTemplate;
 
-    private String bookServiceUrl = "http://localhost:8082/book-ms/api/v1/books";
-    private String userServiceUrl = "http://localhost:8082/user-ms/api/v1/users";
-    private String stockServiceUrl = "http://localhost:8082/stock-ms/api/v1/stock";
+    private String bookServiceUrl = "http://library-gateway:8082/book-ms/api/v1/books";
+    private String userServiceUrl = "http://library-gateway:8082/user-ms/api/v1/users";
+    private String stockServiceUrl = "http://library-gateway:8082/stock-ms/api/v1/stock";
 
     private final Integer STATUS_FLAG_ACTIVE = 1;
 

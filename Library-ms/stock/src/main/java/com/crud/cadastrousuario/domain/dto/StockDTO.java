@@ -2,7 +2,7 @@ package com.crud.cadastrousuario.domain.dto;
 
 
 
-import com.crud.cadastrousuario.domain.model.Book;
+
 import com.crud.cadastrousuario.domain.model.Stock;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +36,7 @@ public class StockDTO {
     @Min(value = 0, message = "Quantity must be at least 0")
     private Integer amount;
 
-    private Book book;
+    private Long book;
 
     public StockDTO(Stock stock) {
 

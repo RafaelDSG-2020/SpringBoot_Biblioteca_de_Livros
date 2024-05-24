@@ -15,30 +15,22 @@ import java.util.List;
 
 
 @Data
-@Entity
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "USERS")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User implements Serializable  {
+public class UserDTO implements Serializable  {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID" , insertable=false, updatable=false)
+
     private Long id;
-    @Column(name = "NAME", length = 50, nullable = false)
+
     private String name;
-    @Column(name = "EMAIL", length = 50, nullable = false, unique=true )
+
     private String email;
-    @Column(name = "PHONE" , length = 50, nullable = false)
+
     private String phone;
-    @Column(name = "FLAG" , nullable = false)
+
     private Integer flag;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "usersID" , fetch = FetchType.LAZY)
-    private List<LoanOfBooks> loan;
 
 
 }

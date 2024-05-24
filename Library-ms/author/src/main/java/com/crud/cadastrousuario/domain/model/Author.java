@@ -32,9 +32,7 @@ public class Author {
     @Column(name = "FLAG" , nullable = false)
     private Integer flag;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "authors" , cascade = CascadeType.ALL)
-    private List<Book> books = new ArrayList<>();
+
 
 
     public Author(AuthorDTO author) {
@@ -42,6 +40,6 @@ public class Author {
         this.name = author.getName();
         this.nationality = author.getNationality();
         this.flag = 1;
-        this.books = author.getBooks();
+
     }
 }

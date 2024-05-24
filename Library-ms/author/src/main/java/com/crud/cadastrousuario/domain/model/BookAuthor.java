@@ -1,43 +1,29 @@
 package com.crud.cadastrousuario.domain.model;
 
-
-import com.crud.cadastrousuario.domain.dto.StockDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "STOCK")
+@Table(name = "BOOK_AUTHOR")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Stock {
+public class BookAuthor {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "AMOUNT" , nullable = false)
-    private Integer amount;
-
-
-   // @Embedded
     @Column(name = "BOOK_ID")
-    private Long book;
+    private Long bookID;
 
-
-    public Stock(StockDTO stockCreateDTO) {
-
-        this.amount = stockCreateDTO.getAmount();
-        this.book = stockCreateDTO.getBook();
-
-    }
-
-
+    @Column(name = "AUHTOR_ID")
+    private Long authorID;
 }

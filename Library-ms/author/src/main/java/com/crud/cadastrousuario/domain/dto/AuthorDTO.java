@@ -3,7 +3,6 @@ package com.crud.cadastrousuario.domain.dto;
 
 import com.crud.cadastrousuario.domain.model.Author;
 
-import com.crud.cadastrousuario.domain.model.Book;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -36,7 +35,7 @@ public class AuthorDTO {
 
     private Integer flag;
 
-    private List<Book> books;
+
 
 
     public AuthorDTO(Author author) {
@@ -45,7 +44,7 @@ public class AuthorDTO {
         this.name = author.getName();
         this.nationality = author.getNationality();
         this.flag = author.getFlag();
-        this.books = author.getBooks();
+
 
     }
 

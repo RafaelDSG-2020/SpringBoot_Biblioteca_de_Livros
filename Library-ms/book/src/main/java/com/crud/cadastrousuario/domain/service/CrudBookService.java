@@ -1,10 +1,10 @@
 package com.crud.cadastrousuario.domain.service;
 
 
+import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 import com.crud.cadastrousuario.domain.dto.BookDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
-import com.crud.cadastrousuario.domain.model.Author;
 import com.crud.cadastrousuario.domain.model.Book;
 import com.crud.cadastrousuario.domain.repository.BookRepository;
 import com.crud.cadastrousuario.domain.repository.BookRepositorySpec;
@@ -34,7 +34,8 @@ public class CrudBookService {
     public RestTemplate restTemplate;
 
 
-    private String authorServiceUrl = "http://library-gateway:8082/author-ms/api/v1/authors";
+    private String authorServiceUrl = "http://localhost:8082/author-ms/api/v1/authors";
+    //private String authorServiceUrl = "http://library-gateway:8082/author-ms/api/v1/authors";
 
 
     private final Integer STATUS_FLAG_ACTIVE = 1;
@@ -81,7 +82,7 @@ public class CrudBookService {
         isIsbnAvailable(book);
         isDateAvailable(book);
 
-        Optional.ofNullable(restTemplate.getForObject(authorServiceUrl + "/author" , Author.class))
+        Optional.ofNullable(restTemplate.getForObject(authorServiceUrl + "/author" , AuthorDTO.class))
                 .orElseThrow(() -> new BadRequestException("There are no authors"));
 
     //    authorService.isAuthorAvailable();

@@ -4,6 +4,9 @@ package com.crud.cadastrousuario.domain.service;
 import com.crud.cadastrousuario.domain.dto.LoanOfBooksDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.model.*;
+import com.crud.cadastrousuario.domain.model.BookDTO;
+import com.crud.cadastrousuario.domain.model.StockDTO;
+import com.crud.cadastrousuario.domain.model.UserDTO;
 import com.crud.cadastrousuario.domain.repository.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +32,13 @@ public class LoanOfBooksService {
     @Autowired
     RestTemplate restTemplate;
 
-    private String bookServiceUrl = "http://library-gateway:8082/book-ms/api/v1/books";
-    private String userServiceUrl = "http://library-gateway:8082/user-ms/api/v1/users";
-    private String stockServiceUrl = "http://library-gateway:8082/stock-ms/api/v1/stock";
+//    private String bookServiceUrl = "http://library-gateway:8082/book-ms/api/v1/books";
+//    private String userServiceUrl = "http://library-gateway:8082/user-ms/api/v1/users";
+//    private String stockServiceUrl = "http://library-gateway:8082/stock-ms/api/v1/stock";
+
+    private String bookServiceUrl = "http://localhost:8082/book-ms/api/v1/books";
+    private String userServiceUrl = "http://localhost:8082/user-ms/api/v1/users";
+    private String stockServiceUrl = "http://localhost:8082/stock-ms/api/v1/stock";
 
     private final Integer STATUS_FLAG_ACTIVE = 1;
 
@@ -46,15 +53,15 @@ public class LoanOfBooksService {
  //   @Transactional
     public LoanOfBooksDTO saveLoan(Long usersID, Long bookID ) {
 
-        Book book = findEntityById(bookServiceUrl, bookID, Book.class ,  "Book not found");
-        User user = findEntityById(userServiceUrl, usersID, User.class , "User not found");
-        Stock stock = findEntityById(stockServiceUrl, bookID, Stock.class , "Stock not found");
+        BookDTO book = findEntityById(bookServiceUrl, bookID, BookDTO.class ,  "Book not found");
+        UserDTO user = findEntityById(userServiceUrl, usersID, UserDTO.class , "User not found");
+        StockDTO stock = findEntityById(stockServiceUrl, bookID, StockDTO.class , "Stock not found");
 
         checkAndDecrementStock(stock , book.getId());
 
         LoanOfBooks loanOfBooks = new LoanOfBooks();
-        loanOfBooks.setBookID(book);
-        loanOfBooks.setUsersID(user);
+        loanOfBooks.setBookID(book.getId());
+        loanOfBooks.setUsersID(user.getId());
         loanOfBooks.setStatus(Status.EMPRESTADO);
         loanOfBooks = loanOfBooksRepository.save(loanOfBooks);
         return new LoanOfBooksDTO(loanOfBooks);
@@ -89,9 +96,9 @@ public class LoanOfBooksService {
 
 
 
-    private void checkAndDecrementStock(Stock stock , Long id) {
+    private void checkAndDecrementStock(StockDTO stock , Long id) {
 
-        Book book = restTemplate.getForObject(bookServiceUrl + "/" + id , Book.class);
+        BookDTO book = restTemplate.getForObject(bookServiceUrl + "/" + id , BookDTO.class);
         if (stock.getAmount().equals(THRESSHOLD_VALUE) && book.getFlag().equals(STATUS_FLAG_ACTIVE)) {
             throw new BadRequestException("The stock of book is empty");
         }
@@ -100,7 +107,7 @@ public class LoanOfBooksService {
         restTemplate.put(stockServiceUrl + "/" + stock.getId() , stock);
 
         if (stock.getAmount().equals(THRESSHOLD_VALUE)) {
-            Book bookStock = stock.getBook();
+            BookDTO bookStock = restTemplate.getForObject(bookServiceUrl + "/" + stock.getBook() , BookDTO.class);
             bookStock.setFlag(STATUS_FLAG_INACTIVE);
             restTemplate.put(bookServiceUrl + "/" + bookStock.getId() , bookStock);
            // bookRepository.save(book);

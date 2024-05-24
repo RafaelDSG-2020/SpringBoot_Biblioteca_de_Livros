@@ -21,34 +21,28 @@ import java.util.List;
 
 
 @Data
-@Entity
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "BOOK")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Book {
+public class BookDTO {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID" , insertable=false, updatable=false)
+
     private Long id;
 
-    @Column(name = "TITLE", length = 50, nullable = false)
+
     private String title;
 
-    @Column(name = "PUBLISHING_COMPANY", length = 50, nullable = false)
+
     private String publishingCompany;
 
-    @Column(name = "ISBN", length = 50, nullable = false, unique = true)
+
     private String isbn;
 
-    @Column(name = "PUBLISHING_DATE", length = 50, nullable = false)
+
     @Temporal(TemporalType.DATE)
     private LocalDate publishingDate;
 
-    @Column(name = "FLAG" , nullable = false)
     private Integer flag;
 
 

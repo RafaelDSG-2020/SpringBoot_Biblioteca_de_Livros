@@ -1,9 +1,10 @@
 package com.crud.cadastrousuario.domain.service;
 
+import com.crud.cadastrousuario.domain.dto.BookDTO;
 import com.crud.cadastrousuario.domain.dto.StockDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 
-import com.crud.cadastrousuario.domain.model.Book;
+
 import com.crud.cadastrousuario.domain.model.Stock;
 
 import com.crud.cadastrousuario.domain.repository.StockRepository;
@@ -31,7 +32,8 @@ public class StockService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String bookServiceUrl = "http://library-gateway:8082/book-ms/api/v1/books";
+    //private String bookServiceUrl = "http://library-gateway:8082/book-ms/api/v1/books";
+    private String bookServiceUrl = "http://localhost:8082/book-ms/api/v1/books";
 
 
 
@@ -57,7 +59,7 @@ public class StockService {
    // @Transactional
    public StockDTO save(Long bookID , StockDTO stockCreateDTO) {
 
-       Book book = restTemplate.getForObject(bookServiceUrl + "/" + bookID, Book.class);
+       BookDTO book = restTemplate.getForObject(bookServiceUrl + "/" + bookID, BookDTO.class);
        Optional.ofNullable(book).orElseThrow(() -> new BadRequestException("Book not found"));
 
 
@@ -68,7 +70,7 @@ public class StockService {
 
 
        Stock stock = new Stock(stockCreateDTO);
-       stock.setBook(book);
+       stock.setBook(book.getId());
        stockRepository.save(stock);
 
        return new StockDTO(stock);
@@ -86,7 +88,7 @@ public class StockService {
 
 
 
-        Book book = stockBook.getBook();
+        BookDTO book = restTemplate.getForObject(bookServiceUrl + "/" + stockBook.getBook() , BookDTO.class);
         book.setFlag(STATUS_FLAG_ACTIVE);
         restTemplate.put(bookServiceUrl + "/" + book.getId() , book);
 

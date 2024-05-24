@@ -3,15 +3,18 @@ package com.crud.cadastrousuario.domain.service;
 import com.crud.cadastrousuario.domain.dto.AuthorDTO;
 
 
+import com.crud.cadastrousuario.domain.dto.BookDTO;
 import com.crud.cadastrousuario.domain.exception.BadRequestException;
 import com.crud.cadastrousuario.domain.exception.NotFoundException;
 import com.crud.cadastrousuario.domain.model.Author;
 
-import com.crud.cadastrousuario.domain.model.Book;
+
+import com.crud.cadastrousuario.domain.model.BookAuthor;
 import com.crud.cadastrousuario.domain.repository.AuthorRepository;
 import com.crud.cadastrousuario.domain.repository.AuthorRepositorySpec;
 
 
+import com.crud.cadastrousuario.domain.repository.BookAuthorRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,13 +36,17 @@ public class CrudAuthorService {
     private AuthorRepository authorRepository;
 
     @Autowired
+    private BookAuthorRepository bookAuthorRepository;
+
+    @Autowired
     private RestTemplate restTemplate;
 
     private final Integer STATUS_FLAG_ACTIVE = 1;
 
     private final Integer STATUS_FLAG_INACTIVE = 0;
 
-    private String bookServiceUrl = "http://library-gateway:8082/book-ms/api/v1/books";
+    //private String bookServiceUrl = "http://library-gateway:8082/book-ms/api/v1/books";
+    private String bookServiceUrl = "http://localhost:8082/book-ms/api/v1/books";
 
 
 
@@ -129,16 +136,23 @@ public class CrudAuthorService {
     @Transactional
     public Author addBookToAuthor(Long bookId, Long authorId) {
 
-        Book book = restTemplate.getForObject(bookServiceUrl + "/" + bookId, Book.class);
+        BookDTO book = restTemplate.getForObject(bookServiceUrl + "/" + bookId, BookDTO.class);
         Optional.ofNullable(book).orElseThrow(() -> new BadRequestException("The book does not exist"));
       //  Book book = bookRepository.findById(bookId).orElseThrow();
         Author author = authorRepository.findById(authorId).orElseThrow();
 
-        book.getAuthors().add(author);
-        author.getBooks().add(book);
+
+        BookAuthor bookAuthor = new BookAuthor();
+        bookAuthor.setBookID(book.getId());
+        bookAuthor.setAuthorID(book.getId());
+
+        bookAuthorRepository.save(bookAuthor);
+
+//        book.getAuthors().add(author);
+//        author.getBooks().add(book);
 
 
-        authorRepository.save(author);
+      //  authorRepository.save(author);
         return author;
     }
 }

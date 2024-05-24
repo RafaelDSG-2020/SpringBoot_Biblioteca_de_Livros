@@ -23,13 +23,11 @@ public class LoanOfBooks {
     private Long id;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "BOOK_ID")
-    private Book bookID;
+    @Column(name = "BOOK_ID")
+    private Long bookID;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USERS_ID")
-    private User usersID;
+    @Column(name = "USERS_ID")
+    private Long usersID;
 
     @Column(name = "DATE_REMOVAL", length = 50, nullable = false)
     @Temporal(TemporalType.DATE)

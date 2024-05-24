@@ -10,13 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "STOCK")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Stock {
+public class StockDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +23,8 @@ public class Stock {
     @Column(name = "AMOUNT" , nullable = false)
     private Integer amount;
 
-    @OneToOne
-    @JoinColumn(name = "BOOK_ID")
-    private Book book;
+    @Column(name = "BOOK_ID")
+    private Long book;
 
 
 

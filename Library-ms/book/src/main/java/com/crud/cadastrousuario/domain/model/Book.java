@@ -50,22 +50,6 @@ public class Book {
     @Column(name = "FLAG" , nullable = false)
     private Integer flag;
 
-  //  private Long authorsID;
-
-  //  private Long loanID;
-
-//    @JsonIgnore
-//    @ManyToMany(cascade = CascadeType.ALL )
-//    @JoinTable(name = "BOOK_AUTHOR" ,
-//            joinColumns = @JoinColumn(name = "BOOK_ID") ,
-//            inverseJoinColumns = @JoinColumn(name = "AUTHOR_ID"))
-//    private List<Author> authors = new ArrayList<>();
-
-
-
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "bookID" , fetch = FetchType.LAZY)
-//    private List<LoanOfBooks> loan;
 
 
 
@@ -78,7 +62,7 @@ public class Book {
         this.isbn = bookCreateDTO.getIsbn();
         this.publishingDate = bookCreateDTO.getPublishingDate();
         this.flag = 1;
-      //  this.authors = bookCreateDTO.getAuthors();
+
 
     }
 }

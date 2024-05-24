@@ -1,9 +1,9 @@
 package com.crud.cadastrousuario.domain.dto;
 
 
-import com.crud.cadastrousuario.domain.model.Book;
+
 import com.crud.cadastrousuario.domain.model.LoanOfBooks;
-import com.crud.cadastrousuario.domain.model.User;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,9 +24,9 @@ public class LoanOfBooksDTO {
 
     private Long id;
 
-    private Book bookId;
+    private Long bookId;
 
-    private User usersId;
+    private Long usersId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateRemoval;
